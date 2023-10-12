@@ -14,6 +14,7 @@ class CatalogNotifier extends ChangeNotifier {
     final newCatalog = Catalog()
       ..createdAt = DateTime.now().millisecondsSinceEpoch
       ..name = name
+      ..orderNum = 0
       ..remark = remark;
 
     await database.isar!.writeTxn(() async {
@@ -31,6 +32,7 @@ class CatalogNotifier extends ChangeNotifier {
     while (true) {
       List<Catalog> catalogs = await database.isar!.catalogs
           .where()
+          .sortByOrderNum()
           .offset((pageCount - 1) * AppParams.databaseQueryPageSize)
           .limit(AppParams.databaseQueryPageSize)
           .findAll();
@@ -45,8 +47,6 @@ class CatalogNotifier extends ChangeNotifier {
         pageCount += 1;
       }
     }
-
-    print(database.isar!.catalogs.countSync());
   }
 
   int onHoverCatalogId = -1;
@@ -56,6 +56,39 @@ class CatalogNotifier extends ChangeNotifier {
       onHoverCatalogId = id;
       notifyListeners();
     }
+  }
+
+  changeIndex(int oldIndex, int newIndex) async {
+    await database.isar!.writeTxn(() async {
+      final item = datas.elementAt(oldIndex);
+
+      if (oldIndex > newIndex) {
+        // 从后往前
+        item.orderNum = datas.elementAt(newIndex).orderNum! - 1;
+        for (int i = 0; i < newIndex; i++) {
+          final before = datas.elementAt(i);
+          if (before != item) {
+            before.orderNum = before.orderNum! - 1;
+            await database.isar!.catalogs.put(before);
+          }
+        }
+      } else {
+        // 从前往后
+        item.orderNum = datas.elementAt(newIndex).orderNum! + 1;
+
+        for (int j = newIndex + 1; j < datas.length; j++) {
+          final after = datas.elementAt(j);
+          if (after != item) {
+            after.orderNum = after.orderNum! + 1;
+            await database.isar!.catalogs.put(after);
+          }
+        }
+      }
+
+      await database.isar!.catalogs.put(item);
+    });
+    datas.clear();
+    queryAll();
   }
 }
 

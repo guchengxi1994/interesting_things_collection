@@ -3,14 +3,13 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:interesting_things_collection/catalog/catalog_notifier.dart';
+import 'package:interesting_things_collection/isar/catalog.dart';
 import 'package:interesting_things_collection/style/app_style.dart';
 
 class CatalogCard extends ConsumerWidget {
-  const CatalogCard(
-      {super.key, this.image, required this.name, required this.id});
+  const CatalogCard({super.key, this.image, required this.catalog});
   final Widget? image;
-  final String name;
-  final int id;
+  final Catalog catalog;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -41,16 +40,16 @@ class CatalogCard extends ConsumerWidget {
   Widget _desktop(CatalogNotifier notifier) {
     return MouseRegion(
       onEnter: (event) {
-        notifier.changeOnHoverCatalogId(id);
+        notifier.changeOnHoverCatalogId(catalog.id);
       },
       onExit: (event) {
         notifier.changeOnHoverCatalogId(-1);
       },
       child: SizedBox(
-        width: notifier.onHoverCatalogId == id
+        width: notifier.onHoverCatalogId == catalog.id
             ? AppStyle.catalogCardWidth * AppStyle.catalogOnHoverFactor
             : AppStyle.catalogCardWidth,
-        height: notifier.onHoverCatalogId == id
+        height: notifier.onHoverCatalogId == catalog.id
             ? AppStyle.catalogCardHeight * AppStyle.catalogOnHoverFactor
             : AppStyle.catalogCardHeight,
         child: _child(),
@@ -59,7 +58,7 @@ class CatalogCard extends ConsumerWidget {
   }
 
   Widget _child() {
-    final color = AppStyle.catalogCardBorderColors[name.hashCode % 5];
+    final color = AppStyle.catalogCardBorderColors[catalog.name.hashCode % 8];
 
     return Container(
       decoration: BoxDecoration(
@@ -87,9 +86,16 @@ class CatalogCard extends ConsumerWidget {
           onTap: () {},
           child: Column(
             children: [
-              Expanded(flex: 2, child: image ?? const SizedBox()),
+              Expanded(
+                  flex: 2,
+                  child: image ??
+                      SizedBox(
+                        child: Center(
+                          child: Text(catalog.orderNum.toString()),
+                        ),
+                      )),
               const Divider(),
-              Expanded(flex: 1, child: Text("$name:$id"))
+              Expanded(flex: 1, child: Text("${catalog.name}:${catalog.id}"))
             ],
           ),
         ),

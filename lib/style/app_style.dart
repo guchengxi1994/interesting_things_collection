@@ -12,6 +12,9 @@ class AppStyle {
     Colors.blue,
     Colors.brown,
     Colors.green,
-    Colors.orange
+    Colors.deepPurpleAccent,
+    Colors.orange,
+    Colors.deepOrangeAccent,
+    Colors.pink,
   ];
 }
