@@ -16,6 +16,8 @@ class Thing {
 
   int? orderNum;
 
+  double? score;
+
   @override
   bool operator ==(Object other) {
     if (other is! Thing) {

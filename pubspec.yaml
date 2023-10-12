@@ -19,6 +19,7 @@ dependencies:
   path_provider: ^2.1.1
   flutter_riverpod: ^2.4.3
   flutter_smart_dialog: ^4.9.4
+  flutter_quill: ^7.4.9
 
 dev_dependencies:
   flutter_test:

@@ -46,6 +46,11 @@ const ThingSchema = CollectionSchema(
       id: 5,
       name: r'remark',
       type: IsarType.string,
+    ),
+    r'score': PropertySchema(
+      id: 6,
+      name: r'score',
+      type: IsarType.double,
     )
   },
   estimateSize: _thingEstimateSize,
@@ -95,6 +100,7 @@ void _thingSerialize(
   writer.writeString(offsets[3], object.name);
   writer.writeLong(offsets[4], object.orderNum);
   writer.writeString(offsets[5], object.remark);
+  writer.writeDouble(offsets[6], object.score);
 }
 
 Thing _thingDeserialize(
@@ -110,6 +116,7 @@ Thing _thingDeserialize(
   object.name = reader.readStringOrNull(offsets[3]);
   object.orderNum = reader.readLongOrNull(offsets[4]);
   object.remark = reader.readStringOrNull(offsets[5]);
+  object.score = reader.readDoubleOrNull(offsets[6]);
   return object;
 }
 
@@ -132,6 +139,8 @@ P _thingDeserializeProp<P>(
       return (reader.readLongOrNull(offset)) as P;
     case 5:
       return (reader.readStringOrNull(offset)) as P;
+    case 6:
+      return (reader.readDoubleOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -824,6 +833,84 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
       ));
     });
   }
+
+  QueryBuilder<Thing, Thing, QAfterFilterCondition> scoreIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'score',
+      ));
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterFilterCondition> scoreIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'score',
+      ));
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterFilterCondition> scoreEqualTo(
+    double? value, {
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'score',
+        value: value,
+        epsilon: epsilon,
+      ));
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterFilterCondition> scoreGreaterThan(
+    double? value, {
+    bool include = false,
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'score',
+        value: value,
+        epsilon: epsilon,
+      ));
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterFilterCondition> scoreLessThan(
+    double? value, {
+    bool include = false,
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'score',
+        value: value,
+        epsilon: epsilon,
+      ));
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterFilterCondition> scoreBetween(
+    double? lower,
+    double? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    double epsilon = Query.epsilon,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'score',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        epsilon: epsilon,
+      ));
+    });
+  }
 }
 
 extension ThingQueryObject on QueryBuilder<Thing, Thing, QFilterCondition> {}
@@ -900,6 +987,18 @@ extension ThingQuerySortBy on QueryBuilder<Thing, Thing, QSortBy> {
   QueryBuilder<Thing, Thing, QAfterSortBy> sortByRemarkDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'remark', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterSortBy> sortByScore() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'score', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterSortBy> sortByScoreDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'score', Sort.desc);
     });
   }
 }
@@ -988,6 +1087,18 @@ extension ThingQuerySortThenBy on QueryBuilder<Thing, Thing, QSortThenBy> {
       return query.addSortBy(r'remark', Sort.desc);
     });
   }
+
+  QueryBuilder<Thing, Thing, QAfterSortBy> thenByScore() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'score', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterSortBy> thenByScoreDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'score', Sort.desc);
+    });
+  }
 }
 
 extension ThingQueryWhereDistinct on QueryBuilder<Thing, Thing, QDistinct> {
@@ -1026,6 +1137,12 @@ extension ThingQueryWhereDistinct on QueryBuilder<Thing, Thing, QDistinct> {
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'remark', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QDistinct> distinctByScore() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'score');
     });
   }
 }
@@ -1070,6 +1187,12 @@ extension ThingQueryProperty on QueryBuilder<Thing, Thing, QQueryProperty> {
   QueryBuilder<Thing, String?, QQueryOperations> remarkProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'remark');
+    });
+  }
+
+  QueryBuilder<Thing, double?, QQueryOperations> scoreProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'score');
     });
   }
 }
