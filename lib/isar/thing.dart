@@ -10,9 +10,20 @@ class Thing {
 
   String? name;
 
-  int? isDeleted;
-
   String? remark;
 
   int? createdAt;
+
+  int? orderNum;
+
+  @override
+  bool operator ==(Object other) {
+    if (other is! Thing) {
+      return false;
+    }
+    return other.id == id;
+  }
+
+  @override
+  int get hashCode => id.hashCode;
 }

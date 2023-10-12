@@ -8,9 +8,20 @@ class Catalog {
 
   String? name;
 
-  int? isDeleted;
-
   String? remark;
 
   int? createdAt;
+
+  int? orderNum;
+
+  @override
+  bool operator ==(Object other) {
+    if (other is! Catalog) {
+      return false;
+    }
+    return other.id == id;
+  }
+
+  @override
+  int get hashCode => id.hashCode;
 }

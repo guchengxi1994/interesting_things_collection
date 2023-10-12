@@ -22,9 +22,9 @@ const CatalogSchema = CollectionSchema(
       name: r'createdAt',
       type: IsarType.long,
     ),
-    r'isDeleted': PropertySchema(
+    r'hashCode': PropertySchema(
       id: 1,
-      name: r'isDeleted',
+      name: r'hashCode',
       type: IsarType.long,
     ),
     r'name': PropertySchema(
@@ -32,8 +32,13 @@ const CatalogSchema = CollectionSchema(
       name: r'name',
       type: IsarType.string,
     ),
-    r'remark': PropertySchema(
+    r'orderNum': PropertySchema(
       id: 3,
+      name: r'orderNum',
+      type: IsarType.long,
+    ),
+    r'remark': PropertySchema(
+      id: 4,
       name: r'remark',
       type: IsarType.string,
     )
@@ -80,9 +85,10 @@ void _catalogSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeLong(offsets[0], object.createdAt);
-  writer.writeLong(offsets[1], object.isDeleted);
+  writer.writeLong(offsets[1], object.hashCode);
   writer.writeString(offsets[2], object.name);
-  writer.writeString(offsets[3], object.remark);
+  writer.writeLong(offsets[3], object.orderNum);
+  writer.writeString(offsets[4], object.remark);
 }
 
 Catalog _catalogDeserialize(
@@ -94,9 +100,9 @@ Catalog _catalogDeserialize(
   final object = Catalog();
   object.createdAt = reader.readLongOrNull(offsets[0]);
   object.id = id;
-  object.isDeleted = reader.readLongOrNull(offsets[1]);
   object.name = reader.readStringOrNull(offsets[2]);
-  object.remark = reader.readStringOrNull(offsets[3]);
+  object.orderNum = reader.readLongOrNull(offsets[3]);
+  object.remark = reader.readStringOrNull(offsets[4]);
   return object;
 }
 
@@ -110,10 +116,12 @@ P _catalogDeserializeProp<P>(
     case 0:
       return (reader.readLongOrNull(offset)) as P;
     case 1:
-      return (reader.readLongOrNull(offset)) as P;
+      return (reader.readLong(offset)) as P;
     case 2:
       return (reader.readStringOrNull(offset)) as P;
     case 3:
+      return (reader.readLongOrNull(offset)) as P;
+    case 4:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -278,6 +286,59 @@ extension CatalogQueryFilter
     });
   }
 
+  QueryBuilder<Catalog, Catalog, QAfterFilterCondition> hashCodeEqualTo(
+      int value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'hashCode',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Catalog, Catalog, QAfterFilterCondition> hashCodeGreaterThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'hashCode',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Catalog, Catalog, QAfterFilterCondition> hashCodeLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'hashCode',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Catalog, Catalog, QAfterFilterCondition> hashCodeBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'hashCode',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
   QueryBuilder<Catalog, Catalog, QAfterFilterCondition> idEqualTo(Id value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -322,75 +383,6 @@ extension CatalogQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
         property: r'id',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
-    });
-  }
-
-  QueryBuilder<Catalog, Catalog, QAfterFilterCondition> isDeletedIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'isDeleted',
-      ));
-    });
-  }
-
-  QueryBuilder<Catalog, Catalog, QAfterFilterCondition> isDeletedIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'isDeleted',
-      ));
-    });
-  }
-
-  QueryBuilder<Catalog, Catalog, QAfterFilterCondition> isDeletedEqualTo(
-      int? value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'isDeleted',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Catalog, Catalog, QAfterFilterCondition> isDeletedGreaterThan(
-    int? value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'isDeleted',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Catalog, Catalog, QAfterFilterCondition> isDeletedLessThan(
-    int? value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'isDeleted',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Catalog, Catalog, QAfterFilterCondition> isDeletedBetween(
-    int? lower,
-    int? upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'isDeleted',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -541,6 +533,75 @@ extension CatalogQueryFilter
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'name',
         value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Catalog, Catalog, QAfterFilterCondition> orderNumIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'orderNum',
+      ));
+    });
+  }
+
+  QueryBuilder<Catalog, Catalog, QAfterFilterCondition> orderNumIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'orderNum',
+      ));
+    });
+  }
+
+  QueryBuilder<Catalog, Catalog, QAfterFilterCondition> orderNumEqualTo(
+      int? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'orderNum',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Catalog, Catalog, QAfterFilterCondition> orderNumGreaterThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'orderNum',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Catalog, Catalog, QAfterFilterCondition> orderNumLessThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'orderNum',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Catalog, Catalog, QAfterFilterCondition> orderNumBetween(
+    int? lower,
+    int? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'orderNum',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
       ));
     });
   }
@@ -711,15 +772,15 @@ extension CatalogQuerySortBy on QueryBuilder<Catalog, Catalog, QSortBy> {
     });
   }
 
-  QueryBuilder<Catalog, Catalog, QAfterSortBy> sortByIsDeleted() {
+  QueryBuilder<Catalog, Catalog, QAfterSortBy> sortByHashCode() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'isDeleted', Sort.asc);
+      return query.addSortBy(r'hashCode', Sort.asc);
     });
   }
 
-  QueryBuilder<Catalog, Catalog, QAfterSortBy> sortByIsDeletedDesc() {
+  QueryBuilder<Catalog, Catalog, QAfterSortBy> sortByHashCodeDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'isDeleted', Sort.desc);
+      return query.addSortBy(r'hashCode', Sort.desc);
     });
   }
 
@@ -732,6 +793,18 @@ extension CatalogQuerySortBy on QueryBuilder<Catalog, Catalog, QSortBy> {
   QueryBuilder<Catalog, Catalog, QAfterSortBy> sortByNameDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'name', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Catalog, Catalog, QAfterSortBy> sortByOrderNum() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'orderNum', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Catalog, Catalog, QAfterSortBy> sortByOrderNumDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'orderNum', Sort.desc);
     });
   }
 
@@ -762,6 +835,18 @@ extension CatalogQuerySortThenBy
     });
   }
 
+  QueryBuilder<Catalog, Catalog, QAfterSortBy> thenByHashCode() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hashCode', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Catalog, Catalog, QAfterSortBy> thenByHashCodeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hashCode', Sort.desc);
+    });
+  }
+
   QueryBuilder<Catalog, Catalog, QAfterSortBy> thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
@@ -774,18 +859,6 @@ extension CatalogQuerySortThenBy
     });
   }
 
-  QueryBuilder<Catalog, Catalog, QAfterSortBy> thenByIsDeleted() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'isDeleted', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Catalog, Catalog, QAfterSortBy> thenByIsDeletedDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'isDeleted', Sort.desc);
-    });
-  }
-
   QueryBuilder<Catalog, Catalog, QAfterSortBy> thenByName() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'name', Sort.asc);
@@ -795,6 +868,18 @@ extension CatalogQuerySortThenBy
   QueryBuilder<Catalog, Catalog, QAfterSortBy> thenByNameDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'name', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Catalog, Catalog, QAfterSortBy> thenByOrderNum() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'orderNum', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Catalog, Catalog, QAfterSortBy> thenByOrderNumDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'orderNum', Sort.desc);
     });
   }
 
@@ -819,9 +904,9 @@ extension CatalogQueryWhereDistinct
     });
   }
 
-  QueryBuilder<Catalog, Catalog, QDistinct> distinctByIsDeleted() {
+  QueryBuilder<Catalog, Catalog, QDistinct> distinctByHashCode() {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'isDeleted');
+      return query.addDistinctBy(r'hashCode');
     });
   }
 
@@ -829,6 +914,12 @@ extension CatalogQueryWhereDistinct
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'name', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<Catalog, Catalog, QDistinct> distinctByOrderNum() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'orderNum');
     });
   }
 
@@ -854,15 +945,21 @@ extension CatalogQueryProperty
     });
   }
 
-  QueryBuilder<Catalog, int?, QQueryOperations> isDeletedProperty() {
+  QueryBuilder<Catalog, int, QQueryOperations> hashCodeProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'isDeleted');
+      return query.addPropertyName(r'hashCode');
     });
   }
 
   QueryBuilder<Catalog, String?, QQueryOperations> nameProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'name');
+    });
+  }
+
+  QueryBuilder<Catalog, int?, QQueryOperations> orderNumProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'orderNum');
     });
   }
 

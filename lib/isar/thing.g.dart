@@ -27,9 +27,9 @@ const ThingSchema = CollectionSchema(
       name: r'createdAt',
       type: IsarType.long,
     ),
-    r'isDeleted': PropertySchema(
+    r'hashCode': PropertySchema(
       id: 2,
-      name: r'isDeleted',
+      name: r'hashCode',
       type: IsarType.long,
     ),
     r'name': PropertySchema(
@@ -37,8 +37,13 @@ const ThingSchema = CollectionSchema(
       name: r'name',
       type: IsarType.string,
     ),
-    r'remark': PropertySchema(
+    r'orderNum': PropertySchema(
       id: 4,
+      name: r'orderNum',
+      type: IsarType.long,
+    ),
+    r'remark': PropertySchema(
+      id: 5,
       name: r'remark',
       type: IsarType.string,
     )
@@ -86,9 +91,10 @@ void _thingSerialize(
 ) {
   writer.writeLong(offsets[0], object.catalogId);
   writer.writeLong(offsets[1], object.createdAt);
-  writer.writeLong(offsets[2], object.isDeleted);
+  writer.writeLong(offsets[2], object.hashCode);
   writer.writeString(offsets[3], object.name);
-  writer.writeString(offsets[4], object.remark);
+  writer.writeLong(offsets[4], object.orderNum);
+  writer.writeString(offsets[5], object.remark);
 }
 
 Thing _thingDeserialize(
@@ -101,9 +107,9 @@ Thing _thingDeserialize(
   object.catalogId = reader.readLongOrNull(offsets[0]);
   object.createdAt = reader.readLongOrNull(offsets[1]);
   object.id = id;
-  object.isDeleted = reader.readLongOrNull(offsets[2]);
   object.name = reader.readStringOrNull(offsets[3]);
-  object.remark = reader.readStringOrNull(offsets[4]);
+  object.orderNum = reader.readLongOrNull(offsets[4]);
+  object.remark = reader.readStringOrNull(offsets[5]);
   return object;
 }
 
@@ -119,10 +125,12 @@ P _thingDeserializeProp<P>(
     case 1:
       return (reader.readLongOrNull(offset)) as P;
     case 2:
-      return (reader.readLongOrNull(offset)) as P;
+      return (reader.readLong(offset)) as P;
     case 3:
       return (reader.readStringOrNull(offset)) as P;
     case 4:
+      return (reader.readLongOrNull(offset)) as P;
+    case 5:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -355,6 +363,58 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
+  QueryBuilder<Thing, Thing, QAfterFilterCondition> hashCodeEqualTo(int value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'hashCode',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterFilterCondition> hashCodeGreaterThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'hashCode',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterFilterCondition> hashCodeLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'hashCode',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterFilterCondition> hashCodeBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'hashCode',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
   QueryBuilder<Thing, Thing, QAfterFilterCondition> idEqualTo(Id value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -399,75 +459,6 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
         property: r'id',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
-    });
-  }
-
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> isDeletedIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'isDeleted',
-      ));
-    });
-  }
-
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> isDeletedIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'isDeleted',
-      ));
-    });
-  }
-
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> isDeletedEqualTo(
-      int? value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'isDeleted',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> isDeletedGreaterThan(
-    int? value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'isDeleted',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> isDeletedLessThan(
-    int? value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'isDeleted',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> isDeletedBetween(
-    int? lower,
-    int? upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'isDeleted',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -616,6 +607,75 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'name',
         value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterFilterCondition> orderNumIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'orderNum',
+      ));
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterFilterCondition> orderNumIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'orderNum',
+      ));
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterFilterCondition> orderNumEqualTo(
+      int? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'orderNum',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterFilterCondition> orderNumGreaterThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'orderNum',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterFilterCondition> orderNumLessThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'orderNum',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterFilterCondition> orderNumBetween(
+    int? lower,
+    int? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'orderNum',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
       ));
     });
   }
@@ -795,15 +855,15 @@ extension ThingQuerySortBy on QueryBuilder<Thing, Thing, QSortBy> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterSortBy> sortByIsDeleted() {
+  QueryBuilder<Thing, Thing, QAfterSortBy> sortByHashCode() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'isDeleted', Sort.asc);
+      return query.addSortBy(r'hashCode', Sort.asc);
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterSortBy> sortByIsDeletedDesc() {
+  QueryBuilder<Thing, Thing, QAfterSortBy> sortByHashCodeDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'isDeleted', Sort.desc);
+      return query.addSortBy(r'hashCode', Sort.desc);
     });
   }
 
@@ -816,6 +876,18 @@ extension ThingQuerySortBy on QueryBuilder<Thing, Thing, QSortBy> {
   QueryBuilder<Thing, Thing, QAfterSortBy> sortByNameDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'name', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterSortBy> sortByOrderNum() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'orderNum', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterSortBy> sortByOrderNumDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'orderNum', Sort.desc);
     });
   }
 
@@ -857,6 +929,18 @@ extension ThingQuerySortThenBy on QueryBuilder<Thing, Thing, QSortThenBy> {
     });
   }
 
+  QueryBuilder<Thing, Thing, QAfterSortBy> thenByHashCode() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hashCode', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterSortBy> thenByHashCodeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hashCode', Sort.desc);
+    });
+  }
+
   QueryBuilder<Thing, Thing, QAfterSortBy> thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
@@ -869,18 +953,6 @@ extension ThingQuerySortThenBy on QueryBuilder<Thing, Thing, QSortThenBy> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterSortBy> thenByIsDeleted() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'isDeleted', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Thing, Thing, QAfterSortBy> thenByIsDeletedDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'isDeleted', Sort.desc);
-    });
-  }
-
   QueryBuilder<Thing, Thing, QAfterSortBy> thenByName() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'name', Sort.asc);
@@ -890,6 +962,18 @@ extension ThingQuerySortThenBy on QueryBuilder<Thing, Thing, QSortThenBy> {
   QueryBuilder<Thing, Thing, QAfterSortBy> thenByNameDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'name', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterSortBy> thenByOrderNum() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'orderNum', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterSortBy> thenByOrderNumDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'orderNum', Sort.desc);
     });
   }
 
@@ -919,9 +1003,9 @@ extension ThingQueryWhereDistinct on QueryBuilder<Thing, Thing, QDistinct> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QDistinct> distinctByIsDeleted() {
+  QueryBuilder<Thing, Thing, QDistinct> distinctByHashCode() {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'isDeleted');
+      return query.addDistinctBy(r'hashCode');
     });
   }
 
@@ -929,6 +1013,12 @@ extension ThingQueryWhereDistinct on QueryBuilder<Thing, Thing, QDistinct> {
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'name', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QDistinct> distinctByOrderNum() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'orderNum');
     });
   }
 
@@ -959,15 +1049,21 @@ extension ThingQueryProperty on QueryBuilder<Thing, Thing, QQueryProperty> {
     });
   }
 
-  QueryBuilder<Thing, int?, QQueryOperations> isDeletedProperty() {
+  QueryBuilder<Thing, int, QQueryOperations> hashCodeProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'isDeleted');
+      return query.addPropertyName(r'hashCode');
     });
   }
 
   QueryBuilder<Thing, String?, QQueryOperations> nameProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'name');
+    });
+  }
+
+  QueryBuilder<Thing, int?, QQueryOperations> orderNumProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'orderNum');
     });
   }
 

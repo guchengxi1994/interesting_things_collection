@@ -3,24 +3,21 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:interesting_things_collection/isar/database.dart';
 
+import 'catalog/catalog_notifier.dart';
+import 'catalog/catalog_screen.dart';
+import 'common/dev_tool.dart';
+
 void main() {
   runApp(const ProviderScope(
     child: MyApp(),
   ));
 }
 
-class MyApp extends ConsumerWidget {
+class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    WidgetsBinding.instance.addPostFrameCallback(
-      (timeStamp) async {
-        await ref.read(isarDatabaseNotifier).init();
-      },
-    );
-
+  Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       navigatorObservers: [FlutterSmartDialog.observer],
@@ -30,40 +27,44 @@ class MyApp extends ConsumerWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
 
 class MyHomePage extends ConsumerWidget {
-  const MyHomePage({super.key, required this.title});
+  MyHomePage({super.key, required this.title});
 
   final String title;
 
-  void _incrementCounter(WidgetRef ref) {
-    ref.read(isarDatabaseNotifier).newCatalog();
+  final IsarDatabase database = IsarDatabase();
+
+  Future _incrementCounter(WidgetRef ref) async {
+    await ref.read(catalogNotifier).newCatalog(DevTool.getRandomString(5));
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) async {
+        while (database.isar == null) {
+          await Future.delayed(const Duration(milliseconds: 200));
+        }
+        ref.read(catalogNotifier).queryAll();
+      },
+    );
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(title),
       ),
-      body: const Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-          ],
-        ),
-      ),
+      body: const CatalogScreen(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          _incrementCounter(ref);
+          _incrementCounter(ref).then((value) {
+            ref.read(catalogNotifier).queryAll();
+          });
         },
         tooltip: 'Increment',
         child: const Icon(Icons.add),
