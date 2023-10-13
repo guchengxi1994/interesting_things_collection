@@ -8,9 +8,6 @@ import 'package:interesting_things_collection/layout/desktop_layout.dart';
 import 'package:interesting_things_collection/notifier/color_notifier.dart';
 import 'package:interesting_things_collection/style/app_style.dart';
 
-import 'catalog/catalog_notifier.dart';
-import 'common/dev_tool.dart';
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -36,6 +33,8 @@ class MyAppState extends ConsumerState<MyApp> {
     super.initState();
     future = Future(() async {
       ref.read(colorNotifier).init();
+      // ignore: unused_local_variable
+      final IsarDatabase database = IsarDatabase();
     });
   }
 
@@ -55,57 +54,19 @@ class MyAppState extends ConsumerState<MyApp> {
                       ref.watch(colorNotifier).currentColor]),
               useMaterial3: true,
             ),
-            home: MyHomePage(title: 'Flutter Demo Home Page'),
+            home: const MyHomePage(),
           );
         });
   }
 }
 
 class MyHomePage extends ConsumerWidget {
-  MyHomePage({super.key, required this.title});
-
-  final String title;
-
-  final IsarDatabase database = IsarDatabase();
-
-  Future _incrementCounter(WidgetRef ref) async {
-    await ref.read(catalogNotifier).newCatalog(DevTool.getRandomString(5));
-  }
+  const MyHomePage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    WidgetsBinding.instance.addPostFrameCallback(
-      (timeStamp) async {
-        while (database.isar == null) {
-          await Future.delayed(const Duration(milliseconds: 200));
-        }
-        ref.read(catalogNotifier).queryAll();
-      },
-    );
-
-    return Scaffold(
+    return const Scaffold(
       body: Layout(),
-      floatingActionButton: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          FloatingActionButton(
-            onPressed: () {
-              _incrementCounter(ref).then((value) {
-                ref.read(catalogNotifier).queryAll();
-              });
-            },
-            tooltip: 'Increment',
-            child: const Icon(Icons.add),
-          ),
-          FloatingActionButton(
-            onPressed: () {
-              ref.read(colorNotifier).changeColor();
-            },
-            tooltip: 'decrease',
-            child: const Icon(Icons.remove),
-          ),
-        ],
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

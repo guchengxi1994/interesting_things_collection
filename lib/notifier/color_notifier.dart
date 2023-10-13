@@ -8,16 +8,19 @@ class ColorNotifier extends ChangeNotifier {
 
   init() async {
     currentColor = await localStorage.getThemeColor();
+    notifyListeners();
   }
 
-  changeColor() {
-    currentColor = (currentColor + 1) % 8;
-    Future.microtask(
-      () async {
-        await localStorage.setThemeColor(currentColor);
-      },
-    );
-    notifyListeners();
+  changeColor(int index) {
+    if (currentColor != index) {
+      currentColor = index;
+      Future.microtask(
+        () async {
+          await localStorage.setThemeColor(currentColor);
+        },
+      );
+      notifyListeners();
+    }
   }
 }
 

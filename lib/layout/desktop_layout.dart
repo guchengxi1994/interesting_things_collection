@@ -3,15 +3,55 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:interesting_things_collection/catalog/catalog_screen.dart';
 import 'package:interesting_things_collection/layout/expand_collapse_notifier.dart';
 import 'package:interesting_things_collection/notifier/color_notifier.dart';
+import 'package:interesting_things_collection/settings/settings_screen.dart';
 import 'package:interesting_things_collection/style/app_style.dart';
 
-class Layout extends ConsumerWidget {
-  Layout({super.key});
-
-  late final notifier = ExpandCollapseNotifier(minWidth: 75, maxWidth: 200);
+class Layout extends ConsumerStatefulWidget {
+  const Layout({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() {
+    return LayoutState();
+  }
+}
+
+class LayoutState extends ConsumerState<Layout> with TickerProviderStateMixin {
+  late final notifier =
+      ExpandCollapseNotifier(minWidth: minWidth, maxWidth: maxWidth);
+  final PageController controller = PageController();
+  int selected = 0;
+
+  static const double minWidth = 75;
+  static const double maxWidth = 200;
+
+  late AnimationController _controller;
+  // ignore: unused_field
+  late Animation<double> _animation;
+
+  bool isExpanded = false;
+
+  _toggleSidemenu() {
+    if (!_controller.isAnimating && !_controller.isCompleted) {
+      _controller.forward();
+    } else {
+      _controller.reverse();
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    notifier.addListener(() => mounted ? setState(() {}) : null);
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 200),
+      vsync: this,
+    );
+    _animation =
+        _controller.drive(Tween<double>(begin: minWidth, end: maxWidth));
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Stack(
       children: [
         Row(
@@ -31,22 +71,50 @@ class Layout extends ConsumerWidget {
                     ]),
               ),
               child: NavigationRail(
+                onDestinationSelected: (value) {
+                  if (value != selected) {
+                    controller.jumpToPage(value);
+                    setState(() {
+                      selected = value;
+                    });
+                  }
+                },
                 backgroundColor: Colors.transparent,
-                destinations: const [
+                destinations: [
                   NavigationRailDestination(
-                      icon: Icon(Icons.abc), label: Text("aaa")),
+                      icon: const Icon(
+                        Icons.book,
+                      ),
+                      label: const Text("Catalogs"),
+                      selectedIcon: Icon(
+                        Icons.book,
+                        color: AppStyle.catalogCardBorderColors[
+                            ref.watch(colorNotifier).currentColor],
+                      )),
                   NavigationRailDestination(
-                      icon: Icon(Icons.abc), label: Text("bbb"))
+                      icon: const Icon(
+                        Icons.settings,
+                      ),
+                      label: const Text("Settings"),
+                      selectedIcon: Icon(
+                        Icons.settings,
+                        color: AppStyle.catalogCardBorderColors[
+                            ref.watch(colorNotifier).currentColor],
+                      ))
                 ],
-                selectedIndex: 0,
+                selectedIndex: selected,
                 extended: notifier.isExpanded,
-                minWidth: 75,
-                minExtendedWidth: 200,
+                minWidth: minWidth,
+                minExtendedWidth: maxWidth,
               ),
             ),
-            const Expanded(
+            Expanded(
                 child: SizedBox.expand(
-              child: CatalogScreen(),
+              child: PageView(
+                physics: const NeverScrollableScrollPhysics(),
+                controller: controller,
+                children: const [CatalogScreen(), SettingsScreen()],
+              ),
             ))
           ],
         ),
@@ -56,7 +124,13 @@ class Layout extends ConsumerWidget {
               cursor: SystemMouseCursors.resizeLeft,
               child: GestureDetector(
                 onPanUpdate: (details) {
-                  final _ = notifier.changeSidemenuWidth(details);
+                  final b = notifier.changeSidemenuWidth(details);
+                  if (isExpanded != b) {
+                    setState(() {
+                      isExpanded = b;
+                    });
+                    _toggleSidemenu();
+                  }
                 },
                 child: Container(
                   color: Colors.transparent,
