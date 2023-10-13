@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:interesting_things_collection/catalog/catalog_screen.dart';
 import 'package:interesting_things_collection/layout/expand_collapse_notifier.dart';
+import 'package:interesting_things_collection/notifier/color_notifier.dart';
+import 'package:interesting_things_collection/style/app_style.dart';
 
 class Layout extends ConsumerWidget {
   Layout({super.key});
@@ -15,8 +17,19 @@ class Layout extends ConsumerWidget {
         Row(
           children: [
             Container(
-              decoration:
-                  BoxDecoration(color: Colors.lightBlueAccent.withAlpha(100)),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      AppStyle.catalogCardBorderColors[
+                              ref.watch(colorNotifier).currentColor]
+                          .withAlpha(200),
+                      AppStyle.catalogCardBorderColors[
+                              ref.watch(colorNotifier).currentColor]
+                          .withAlpha(50)
+                    ]),
+              ),
               child: NavigationRail(
                 backgroundColor: Colors.transparent,
                 destinations: const [
