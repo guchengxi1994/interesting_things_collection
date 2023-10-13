@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:interesting_things_collection/isar/database.dart';
+import 'package:interesting_things_collection/layout/desktop_layout.dart';
 
 import 'catalog/catalog_notifier.dart';
-import 'catalog/catalog_screen.dart';
 import 'common/dev_tool.dart';
 
 void main() {
@@ -55,11 +55,7 @@ class MyHomePage extends ConsumerWidget {
     );
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(title),
-      ),
-      body: const CatalogScreen(),
+      body: Layout(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           _incrementCounter(ref).then((value) {

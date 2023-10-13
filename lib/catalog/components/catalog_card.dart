@@ -86,20 +86,33 @@ class CatalogCard extends ConsumerWidget {
           onTap: () {},
           child: Column(
             children: [
-              Expanded(
-                  flex: 2,
-                  child: image ??
-                      SizedBox(
-                        child: Center(
-                          child: Text(catalog.orderNum.toString()),
-                        ),
-                      )),
+              Expanded(flex: 2, child: _createImage(color)),
               const Divider(),
-              Expanded(flex: 1, child: Text("${catalog.name}:${catalog.id}"))
+              Expanded(
+                  flex: 1, child: Text("${catalog.name}:${catalog.orderNum}"))
             ],
           ),
         ),
       ),
     );
+  }
+
+  Widget _createImage(Color color) {
+    if (image == null) {
+      var s = "";
+      if (catalog.name!.length >= 2) {
+        s = catalog.name!.substring(0, 2).toUpperCase();
+      } else {
+        s = catalog.name![0].toUpperCase();
+      }
+
+      return Center(
+        child: Text(
+          s,
+          style: TextStyle(fontSize: 25, color: color),
+        ),
+      );
+    }
+    return image!;
   }
 }
