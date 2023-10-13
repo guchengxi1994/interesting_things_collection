@@ -8,7 +8,7 @@
 PRODUCT_NAME = interesting_things_collection
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.example.interestingThingsCollection
+PRODUCT_BUNDLE_IDENTIFIER = org.xiaoshuyui.interestingThingsCollection
 
 // The copyright displayed in application information
-PRODUCT_COPYRIGHT = Copyright © 2023 com.example. All rights reserved.
+PRODUCT_COPYRIGHT = Copyright © 2023 org.xiaoshuyui. All rights reserved.

@@ -21,6 +21,8 @@ dependencies:
   flutter_smart_dialog: ^4.9.4
   flutter_quill: ^7.4.9
   reorderables: ^0.6.0
+  pretty_qr_code: ^3.0.0
+  qr_code_scanner: ^1.0.1
 
 dev_dependencies:
   flutter_test:

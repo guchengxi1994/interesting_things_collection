@@ -1,4 +1,4 @@
-package com.example.interesting_things_collection
+package org.xiaoshuyui.interesting_things_collection
 
 import io.flutter.embedding.android.FlutterActivity
 
