@@ -5,6 +5,7 @@ import 'package:interesting_things_collection/layout/expand_collapse_notifier.da
 import 'package:interesting_things_collection/notifier/color_notifier.dart';
 import 'package:interesting_things_collection/settings/settings_screen.dart';
 import 'package:interesting_things_collection/style/app_style.dart';
+import 'package:window_manager/window_manager.dart';
 
 class Layout extends ConsumerStatefulWidget {
   const Layout({super.key});
@@ -21,7 +22,7 @@ class LayoutState extends ConsumerState<Layout> with TickerProviderStateMixin {
   final PageController controller = PageController();
   int selected = 0;
 
-  static const double minWidth = 75;
+  static const double minWidth = 70;
   static const double maxWidth = 200;
 
   late AnimationController _controller;
@@ -52,95 +53,107 @@ class LayoutState extends ConsumerState<Layout> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Row(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      AppStyle.catalogCardBorderColors[
-                              ref.watch(colorNotifier).currentColor]
-                          .withAlpha(200),
-                      AppStyle.catalogCardBorderColors[
-                              ref.watch(colorNotifier).currentColor]
-                          .withAlpha(50)
-                    ]),
-              ),
-              child: NavigationRail(
-                onDestinationSelected: (value) {
-                  if (value != selected) {
-                    controller.jumpToPage(value);
-                    setState(() {
-                      selected = value;
-                    });
-                  }
-                },
-                backgroundColor: Colors.transparent,
-                destinations: [
-                  NavigationRailDestination(
-                      icon: const Icon(
-                        Icons.book,
-                      ),
-                      label: const Text("Catalogs"),
-                      selectedIcon: Icon(
-                        Icons.book,
-                        color: AppStyle.catalogCardBorderColors[
-                            ref.watch(colorNotifier).currentColor],
-                      )),
-                  NavigationRailDestination(
-                      icon: const Icon(
-                        Icons.settings,
-                      ),
-                      label: const Text("Settings"),
-                      selectedIcon: Icon(
-                        Icons.settings,
-                        color: AppStyle.catalogCardBorderColors[
-                            ref.watch(colorNotifier).currentColor],
-                      ))
-                ],
-                selectedIndex: selected,
-                extended: notifier.isExpanded,
-                minWidth: minWidth,
-                minExtendedWidth: maxWidth,
-              ),
-            ),
-            Expanded(
-                child: SizedBox.expand(
-              child: PageView(
-                physics: const NeverScrollableScrollPhysics(),
-                controller: controller,
-                children: const [CatalogScreen(), SettingsScreen()],
-              ),
-            ))
-          ],
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      appBar: const PreferredSize(
+        preferredSize: Size.fromHeight(AppStyle.appbarHeight),
+        child: WindowCaption(
+          brightness: Brightness.dark,
+          backgroundColor: Colors.transparent,
         ),
-        Positioned(
-            left: notifier.currentWidth - 10,
-            child: MouseRegion(
-              cursor: SystemMouseCursors.resizeLeft,
-              child: GestureDetector(
-                onPanUpdate: (details) {
-                  final b = notifier.changeSidemenuWidth(details);
-                  if (isExpanded != b) {
-                    setState(() {
-                      isExpanded = b;
-                    });
-                    _toggleSidemenu();
-                  }
-                },
-                child: Container(
-                  color: Colors.transparent,
-                  width: 20,
-                  height: MediaQuery.of(context).size.height,
-                  // child: const SizedBox.expand(),
+      ),
+      body: Stack(
+        children: [
+          Row(
+            children: [
+              Container(
+                color: Colors.transparent,
+                child: NavigationRail(
+                  onDestinationSelected: (value) {
+                    if (value != selected) {
+                      controller.jumpToPage(value);
+                      setState(() {
+                        selected = value;
+                      });
+                    }
+                  },
+                  backgroundColor: Colors.transparent,
+                  destinations: [
+                    NavigationRailDestination(
+                        icon: const Icon(
+                          Icons.book,
+                        ),
+                        label: const Text("Catalogs"),
+                        selectedIcon: Icon(
+                          Icons.book,
+                          color: AppStyle.catalogCardBorderColors[
+                              ref.watch(colorNotifier).currentColor],
+                        )),
+                    NavigationRailDestination(
+                        icon: const Icon(
+                          Icons.transform,
+                        ),
+                        label: const Text("Data Transfer"),
+                        selectedIcon: Icon(
+                          Icons.transform,
+                          color: AppStyle.catalogCardBorderColors[
+                              ref.watch(colorNotifier).currentColor],
+                        )),
+                    NavigationRailDestination(
+                        icon: const Icon(
+                          Icons.settings,
+                        ),
+                        label: const Text("Settings"),
+                        selectedIcon: Icon(
+                          Icons.settings,
+                          color: AppStyle.catalogCardBorderColors[
+                              ref.watch(colorNotifier).currentColor],
+                        ))
+                  ],
+                  selectedIndex: selected,
+                  extended: notifier.isExpanded,
+                  minWidth: minWidth,
+                  minExtendedWidth: maxWidth,
                 ),
               ),
-            ))
-      ],
+              Expanded(
+                  child: SizedBox.expand(
+                child: PageView(
+                  physics: const NeverScrollableScrollPhysics(),
+                  controller: controller,
+                  children: const [
+                    CatalogScreen(),
+                    SizedBox(),
+                    SettingsScreen(),
+                  ],
+                ),
+              ))
+            ],
+          ),
+          Positioned(
+              left: notifier.currentWidth - 10,
+              child: MouseRegion(
+                cursor: SystemMouseCursors.resizeLeft,
+                child: GestureDetector(
+                  onPanUpdate: (details) {
+                    final b = notifier.changeSidemenuWidth(details);
+                    if (isExpanded != b) {
+                      setState(() {
+                        isExpanded = b;
+                      });
+                      _toggleSidemenu();
+                    }
+                  },
+                  child: Container(
+                    color: Colors.transparent,
+                    width: 20,
+                    height: MediaQuery.of(context).size.height,
+                    // child: const SizedBox.expand(),
+                  ),
+                ),
+              ))
+        ],
+      ),
     );
   }
 }

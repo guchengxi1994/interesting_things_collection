@@ -88,8 +88,7 @@ class CatalogCard extends ConsumerWidget {
             children: [
               Expanded(flex: 2, child: _createImage(color)),
               const Divider(),
-              Expanded(
-                  flex: 1, child: Text("${catalog.name}:${catalog.orderNum}"))
+              Expanded(flex: 1, child: Text("${catalog.name}:${catalog.id}"))
             ],
           ),
         ),

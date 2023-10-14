@@ -58,6 +58,20 @@ class CatalogNotifier extends ChangeNotifier {
     }
   }
 
+  deleteCatalog(int id) async {
+    final catalog = datas.elementAt(id);
+
+    await database.isar!.writeTxn(() async {
+      final b = await database.isar!.catalogs.delete(catalog.id);
+      datas.removeWhere(
+        (element) => element.id == catalog.id,
+      );
+      if (b) {
+        streamController.sink.add(datas);
+      }
+    });
+  }
+
   changeIndex(int oldIndex, int newIndex) async {
     await database.isar!.writeTxn(() async {
       final item = datas.elementAt(oldIndex);

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class AppStyle {
+  static const double appbarHeight = 40;
+
   AppStyle._();
 
   static const double catalogCardWidth = 100;
@@ -17,4 +19,6 @@ class AppStyle {
     Colors.deepOrangeAccent,
     Colors.pink,
   ];
+
+  static const Color inputFillColor = Color.fromARGB(255, 233, 234, 236);
 }

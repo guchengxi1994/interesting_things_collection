@@ -32,6 +32,7 @@ class CatalogScreenState extends ConsumerState<CatalogScreen> {
   }
 
   bool bottomShow = false;
+  int currentDraggingId = -1;
 
   @override
   Widget build(BuildContext context) {
@@ -52,11 +53,13 @@ class CatalogScreenState extends ConsumerState<CatalogScreen> {
                     ref.read(catalogNotifier).changeIndex(oldIndex, newIndex);
                     setState(() {
                       bottomShow = false;
+                      currentDraggingId = -1;
                     });
                   },
                   onReorderStarted: (index) {
                     setState(() {
                       bottomShow = true;
+                      currentDraggingId = index;
                     });
                   },
                   onNoReorder: (index) {
@@ -88,9 +91,8 @@ class CatalogScreenState extends ConsumerState<CatalogScreen> {
       ),
       bottomSheet: bottomShow
           ? MouseRegion(
-              onEnter: (event) {
-                // print("entered");
-                showCupertinoDialog(
+              onEnter: (event) async {
+                final r = await showCupertinoDialog(
                     context: context,
                     builder: (c) {
                       return CupertinoAlertDialog(
@@ -98,17 +100,24 @@ class CatalogScreenState extends ConsumerState<CatalogScreen> {
                         actions: [
                           CupertinoActionSheetAction(
                               onPressed: () {
-                                Navigator.of(c).pop();
+                                Navigator.of(c).pop(true);
                               },
                               child: const Text("Yes")),
                           CupertinoActionSheetAction(
                               onPressed: () {
-                                Navigator.of(c).pop();
+                                Navigator.of(c).pop(false);
                               },
                               child: const Text("No")),
                         ],
                       );
                     });
+
+                if (r) {
+                  ref.read(catalogNotifier).deleteCatalog(currentDraggingId);
+                }
+                setState(() {
+                  currentDraggingId = -1;
+                });
               },
               child: const SizedBox(
                 height: 50,
