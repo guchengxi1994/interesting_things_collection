@@ -9,15 +9,18 @@ environment:
   sdk: '>=3.1.0 <4.0.0'
 
 dependencies:
+  clipboard_watcher: ^0.2.0
   cupertino_icons: ^1.0.2
   flutter:
     sdk: flutter
   flutter_quill: ^7.4.9
   flutter_riverpod: ^2.4.3
   flutter_smart_dialog: ^4.9.4
+  hotkey_manager: ^0.1.7
   # https://isar.dev/zh/tutorials/quickstart.html
   isar: ^3.1.0+1  # run `flutter pub run build_runner build` to generate codes
   isar_flutter_libs: ^3.1.0+1
+  super_clipboard: ^0.6.4
   path_provider: ^2.1.1
   pretty_qr_code: ^3.0.0
   qr_code_scanner: ^1.0.1

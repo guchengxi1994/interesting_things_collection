@@ -121,6 +121,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.0.3"
+  clipboard_watcher:
+    dependency: "direct main"
+    description:
+      name: clipboard_watcher
+      sha256: "2fa9c728f46962668dbc1c07870695c9163524f8dbea25dc176277d1ef1cc2bd"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.2.0"
   clock:
     dependency: transitive
     description:
@@ -376,6 +384,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.3.1"
+  hotkey_manager:
+    dependency: "direct main"
+    description:
+      name: hotkey_manager
+      sha256: "8aaa0aeaca7015b8c561a58d02eb7ebba95e93357fc9540398c5751ee24afd7c"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.1.8"
   http_multi_server:
     dependency: transitive
     description:
@@ -416,6 +432,22 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.0.4"
+  irondash_engine_context:
+    dependency: transitive
+    description:
+      name: irondash_engine_context
+      sha256: fea21bff36d44a5955beba90619f54b9169884014128ae75f50eba2db03c24a0
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.3.1"
+  irondash_message_channel:
+    dependency: transitive
+    description:
+      name: irondash_message_channel
+      sha256: "500daa1fbe679f7d28a5258df3ff47dab6de352e680dc93c1ca9eae1555d8db5"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.3.1"
   isar:
     dependency: "direct main"
     description:
@@ -584,6 +616,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.11.1"
+  pixel_snap:
+    dependency: transitive
+    description:
+      name: pixel_snap
+      sha256: "5de3662b926c9bc189578cf90f9d5b350ee61bc8e20e8a91fa1dfdd26c9f5ece"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.1.2"
   platform:
     dependency: transitive
     description:
@@ -821,6 +861,22 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.2.0"
+  super_clipboard:
+    dependency: "direct main"
+    description:
+      name: super_clipboard
+      sha256: "548642d62d691d2ba00850efe0f7a11ce5696e59111658abd4c6cb76b49aa61d"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.6.4"
+  super_native_extensions:
+    dependency: transitive
+    description:
+      name: super_native_extensions
+      sha256: "3bbb95899f848617b819eec1fa00c80a617f1bd469a480b1f0c4dd383da4c5ec"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.6.4"
   term_glyph:
     dependency: transitive
     description:
@@ -925,6 +981,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "3.0.8"
+  uuid:
+    dependency: transitive
+    description:
+      name: uuid
+      sha256: "648e103079f7c64a36dc7d39369cabb358d377078a051d6ae2ad3aa539519313"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "3.0.7"
   vector_math:
     dependency: transitive
     description:

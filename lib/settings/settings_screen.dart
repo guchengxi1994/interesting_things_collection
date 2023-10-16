@@ -10,8 +10,8 @@ class SettingsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Material(
-      color: Colors.white,
+    return Container(
+      color: Colors.transparent,
       child: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(

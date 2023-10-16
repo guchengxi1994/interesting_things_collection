@@ -37,6 +37,7 @@ class CatalogScreenState extends ConsumerState<CatalogScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.transparent,
       body: StreamBuilder(
           stream: notifier.streamController.stream,
           builder: (c, s) {
