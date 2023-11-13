@@ -12,6 +12,8 @@ void runAPP() async {
   windowManager.waitUntilReadyToShow(null, () async {
     await windowManager.show();
     await windowManager.focus();
+    await windowManager.setMinimumSize(const Size(600, 600));
+    await windowManager.setHasShadow(true);
   });
   windowManager.setBackgroundColor(Colors.transparent);
   runApp(const ProviderScope(
