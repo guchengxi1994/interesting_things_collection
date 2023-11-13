@@ -38,21 +38,13 @@ class AddCatalogDialogState extends ConsumerState<AddCatalogDialog> {
               )
             ],
           ),
-          Expanded(
-              child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(
-                  height: 10,
-                ),
-                _catalogName(),
-                const SizedBox(
-                  height: 10,
-                ),
-              ],
-            ),
-          ))
+          const SizedBox(
+            height: 10,
+          ),
+          _catalogName(),
+          const SizedBox(
+            height: 10,
+          ),
         ]));
   }
 

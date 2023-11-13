@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ import 'package:interesting_things_collection/layout/expand_collapse_notifier.da
 import 'package:interesting_things_collection/notifier/color_notifier.dart';
 import 'package:interesting_things_collection/settings/settings_screen.dart';
 import 'package:interesting_things_collection/style/app_style.dart';
+import 'package:interesting_things_collection/test_page.dart';
 import 'package:super_clipboard/super_clipboard.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -68,8 +70,9 @@ class LayoutState extends ConsumerState<Layout> with TickerProviderStateMixin {
       await hotKeyManager.register(
         _hotKey,
         keyDownHandler: (hotKey) async {
-          final item = DataWriterItem();
-          item.add(formatCustom(Uint8List.fromList([1, 2, 3, 4])));
+          final item = DataWriterItem(suggestedName: 'RedCircle.txt');
+          File f = File(r"d:\Desktop\新建文本文档.txt");
+          item.add(Formats.plainTextFile(f.readAsBytesSync()));
           await ClipboardWriter.instance.write([item]);
         },
       );
@@ -152,7 +155,7 @@ class LayoutState extends ConsumerState<Layout> with TickerProviderStateMixin {
                   controller: controller,
                   children: const [
                     CatalogScreen(),
-                    SizedBox(),
+                    TestPage(),
                     SettingsScreen(),
                   ],
                 ),

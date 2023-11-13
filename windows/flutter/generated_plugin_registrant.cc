@@ -7,6 +7,8 @@
 #include "generated_plugin_registrant.h"
 
 #include <clipboard_watcher/clipboard_watcher_plugin.h>
+#include <file_selector_windows/file_selector_windows.h>
+#include <gal/gal_plugin_c_api.h>
 #include <hotkey_manager/hotkey_manager_plugin.h>
 #include <irondash_engine_context/irondash_engine_context_plugin_c_api.h>
 #include <isar_flutter_libs/isar_flutter_libs_plugin.h>
@@ -19,6 +21,10 @@
 void RegisterPlugins(flutter::PluginRegistry* registry) {
   ClipboardWatcherPluginRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("ClipboardWatcherPlugin"));
+  FileSelectorWindowsRegisterWithRegistrar(
+      registry->GetRegistrarForPlugin("FileSelectorWindows"));
+  GalPluginCApiRegisterWithRegistrar(
+      registry->GetRegistrarForPlugin("GalPluginCApi"));
   HotkeyManagerPluginRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("HotkeyManagerPlugin"));
   IrondashEngineContextPluginCApiRegisterWithRegistrar(
