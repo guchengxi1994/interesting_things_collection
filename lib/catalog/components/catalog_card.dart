@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:interesting_things_collection/catalog/notifiers/catalog_notifier.dart';
@@ -97,7 +98,12 @@ class CatalogCard extends ConsumerWidget {
           children: [
             Expanded(flex: 2, child: _createImage(color)),
             const Divider(),
-            Expanded(flex: 1, child: Text("${catalog.name}:${catalog.id}"))
+            Expanded(
+                flex: 1,
+                child: Text(formatDate(
+                    DateTime.fromMillisecondsSinceEpoch(catalog.createdAt ?? 0)
+                        .toLocal(),
+                    [yyyy, '-', mm, '-', dd])))
           ],
         ),
       ),

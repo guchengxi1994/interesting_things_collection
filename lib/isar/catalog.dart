@@ -14,6 +14,8 @@ class Catalog {
 
   int? orderNum;
 
+  List<String>? tags;
+
   @override
   bool operator ==(Object other) {
     if (other is! Catalog) {

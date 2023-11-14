@@ -6,6 +6,7 @@ import 'package:interesting_things_collection/isar/catalog.dart';
 import 'package:interesting_things_collection/notifier/color_notifier.dart';
 import 'package:interesting_things_collection/style/app_style.dart';
 import 'package:just_the_tooltip/just_the_tooltip.dart';
+import 'package:flutter_tags_x/flutter_tags_x.dart';
 
 class AddCatalogDialog extends ConsumerStatefulWidget {
   const AddCatalogDialog({super.key});
@@ -76,6 +77,10 @@ class AddCatalogDialogState extends ConsumerState<AddCatalogDialog> {
                 const SizedBox(
                   height: 10,
                 ),
+                _buildTags(),
+                const SizedBox(
+                  height: 20,
+                ),
                 _confirmBtn()
               ],
             ),
@@ -101,10 +106,13 @@ class AddCatalogDialogState extends ConsumerState<AddCatalogDialog> {
             _textEditingController = controller;
             _focusNode = focusNode;
             return TextFormField(
+              maxLength: 100,
               controller: _textEditingController,
               focusNode: _focusNode,
               keyboardType: TextInputType.text,
               decoration: InputDecoration(
+                  counterText: "",
+                  hintText: "Max length 100",
                   fillColor: AppStyle.inputFillColor,
                   filled: true,
                   contentPadding: const EdgeInsets.only(left: 10, right: 10),
@@ -232,6 +240,34 @@ class AddCatalogDialogState extends ConsumerState<AddCatalogDialog> {
             },
             child: const Text("Create"))
       ],
+    );
+  }
+
+  List<String> items = ["1", "2", "3"];
+
+  Widget _buildTags() {
+    return Tags(
+      itemCount: items.length,
+      itemBuilder: (int index) {
+        return Tooltip(
+            message: items[index],
+            child: ItemTags(
+              pressEnabled: false,
+              removeButton: ItemTagsRemoveButton(
+                icon: Icons.delete,
+                onRemoved: () {
+                  setState(() {
+                    // required
+                    items.removeAt(index);
+                  });
+                  //required
+                  return true;
+                },
+              ),
+              title: items[index],
+              index: index,
+            ));
+      },
     );
   }
 

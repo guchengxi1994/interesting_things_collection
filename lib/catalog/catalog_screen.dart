@@ -153,9 +153,19 @@ class CatalogScreenState extends ConsumerState<CatalogScreen> {
               child: const SizedBox(
                 height: 50,
                 child: Center(
-                  child: Icon(
-                    Icons.delete_forever,
-                    color: Colors.red,
+                  child: FittedBox(
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.delete_forever,
+                          color: Colors.red,
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text("Delete")
+                      ],
+                    ),
                   ),
                 ),
               ),
