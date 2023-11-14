@@ -48,6 +48,7 @@ class MyAppState extends ConsumerState<MyApp> {
               GlobalCupertinoLocalizations.delegate,
               FlutterQuillLocalizations.delegate,
             ],
+            supportedLocales: FlutterQuillLocalizations.supportedLocales,
             theme: ThemeData(
               colorScheme: ColorScheme.fromSeed(
                   seedColor: AppStyle.catalogCardBorderColors[

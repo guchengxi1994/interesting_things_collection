@@ -2,14 +2,18 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:interesting_things_collection/catalog/catalog_notifier.dart';
+import 'package:interesting_things_collection/catalog/notifiers/catalog_notifier.dart';
 import 'package:interesting_things_collection/isar/catalog.dart';
 import 'package:interesting_things_collection/style/app_style.dart';
 
+typedef OnDoubleClick = VoidCallback;
+
 class CatalogCard extends ConsumerWidget {
-  const CatalogCard({super.key, this.image, required this.catalog});
+  const CatalogCard(
+      {super.key, this.image, required this.catalog, this.onDoubleClick});
   final Widget? image;
   final Catalog catalog;
+  final OnDoubleClick? onDoubleClick;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -38,21 +42,31 @@ class CatalogCard extends ConsumerWidget {
   }
 
   Widget _desktop(CatalogNotifier notifier) {
-    return MouseRegion(
-      onEnter: (event) {
-        notifier.changeOnHoverCatalogId(catalog.id);
+    return GestureDetector(
+      onDoubleTap: () {
+        Future.delayed(const Duration(microseconds: 100)).then((value) {
+          if (onDoubleClick != null) {
+            onDoubleClick!();
+          }
+        });
       },
-      onExit: (event) {
-        notifier.changeOnHoverCatalogId(-1);
-      },
-      child: SizedBox(
-        width: notifier.onHoverCatalogId == catalog.id
-            ? AppStyle.catalogCardWidth * AppStyle.catalogOnHoverFactor
-            : AppStyle.catalogCardWidth,
-        height: notifier.onHoverCatalogId == catalog.id
-            ? AppStyle.catalogCardHeight * AppStyle.catalogOnHoverFactor
-            : AppStyle.catalogCardHeight,
-        child: _child(),
+      child: MouseRegion(
+        onEnter: (event) {
+          notifier.changeOnHoverCatalogId(catalog.id);
+        },
+        onExit: (event) {
+          notifier.changeOnHoverCatalogId(-1);
+        },
+        cursor: SystemMouseCursors.click,
+        child: SizedBox(
+          width: notifier.onHoverCatalogId == catalog.id
+              ? AppStyle.catalogCardWidth * AppStyle.catalogOnHoverFactor
+              : AppStyle.catalogCardWidth,
+          height: notifier.onHoverCatalogId == catalog.id
+              ? AppStyle.catalogCardHeight * AppStyle.catalogOnHoverFactor
+              : AppStyle.catalogCardHeight,
+          child: _child(),
+        ),
       ),
     );
   }
@@ -78,19 +92,13 @@ class CatalogCard extends ConsumerWidget {
           ],
           border: Border.all(color: color)),
       // padding: const EdgeInsets.all(2.5),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          borderRadius: BorderRadius.circular(10),
-          hoverColor: Colors.transparent,
-          onTap: () {},
-          child: Column(
-            children: [
-              Expanded(flex: 2, child: _createImage(color)),
-              const Divider(),
-              Expanded(flex: 1, child: Text("${catalog.name}:${catalog.id}"))
-            ],
-          ),
+      child: SizedBox(
+        child: Column(
+          children: [
+            Expanded(flex: 2, child: _createImage(color)),
+            const Divider(),
+            Expanded(flex: 1, child: Text("${catalog.name}:${catalog.id}"))
+          ],
         ),
       ),
     );

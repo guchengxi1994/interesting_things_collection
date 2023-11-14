@@ -1,11 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:interesting_things_collection/catalog/catalog_notifier.dart';
+import 'package:interesting_things_collection/catalog/notifiers/catalog_notifier.dart';
 import 'package:interesting_things_collection/catalog/components/catalog_card.dart';
+import 'package:interesting_things_collection/isar/catalog.dart';
 import 'package:reorderables/reorderables.dart';
 
 import 'components/add_catalog_dialog.dart';
+import 'components/catalog_things.dart';
 
 class CatalogScreen extends ConsumerStatefulWidget {
   const CatalogScreen({super.key});
@@ -18,6 +20,7 @@ class CatalogScreen extends ConsumerStatefulWidget {
 
 class CatalogScreenState extends ConsumerState<CatalogScreen> {
   late final notifier = ref.watch(catalogNotifier);
+  final GlobalKey<ScaffoldState> globalKey = GlobalKey();
   @override
   void initState() {
     super.initState();
@@ -34,10 +37,31 @@ class CatalogScreenState extends ConsumerState<CatalogScreen> {
   bool bottomShow = false;
   int currentDraggingId = -1;
 
+  // ignore: avoid_init_to_null
+  Catalog? selectedCatalog = null;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawerScrimColor: Colors.transparent,
+      key: globalKey,
       backgroundColor: Colors.transparent,
+      endDrawer: Drawer(
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        backgroundColor: const Color.fromARGB(255, 228, 226, 221),
+        width: 0.8 * MediaQuery.of(context).size.width,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topRight: Radius.circular(0), bottomRight: Radius.circular(0)),
+        ),
+        child: SizedBox(
+          // color: Colors.white,
+          width: 0.8 * MediaQuery.of(context).size.width,
+          child: CatalogThingsWidget(
+            catalog: selectedCatalog,
+          ),
+        ),
+      ),
       body: StreamBuilder(
           stream: notifier.streamController.stream,
           builder: (c, s) {
@@ -71,6 +95,12 @@ class CatalogScreenState extends ConsumerState<CatalogScreen> {
                   children: s.data!
                       .map((e) => CatalogCard(
                             catalog: e,
+                            onDoubleClick: () {
+                              setState(() {
+                                selectedCatalog = e;
+                              });
+                              globalKey.currentState!.openEndDrawer();
+                            },
                           ))
                       .toList(),
                 ),

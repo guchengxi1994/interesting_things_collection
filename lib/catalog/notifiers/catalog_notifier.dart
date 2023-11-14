@@ -20,6 +20,8 @@ class CatalogNotifier extends ChangeNotifier {
     await database.isar!.writeTxn(() async {
       await database.isar!.catalogs.put(newCatalog);
     });
+
+    queryAll();
   }
 
   final StreamController<Set<Catalog>> streamController =

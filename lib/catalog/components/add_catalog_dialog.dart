@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:interesting_things_collection/catalog/catalog_notifier.dart';
+import 'package:interesting_things_collection/catalog/notifiers/catalog_notifier.dart';
 import 'package:interesting_things_collection/isar/catalog.dart';
 import 'package:interesting_things_collection/notifier/color_notifier.dart';
 import 'package:interesting_things_collection/style/app_style.dart';
+import 'package:just_the_tooltip/just_the_tooltip.dart';
 
 class AddCatalogDialog extends ConsumerStatefulWidget {
   const AddCatalogDialog({super.key});
@@ -16,7 +18,28 @@ class AddCatalogDialog extends ConsumerStatefulWidget {
 
 class AddCatalogDialogState extends ConsumerState<AddCatalogDialog> {
   TextEditingController _textEditingController = TextEditingController();
+  final TextEditingController _remarkEditingController =
+      TextEditingController();
   FocusNode _focusNode = FocusNode();
+  late String emojis = "";
+
+  // ignore: prefer_typing_uninitialized_variables
+  var loadEmoji;
+
+  @override
+  void initState() {
+    super.initState();
+    loadEmoji = load();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  load() async {
+    emojis = await rootBundle.loadString('assets/emoji.txt');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,10 +64,22 @@ class AddCatalogDialogState extends ConsumerState<AddCatalogDialog> {
           const SizedBox(
             height: 10,
           ),
-          _catalogName(),
-          const SizedBox(
-            height: 10,
-          ),
+          Expanded(
+              child: SingleChildScrollView(
+            child: Column(
+              children: [
+                _catalogName(),
+                const SizedBox(
+                  height: 10,
+                ),
+                _catalogRemark(),
+                const SizedBox(
+                  height: 10,
+                ),
+                _confirmBtn()
+              ],
+            ),
+          ))
         ]));
   }
 
@@ -89,7 +124,113 @@ class AddCatalogDialogState extends ConsumerState<AddCatalogDialog> {
                   )),
             );
           },
+        )),
+        const SizedBox(
+          width: 20,
+        ),
+        FutureBuilder(
+            future: loadEmoji,
+            builder: (c, s) {
+              if (s.connectionState == ConnectionState.done) {
+                return JustTheTooltip(
+                    tailBuilder: (point1, point2, point3) {
+                      return Path()
+                        ..moveTo(point1.dx, point1.dy)
+                        ..lineTo(point3.dx, point3.dy)
+                        ..close();
+                    },
+                    isModal: true,
+                    content: SizedBox(
+                      width: 300,
+                      height: 300,
+                      child: SingleChildScrollView(
+                        child: Wrap(
+                          children: emojis
+                              .split(" ")
+                              .map((e) => InkWell(
+                                    onTap: () {
+                                      _textEditingController.text += e;
+                                    },
+                                    child: Text(
+                                      e,
+                                      style: const TextStyle(fontSize: 15),
+                                    ),
+                                  ))
+                              .toList(),
+                        ),
+                      ),
+                    ),
+                    child: const Tooltip(
+                      message: "Add Emoji",
+                      child: Text(
+                        "😀",
+                        style: TextStyle(fontSize: 20),
+                      ),
+                    ));
+              }
+
+              return const SizedBox(
+                width: 30,
+                height: 30,
+                child: CircularProgressIndicator(),
+              );
+            })
+      ],
+    );
+  }
+
+  Widget _catalogRemark() {
+    return Row(
+      children: [
+        const SizedBox(
+          width: 100,
+          child: Text("Catalog Remark"),
+        ),
+        Expanded(
+            child: TextField(
+          maxLength: 1024,
+          maxLines: null,
+          controller: _remarkEditingController,
+          keyboardType: TextInputType.multiline,
+          decoration: InputDecoration(
+              hintText: "Max length 1024",
+              counterText: "",
+              fillColor: AppStyle.inputFillColor,
+              filled: true,
+              contentPadding: const EdgeInsets.only(
+                  left: 10, right: 10, top: 15, bottom: 15),
+              border: const UnderlineInputBorder(
+                borderSide: BorderSide.none,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(4),
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                    color: AppStyle.catalogCardBorderColors[
+                        ref.read(colorNotifier).currentColor]),
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(4),
+                ),
+              )),
         ))
+      ],
+    );
+  }
+
+  Widget _confirmBtn() {
+    return Row(
+      children: [
+        const Expanded(child: SizedBox()),
+        ElevatedButton(
+            onPressed: () {
+              if (_textEditingController.text == "") {
+                return;
+              }
+              ref.read(catalogNotifier).newCatalog(_textEditingController.text,
+                  remark: _remarkEditingController.text);
+            },
+            child: const Text("Create"))
       ],
     );
   }

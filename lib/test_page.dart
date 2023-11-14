@@ -9,6 +9,7 @@ import 'package:flutter_quill_extensions/presentation/embeds/editor/shims/dart_u
 import 'package:image_cropper/image_cropper.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
+import 'package:quill_html_converter/quill_html_converter.dart';
 
 class TestPage extends StatefulWidget {
   const TestPage({Key? key}) : super(key: key);
@@ -169,21 +170,20 @@ class _TestPageState extends State<TestPage> {
   QuillToolbar get quillToolbar {
     final customButtons = [
       QuillToolbarCustomButtonOptions(
-        icon: const Icon(Icons.ac_unit),
+        tooltip: "Save as json",
+        icon: const Icon(Icons.save),
         onPressed: () {
-          debugPrint('snowflake1');
+          debugPrint('json');
         },
       ),
       QuillToolbarCustomButtonOptions(
-        icon: const Icon(Icons.ac_unit),
+        tooltip: "Save as html",
+        icon: const Icon(Icons.save_as),
         onPressed: () {
-          debugPrint('snowflake2');
-        },
-      ),
-      QuillToolbarCustomButtonOptions(
-        icon: const Icon(Icons.ac_unit),
-        onPressed: () {
-          debugPrint('snowflake3');
+          // debugPrint('html');
+          final html = _controller.document.toDelta().toHtml();
+          File f = File(r"C:\Users\xiaoshuyui\Desktop\xxxxx.html");
+          f.writeAsStringSync(html);
         },
       ),
     ];
