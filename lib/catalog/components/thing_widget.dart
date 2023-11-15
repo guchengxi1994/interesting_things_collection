@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_stars/flutter_rating_stars.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -6,6 +8,8 @@ import 'package:interesting_things_collection/isar/thing.dart';
 import 'package:interesting_things_collection/notifier/color_notifier.dart';
 import 'package:interesting_things_collection/style/app_style.dart';
 import 'package:popup_card/popup_card.dart';
+
+import 'editor.dart';
 
 class ThingWidget extends ConsumerWidget {
   const ThingWidget({super.key, required this.thing});
@@ -30,7 +34,16 @@ class ThingWidget extends ConsumerWidget {
           child: Container(
             color: Colors.white,
             width: MediaQuery.of(context).size.width * .8,
-            height: MediaQuery.of(context).size.height,
+            height: Platform.isWindows
+                ? MediaQuery.of(context).size.height - AppStyle.appbarHeight
+                : MediaQuery.of(context).size.height,
+            child: Editor(
+              savedData: thing.remark ?? "",
+              saveToJson: (p0) {
+                thing.remark = p0;
+                ref.read(thingsHoverNotifier.notifier).saveThing(thing);
+              },
+            ),
           ),
         ),
         child: _buildItem(context, ref),
