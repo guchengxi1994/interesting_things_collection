@@ -48,13 +48,18 @@ class CatalogScreenState extends ConsumerState<CatalogScreen> {
       backgroundColor: Colors.transparent,
       endDrawer: Drawer(
         clipBehavior: Clip.antiAliasWithSaveLayer,
-        backgroundColor: const Color.fromARGB(255, 228, 226, 221),
+        backgroundColor: Colors.white,
         width: 0.8 * MediaQuery.of(context).size.width,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
               topRight: Radius.circular(0), bottomRight: Radius.circular(0)),
         ),
-        child: SizedBox(
+        child: Container(
+          decoration: const BoxDecoration(
+              border: Border(
+                  left: BorderSide(width: 1, color: Colors.black),
+                  top: BorderSide(width: 1, color: Colors.black)),
+              color: Colors.white),
           // color: Colors.white,
           width: 0.8 * MediaQuery.of(context).size.width,
           child: CatalogThingsWidget(

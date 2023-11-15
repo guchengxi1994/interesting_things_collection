@@ -8,6 +8,8 @@ import 'package:interesting_things_collection/style/app_style.dart';
 import 'package:just_the_tooltip/just_the_tooltip.dart';
 import 'package:flutter_tags_x/flutter_tags_x.dart';
 
+import 'add_tag_button.dart';
+
 class AddCatalogDialog extends ConsumerStatefulWidget {
   const AddCatalogDialog({super.key});
 
@@ -235,39 +237,68 @@ class AddCatalogDialogState extends ConsumerState<AddCatalogDialog> {
               if (_textEditingController.text == "") {
                 return;
               }
-              ref.read(catalogNotifier).newCatalog(_textEditingController.text,
-                  remark: _remarkEditingController.text);
+              ref
+                  .read(catalogNotifier)
+                  .newCatalog(_textEditingController.text,
+                      remark: _remarkEditingController.text, tags: items)
+                  .then((value) {
+                Navigator.of(context).pop();
+              });
             },
             child: const Text("Create"))
       ],
     );
   }
 
-  List<String> items = ["1", "2", "3"];
+  List<String> items = [];
 
   Widget _buildTags() {
-    return Tags(
-      itemCount: items.length,
-      itemBuilder: (int index) {
-        return Tooltip(
-            message: items[index],
-            child: ItemTags(
-              pressEnabled: false,
-              removeButton: ItemTagsRemoveButton(
-                icon: Icons.delete,
-                onRemoved: () {
-                  setState(() {
-                    // required
-                    items.removeAt(index);
-                  });
-                  //required
-                  return true;
+    return Row(
+      children: [
+        const SizedBox(
+          width: 100,
+          child: Text("Tags"),
+        ),
+        Expanded(
+            child: Align(
+          alignment: Alignment.topLeft,
+          child: Tags(
+            itemCount: items.length + 1,
+            itemBuilder: (int index) {
+              if (index < items.length) {
+                return Tooltip(
+                    message: items[index],
+                    child: ItemTags(
+                      pressEnabled: false,
+                      removeButton: ItemTagsRemoveButton(
+                        icon: Icons.delete,
+                        onRemoved: () {
+                          setState(() {
+                            // required
+                            items.removeAt(index);
+                          });
+                          //required
+                          return true;
+                        },
+                      ),
+                      title: items[index],
+                      index: index,
+                    ));
+              }
+              return AddTagButton(
+                onSave: (String s) {
+                  // print(s);
+                  if (s != "") {
+                    setState(() {
+                      items.add(s);
+                    });
+                  }
                 },
-              ),
-              title: items[index],
-              index: index,
-            ));
-      },
+              );
+            },
+          ),
+        ))
+      ],
     );
   }
 

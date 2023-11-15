@@ -5,6 +5,8 @@ import 'package:interesting_things_collection/catalog/models/things_state.dart';
 import 'package:interesting_things_collection/catalog/notifiers/things_notifier.dart';
 import 'package:interesting_things_collection/isar/catalog.dart';
 
+import 'thing_widget.dart';
+
 class CatalogThingsWidget extends ConsumerStatefulWidget {
   const CatalogThingsWidget({super.key, required this.catalog});
   final Catalog? catalog;
@@ -61,9 +63,12 @@ class _CatalogThingsWidgetState extends ConsumerState<CatalogThingsWidget> {
                 controller: scrollController,
                 itemCount: value.thingsList.length,
                 itemBuilder: (c, index) {
-                  return SizedBox(
-                    height: 200,
-                    child: Text(value.thingsList[index].name.toString()),
+                  // return SizedBox(
+                  //   height: 200,
+                  //   child: Text(value.thingsList[index].name.toString()),
+                  // );
+                  return ThingWidget(
+                    thing: value.thingsList[index],
                   );
                 })),
         _ => const Center(

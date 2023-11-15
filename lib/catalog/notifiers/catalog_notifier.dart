@@ -10,12 +10,14 @@ import 'package:isar/isar.dart';
 class CatalogNotifier extends ChangeNotifier {
   final IsarDatabase database = IsarDatabase();
 
-  newCatalog(String name, {String? remark}) async {
+  Future newCatalog(String name,
+      {String? remark, List<String> tags = const []}) async {
     final newCatalog = Catalog()
       ..createdAt = DateTime.now().millisecondsSinceEpoch
       ..name = name
       ..orderNum = 0
-      ..remark = remark;
+      ..remark = remark
+      ..tags = tags;
 
     await database.isar!.writeTxn(() async {
       await database.isar!.catalogs.put(newCatalog);
