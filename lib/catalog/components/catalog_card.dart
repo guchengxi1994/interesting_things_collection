@@ -39,9 +39,13 @@ class _CatalogCardState extends ConsumerState<CatalogCard> {
   void didUpdateWidget(covariant CatalogCard oldWidget) {
     super.didUpdateWidget(oldWidget);
     Future.microtask(() async {
-      catalog =
+      final newCatalog =
           await ref.read(catalogNotifier).getCatalogById(widget.catalogId);
-      setState(() {});
+      if (newCatalog != catalog) {
+        setState(() {
+          catalog = newCatalog;
+        });
+      }
     });
   }
 

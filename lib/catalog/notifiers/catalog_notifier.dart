@@ -32,6 +32,7 @@ class CatalogNotifier extends ChangeNotifier {
   Set<Catalog> datas = {};
 
   queryAll() async {
+    datas.clear();
     int pageCount = 1;
     while (true) {
       List<Catalog> catalogs = await database.isar!.catalogs
