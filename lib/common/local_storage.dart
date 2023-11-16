@@ -15,13 +15,19 @@ class LocalStorage {
     _storage ??= await SharedPreferences.getInstance();
   }
 
-  Future<int> getThemeColor() async {
-    await _initStorage();
+  int getThemeColor() {
     return _storage!.getInt("themeColor") ?? 2;
   }
 
   Future setThemeColor(int c) async {
-    await _initStorage();
-    _storage!.setInt("themeColor", c);
+    await _storage!.setInt("themeColor", c);
+  }
+
+  bool getShowPreviewWhenHoverOnThings() {
+    return _storage!.getBool("showPreviewWhenHoverOnThings") ?? true;
+  }
+
+  Future setShowPreviewWhenHoverOnThings(bool b) async {
+    await _storage!.setBool("showPreviewWhenHoverOnThings", b);
   }
 }

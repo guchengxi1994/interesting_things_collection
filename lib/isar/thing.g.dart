@@ -42,13 +42,18 @@ const ThingSchema = CollectionSchema(
       name: r'orderNum',
       type: IsarType.long,
     ),
-    r'remark': PropertySchema(
+    r'preview': PropertySchema(
       id: 5,
+      name: r'preview',
+      type: IsarType.string,
+    ),
+    r'remark': PropertySchema(
+      id: 6,
       name: r'remark',
       type: IsarType.string,
     ),
     r'score': PropertySchema(
-      id: 6,
+      id: 7,
       name: r'score',
       type: IsarType.double,
     )
@@ -80,6 +85,12 @@ int _thingEstimateSize(
     }
   }
   {
+    final value = object.preview;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
     final value = object.remark;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
@@ -99,8 +110,9 @@ void _thingSerialize(
   writer.writeLong(offsets[2], object.hashCode);
   writer.writeString(offsets[3], object.name);
   writer.writeLong(offsets[4], object.orderNum);
-  writer.writeString(offsets[5], object.remark);
-  writer.writeDouble(offsets[6], object.score);
+  writer.writeString(offsets[5], object.preview);
+  writer.writeString(offsets[6], object.remark);
+  writer.writeDouble(offsets[7], object.score);
 }
 
 Thing _thingDeserialize(
@@ -115,8 +127,9 @@ Thing _thingDeserialize(
   object.id = id;
   object.name = reader.readStringOrNull(offsets[3]);
   object.orderNum = reader.readLongOrNull(offsets[4]);
-  object.remark = reader.readStringOrNull(offsets[5]);
-  object.score = reader.readDoubleOrNull(offsets[6]);
+  object.preview = reader.readStringOrNull(offsets[5]);
+  object.remark = reader.readStringOrNull(offsets[6]);
+  object.score = reader.readDoubleOrNull(offsets[7]);
   return object;
 }
 
@@ -140,6 +153,8 @@ P _thingDeserializeProp<P>(
     case 5:
       return (reader.readStringOrNull(offset)) as P;
     case 6:
+      return (reader.readStringOrNull(offset)) as P;
+    case 7:
       return (reader.readDoubleOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -689,6 +704,152 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
+  QueryBuilder<Thing, Thing, QAfterFilterCondition> previewIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'preview',
+      ));
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterFilterCondition> previewIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'preview',
+      ));
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterFilterCondition> previewEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'preview',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterFilterCondition> previewGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'preview',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterFilterCondition> previewLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'preview',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterFilterCondition> previewBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'preview',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterFilterCondition> previewStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'preview',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterFilterCondition> previewEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'preview',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterFilterCondition> previewContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'preview',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterFilterCondition> previewMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'preview',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterFilterCondition> previewIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'preview',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterFilterCondition> previewIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'preview',
+        value: '',
+      ));
+    });
+  }
+
   QueryBuilder<Thing, Thing, QAfterFilterCondition> remarkIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -978,6 +1139,18 @@ extension ThingQuerySortBy on QueryBuilder<Thing, Thing, QSortBy> {
     });
   }
 
+  QueryBuilder<Thing, Thing, QAfterSortBy> sortByPreview() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'preview', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterSortBy> sortByPreviewDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'preview', Sort.desc);
+    });
+  }
+
   QueryBuilder<Thing, Thing, QAfterSortBy> sortByRemark() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'remark', Sort.asc);
@@ -1076,6 +1249,18 @@ extension ThingQuerySortThenBy on QueryBuilder<Thing, Thing, QSortThenBy> {
     });
   }
 
+  QueryBuilder<Thing, Thing, QAfterSortBy> thenByPreview() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'preview', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterSortBy> thenByPreviewDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'preview', Sort.desc);
+    });
+  }
+
   QueryBuilder<Thing, Thing, QAfterSortBy> thenByRemark() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'remark', Sort.asc);
@@ -1133,6 +1318,13 @@ extension ThingQueryWhereDistinct on QueryBuilder<Thing, Thing, QDistinct> {
     });
   }
 
+  QueryBuilder<Thing, Thing, QDistinct> distinctByPreview(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'preview', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<Thing, Thing, QDistinct> distinctByRemark(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -1181,6 +1373,12 @@ extension ThingQueryProperty on QueryBuilder<Thing, Thing, QQueryProperty> {
   QueryBuilder<Thing, int?, QQueryOperations> orderNumProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'orderNum');
+    });
+  }
+
+  QueryBuilder<Thing, String?, QQueryOperations> previewProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'preview');
     });
   }
 

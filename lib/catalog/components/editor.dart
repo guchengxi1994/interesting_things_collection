@@ -1,8 +1,11 @@
+// ignore_for_file: unused_element
+
 import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_quill/extensions.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
@@ -11,14 +14,18 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:path_provider/path_provider.dart';
 // ignore: depend_on_referenced_packages
 import 'package:path/path.dart' as path;
+import 'dart:ui' as ui;
 
 typedef OnQuillSave = void Function(String);
+typedef OnQuillPreviewImageSave = void Function(Uint8List);
 
 class Editor extends StatefulWidget {
-  const Editor({Key? key, this.saveToJson, this.savedData = ""})
+  const Editor(
+      {Key? key, this.saveToJson, this.savedData = "", this.savePreview})
       : super(key: key);
   final OnQuillSave? saveToJson;
   final String savedData;
+  final OnQuillPreviewImageSave? savePreview;
 
   @override
   State<Editor> createState() => _EditorState();
@@ -32,6 +39,7 @@ class _EditorState extends State<Editor> {
   @override
   void dispose() {
     _controller.dispose();
+    quillScrollController.dispose();
     super.dispose();
   }
 
@@ -56,11 +64,13 @@ class _EditorState extends State<Editor> {
     return _buildWelcomeEditor(context);
   }
 
+  final ScrollController quillScrollController = ScrollController();
+
   QuillEditor get quillEditor {
     if (kIsWeb) {
       return QuillEditor(
         focusNode: _focusNode,
-        scrollController: ScrollController(),
+        scrollController: quillScrollController,
         configurations: QuillEditorConfigurations(
           builder: (context, rawEditor) {
             return rawEditor;
@@ -138,7 +148,7 @@ class _EditorState extends State<Editor> {
           // TimeStampEmbedBuilderWidget()
         ],
       ),
-      scrollController: ScrollController(),
+      scrollController: quillScrollController,
       focusNode: _focusNode,
     );
   }
@@ -192,11 +202,32 @@ class _EditorState extends State<Editor> {
           Navigator.of(context).pop();
         },
       ),
-      // QuillToolbarCustomButtonOptions(
-      //   tooltip: "Save as html",
-      //   icon: const Icon(Icons.save_as),
-      //   onPressed: () {},
-      // ),
+      QuillToolbarCustomButtonOptions(
+        tooltip: "Save as image",
+        icon: const Icon(Icons.save_as),
+        onPressed: () async {
+          if (widget.savePreview != null) {
+            try {
+              RenderRepaintBoundary repaintBoundary = _shotKey.currentContext!
+                  .findRenderObject() as RenderRepaintBoundary;
+              var resultImage = await repaintBoundary.toImage();
+              ByteData? byteData =
+                  await resultImage.toByteData(format: ui.ImageByteFormat.png);
+              if (byteData != null) {
+                Uint8List pngBytes = byteData.buffer.asUint8List();
+                widget.savePreview!(pngBytes);
+              }
+            } catch (_) {}
+          }
+        },
+      ),
+      QuillToolbarCustomButtonOptions(
+        tooltip: "Exit without saving",
+        icon: const Icon(Icons.exit_to_app),
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+      ),
     ];
     if (kIsWeb) {
       return QuillToolbar(
@@ -288,6 +319,8 @@ class _EditorState extends State<Editor> {
     );
   }
 
+  final GlobalKey _shotKey = GlobalKey();
+
   Widget _buildWelcomeEditor(BuildContext context) {
     return SafeArea(
       child: QuillProvider(
@@ -307,7 +340,10 @@ class _EditorState extends State<Editor> {
               flex: 15,
               child: Container(
                 padding: const EdgeInsets.only(left: 16, right: 16),
-                child: quillEditor,
+                child: RepaintBoundary(
+                  key: _shotKey,
+                  child: quillEditor,
+                ),
               ),
             ),
             kIsWeb

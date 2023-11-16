@@ -3,10 +3,14 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_stars/flutter_rating_stars.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:interesting_things_collection/catalog/notifiers/things_hover_notifier.dart';
+import 'package:interesting_things_collection/common/base64_utils.dart';
 import 'package:interesting_things_collection/isar/thing.dart';
 import 'package:interesting_things_collection/notifier/color_notifier.dart';
+import 'package:interesting_things_collection/notifier/settings_notifier.dart';
 import 'package:interesting_things_collection/style/app_style.dart';
+import 'package:just_the_tooltip/just_the_tooltip.dart';
 import 'package:popup_card/popup_card.dart';
 
 import 'editor.dart';
@@ -25,29 +29,54 @@ class ThingWidget extends ConsumerWidget {
         ref.read(thingsHoverNotifier.notifier).changeIndex(0);
       },
       cursor: SystemMouseCursors.click,
-      child: PopupItemLauncher(
+      child: ref.watch(settingsNotifier).showPreviewWhenHoverOnThings
+          ? JustTheTooltip(
+              content: SizedBox(
+                width: 300,
+                height: 300,
+                child: thing.preview == null
+                    ? Image.asset("assets/empty.png")
+                    : Image.memory(Base64Utils.base64ToBytes(thing.preview!)),
+              ),
+              child: _buildChild(context, ref))
+          : _buildChild(context, ref),
+    );
+  }
+
+  Widget _buildChild(BuildContext context, WidgetRef ref) {
+    return PopupItemLauncher(
+      tag: 'test-${thing.id}',
+      popUp: PopUpItem(
+        reservedAppbarHeight: AppStyle.appbarHeight,
+        alignment: Alignment.topRight,
         tag: 'test-${thing.id}',
-        popUp: PopUpItem(
-          reservedAppbarHeight: AppStyle.appbarHeight,
-          alignment: Alignment.topRight,
-          tag: 'test-${thing.id}',
-          child: Container(
-            color: Colors.white,
-            width: MediaQuery.of(context).size.width * .8,
-            height: Platform.isWindows
-                ? MediaQuery.of(context).size.height - AppStyle.appbarHeight
-                : MediaQuery.of(context).size.height,
-            child: Editor(
-              savedData: thing.remark ?? "",
-              saveToJson: (p0) {
-                thing.remark = p0;
-                ref.read(thingsHoverNotifier.notifier).saveThing(thing);
-              },
-            ),
+        child: Container(
+          color: Colors.white,
+          width: MediaQuery.of(context).size.width * .8,
+          height: Platform.isWindows
+              ? MediaQuery.of(context).size.height - AppStyle.appbarHeight
+              : MediaQuery.of(context).size.height,
+          child: Editor(
+            savedData: thing.remark ?? "",
+            saveToJson: (p0) async {
+              SmartDialog.showLoading();
+              thing.remark = p0;
+              ref.read(thingsHoverNotifier.notifier).saveThing(thing);
+              await Future.delayed(const Duration(seconds: 1));
+              SmartDialog.dismiss();
+            },
+            savePreview: (p0) async {
+              SmartDialog.showLoading();
+
+              thing.preview = Base64Utils.uint8List2Base64(p0);
+              await ref.read(thingsHoverNotifier.notifier).saveThing(thing);
+              await Future.delayed(const Duration(seconds: 1));
+              SmartDialog.dismiss();
+            },
           ),
         ),
-        child: _buildItem(context, ref),
       ),
+      child: _buildItem(context, ref),
     );
   }
 
@@ -94,7 +123,7 @@ class ThingWidget extends ConsumerWidget {
             children: [
               Text(thing.name.toString()),
               RatingStars(
-                value: thing.score ?? 3.1,
+                value: thing.score ?? 0,
                 starBuilder: (index, color) => Icon(
                   Icons.star,
                   color: color,

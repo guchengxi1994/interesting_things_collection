@@ -6,8 +6,8 @@ class ColorNotifier extends ChangeNotifier {
   late int currentColor = 0;
   final LocalStorage localStorage = LocalStorage();
 
-  init() async {
-    currentColor = await localStorage.getThemeColor();
+  init() {
+    currentColor = localStorage.getThemeColor();
     notifyListeners();
   }
 

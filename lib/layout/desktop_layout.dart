@@ -9,7 +9,6 @@ import 'package:interesting_things_collection/layout/expand_collapse_notifier.da
 import 'package:interesting_things_collection/notifier/color_notifier.dart';
 import 'package:interesting_things_collection/settings/settings_screen.dart';
 import 'package:interesting_things_collection/style/app_style.dart';
-import 'package:interesting_things_collection/test_page.dart';
 import 'package:super_clipboard/super_clipboard.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -155,7 +154,7 @@ class LayoutState extends ConsumerState<Layout> with TickerProviderStateMixin {
                   controller: controller,
                   children: const [
                     CatalogScreen(),
-                    TestPage(),
+                    SizedBox(),
                     SettingsScreen(),
                   ],
                 ),

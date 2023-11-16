@@ -62,6 +62,10 @@ class CatalogNotifier extends ChangeNotifier {
     }
   }
 
+  Future<Catalog> getCatalogById(int id) async {
+    return (await database.isar!.catalogs.get(id))!;
+  }
+
   deleteCatalog(int id) async {
     final catalog = datas.elementAt(id);
 

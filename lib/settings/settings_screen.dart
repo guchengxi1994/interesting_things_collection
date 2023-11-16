@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:interesting_things_collection/notifier/color_notifier.dart';
+import 'package:interesting_things_collection/notifier/settings_notifier.dart';
 import 'package:interesting_things_collection/style/app_style.dart';
 // ignore: unused_import, depend_on_referenced_packages
 import 'package:collection/collection.dart';
@@ -37,6 +38,20 @@ class SettingsScreen extends ConsumerWidget {
                       ))
                   .toList(),
             ),
+            Row(
+              children: [
+                const Text("Show preview image when hover ?"),
+                Switch(
+                    value: ref
+                        .watch(settingsNotifier)
+                        .showPreviewWhenHoverOnThings,
+                    onChanged: (v) {
+                      ref
+                          .read(settingsNotifier.notifier)
+                          .changeShowPreviewWhenHoverOnThings(v);
+                    }),
+              ],
+            )
           ],
         ),
       ),

@@ -18,6 +18,8 @@ class Thing {
 
   double? score;
 
+  String? preview;
+
   @override
   bool operator ==(Object other) {
     if (other is! Thing) {

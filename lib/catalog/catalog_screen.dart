@@ -99,7 +99,7 @@ class CatalogScreenState extends ConsumerState<CatalogScreen> {
                   },
                   children: s.data!
                       .map((e) => CatalogCard(
-                            catalog: e,
+                            catalogId: e.id,
                             onDoubleClick: () {
                               setState(() {
                                 selectedCatalog = e;
