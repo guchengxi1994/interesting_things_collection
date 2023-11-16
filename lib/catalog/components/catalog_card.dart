@@ -22,17 +22,27 @@ class CatalogCard extends ConsumerStatefulWidget {
 class _CatalogCardState extends ConsumerState<CatalogCard> {
   // ignore: prefer_typing_uninitialized_variables
   var future;
+  // ignore: avoid_init_to_null
   late Catalog? catalog = null;
 
   @override
   void initState() {
     super.initState();
-    future = ref.read(catalogNotifier).getCatalogById(widget.catalogId);
+    future = Future(() async {
+      catalog =
+          await ref.read(catalogNotifier).getCatalogById(widget.catalogId);
+      setState(() {});
+    });
   }
 
   @override
   void didUpdateWidget(covariant CatalogCard oldWidget) {
     super.didUpdateWidget(oldWidget);
+    Future.microtask(() async {
+      catalog =
+          await ref.read(catalogNotifier).getCatalogById(widget.catalogId);
+      setState(() {});
+    });
   }
 
   @override
@@ -40,16 +50,16 @@ class _CatalogCardState extends ConsumerState<CatalogCard> {
     return SizedBox(
         width: AppStyle.catalogCardWidth * AppStyle.catalogOnHoverFactor,
         height: AppStyle.catalogCardHeight * AppStyle.catalogOnHoverFactor,
-        child: FutureBuilder<Catalog>(
+        child: FutureBuilder<void>(
             future: future,
             builder: (c, s) {
               if (s.connectionState == ConnectionState.done) {
                 return Center(
                   child: Builder(builder: (c) {
                     if (Platform.isAndroid || Platform.isIOS) {
-                      return _mobile(s.data!);
+                      return _mobile(catalog!);
                     } else {
-                      return _desktop(s.data!);
+                      return _desktop(catalog!);
                     }
                   }),
                 );
