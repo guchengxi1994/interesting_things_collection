@@ -1,6 +1,3 @@
-import 'dart:io';
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hotkey_manager/hotkey_manager.dart';
@@ -9,7 +6,6 @@ import 'package:interesting_things_collection/layout/expand_collapse_notifier.da
 import 'package:interesting_things_collection/notifier/color_notifier.dart';
 import 'package:interesting_things_collection/settings/settings_screen.dart';
 import 'package:interesting_things_collection/style/app_style.dart';
-import 'package:super_clipboard/super_clipboard.dart';
 import 'package:window_manager/window_manager.dart';
 
 class Layout extends ConsumerStatefulWidget {
@@ -20,10 +16,6 @@ class Layout extends ConsumerStatefulWidget {
     return LayoutState();
   }
 }
-
-const formatCustom = CustomValueFormat<Uint8List>(
-  applicationId: "com.superlist.clipboard.Example.CustomType",
-);
 
 class LayoutState extends ConsumerState<Layout> with TickerProviderStateMixin {
   late final notifier =
@@ -64,18 +56,6 @@ class LayoutState extends ConsumerState<Layout> with TickerProviderStateMixin {
     );
     _animation =
         _controller.drive(Tween<double>(begin: minWidth, end: maxWidth));
-
-    Future.microtask(() async {
-      await hotKeyManager.register(
-        _hotKey,
-        keyDownHandler: (hotKey) async {
-          final item = DataWriterItem(suggestedName: 'RedCircle.txt');
-          File f = File(r"d:\Desktop\新建文本文档.txt");
-          item.add(Formats.plainTextFile(f.readAsBytesSync()));
-          await ClipboardWriter.instance.write([item]);
-        },
-      );
-    });
   }
 
   @override

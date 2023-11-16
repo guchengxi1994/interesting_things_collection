@@ -65,6 +65,9 @@ class _CatalogThingsWidgetState extends ConsumerState<CatalogThingsWidget> {
               ? const SizedBox()
               : CatalogDetails(
                   catalogId: widget.catalog!.id,
+                  onNewThing: (p0) {
+                    ref.read(notifier!.notifier).newThing(p0);
+                  },
                 ),
         ),
         Expanded(child: Builder(builder: (c) {
@@ -84,6 +87,10 @@ class _CatalogThingsWidgetState extends ConsumerState<CatalogThingsWidget> {
                       // );
                       return ThingWidget(
                         thing: value.thingsList[index],
+                        onRatingChange: (p0) {
+                          final t = value.thingsList[index]..score = p0;
+                          ref.read(notifier!.notifier).updateThing(t);
+                        },
                       );
                     })),
             _ => const Center(

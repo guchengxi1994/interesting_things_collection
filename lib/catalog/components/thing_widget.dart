@@ -15,9 +15,12 @@ import 'package:popup_card/popup_card.dart';
 
 import 'editor.dart';
 
+typedef OnRatingChange = void Function(double);
+
 class ThingWidget extends ConsumerWidget {
-  const ThingWidget({super.key, required this.thing});
+  const ThingWidget({super.key, required this.thing, this.onRatingChange});
   final Thing thing;
+  final OnRatingChange? onRatingChange;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -128,6 +131,12 @@ class ThingWidget extends ConsumerWidget {
                   Icons.star,
                   color: color,
                 ),
+                onValueChanged: (value) {
+                  // print(value);
+                  if (onRatingChange != null) {
+                    onRatingChange!(value);
+                  }
+                },
                 starCount: 5,
                 starSize: 20,
                 valueLabelColor: const Color(0xff9b9b9b),

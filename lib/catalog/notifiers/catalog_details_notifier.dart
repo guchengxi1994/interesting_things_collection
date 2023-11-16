@@ -35,7 +35,8 @@ class CatalogDetailsNotifier extends AsyncNotifier<CatalogDetailsState> {
     return CatalogDetailsState(
         catalogName: catalog?.name ?? "",
         rating: rating,
-        tags: catalog?.tags ?? []);
+        tags: catalog?.tags ?? [],
+        createAt: catalog?.createdAt ?? 0);
   }
 
   updateCatalog(String name, List<String> tags) async {

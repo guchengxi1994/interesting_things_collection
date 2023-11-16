@@ -52,4 +52,32 @@ class ThingsNotifier extends AsyncNotifier<ThingsState> {
           thingsList: items..addAll(thingsList));
     });
   }
+
+  Future updateThing(Thing thing) async {
+    await _database.isar!.writeTxn(() async {
+      await _database.isar!.things.put(thing);
+    });
+
+    final index = state.value!.thingsList.indexOf(thing);
+    state.value!.thingsList.removeAt(index);
+    state.value!.thingsList.insert(index, thing);
+
+    state = await AsyncValue.guard(() async {
+      return state.value!;
+    });
+  }
+
+  Future newThing(Thing thing) async {
+    state = const AsyncValue.loading();
+    await _database.isar!.writeTxn(() async {
+      await _database.isar!.things.put(thing);
+    });
+
+    state = await AsyncValue.guard(() async {
+      return ThingsState(
+          catalogId: state.value!.catalogId,
+          pageId: state.value!.pageId,
+          thingsList: state.value!.thingsList..add(thing));
+    });
+  }
 }

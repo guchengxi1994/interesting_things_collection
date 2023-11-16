@@ -709,22 +709,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.0.4"
-  irondash_engine_context:
-    dependency: transitive
-    description:
-      name: irondash_engine_context
-      sha256: f66a1af95756d5fece5034d357853d0127e09b9e4ef58be1f022ca47e11c6f7e
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "0.4.0"
-  irondash_message_channel:
-    dependency: transitive
-    description:
-      name: irondash_message_channel
-      sha256: "500daa1fbe679f7d28a5258df3ff47dab6de352e680dc93c1ca9eae1555d8db5"
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "0.3.1"
   isar:
     dependency: "direct main"
     description:
@@ -949,14 +933,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.14.0"
-  pixel_snap:
-    dependency: transitive
-    description:
-      name: pixel_snap
-      sha256: "5de3662b926c9bc189578cf90f9d5b350ee61bc8e20e8a91fa1dfdd26c9f5ece"
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "0.1.2"
   platform:
     dependency: transitive
     description:
@@ -1217,30 +1193,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.2.0"
-  super_clipboard:
-    dependency: "direct main"
-    description:
-      name: super_clipboard
-      sha256: "90af960cb8950020e491c97b4fcea6fd331e38d01b8741246a61aa92c1049310"
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "0.7.2"
-  super_context_menu:
-    dependency: "direct main"
-    description:
-      name: super_context_menu
-      sha256: "242b6834a69055a7855c91012558baea8be2557e63d45269b5067f6f4fffa8bd"
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "0.7.2"
-  super_native_extensions:
-    dependency: transitive
-    description:
-      name: super_native_extensions
-      sha256: "0ae8094db77637581c414f19ed5e484ebd0c376d2bcf70201fcc0facef3c7501"
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "0.7.2"
   term_glyph:
     dependency: transitive
     description:

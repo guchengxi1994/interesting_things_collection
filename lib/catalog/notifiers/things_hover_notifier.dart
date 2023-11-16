@@ -16,6 +16,9 @@ class ThingsHoverNotifier extends Notifier<int> {
     }
   }
 
+  /// TODO
+  ///
+  /// move to other notifier
   Future saveThing(Thing thing) async {
     await _database.isar!.writeTxn(() async {
       await _database.isar!.things.put(thing);

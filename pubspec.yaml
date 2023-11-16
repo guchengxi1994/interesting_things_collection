@@ -37,8 +37,6 @@ dependencies:
   quill_html_converter: ^0.0.1-experimental.1
   reorderables: ^0.6.0
   shared_preferences: ^2.2.2
-  super_clipboard: ^0.7.2
-  super_context_menu: ^0.7.2
   window_manager: ^0.3.7
 
 dev_dependencies:

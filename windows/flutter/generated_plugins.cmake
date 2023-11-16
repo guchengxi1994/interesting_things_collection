@@ -7,11 +7,9 @@ list(APPEND FLUTTER_PLUGIN_LIST
   file_selector_windows
   gal
   hotkey_manager
-  irondash_engine_context
   isar_flutter_libs
   pasteboard
   screen_retriever
-  super_native_extensions
   url_launcher_windows
   window_manager
 )
