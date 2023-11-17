@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:interesting_things_collection/isar/catalog.dart';
-import 'package:interesting_things_collection/isar/database.dart';
-import 'package:interesting_things_collection/isar/thing.dart';
+import 'package:weaving/isar/catalog.dart';
+import 'package:weaving/isar/database.dart';
+import 'package:weaving/isar/thing.dart';
 import 'package:isar/isar.dart';
 
 import 'catalog_details_state.dart';

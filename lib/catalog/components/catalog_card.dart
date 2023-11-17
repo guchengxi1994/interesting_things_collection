@@ -2,9 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:interesting_things_collection/catalog/notifiers/catalog_notifier.dart';
-import 'package:interesting_things_collection/isar/catalog.dart';
-import 'package:interesting_things_collection/style/app_style.dart';
+import 'package:weaving/catalog/notifiers/catalog_notifier.dart';
+import 'package:weaving/isar/catalog.dart';
+import 'package:weaving/style/app_style.dart';
 
 typedef OnDoubleClick = VoidCallback;
 

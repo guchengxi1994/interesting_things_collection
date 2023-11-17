@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_quill/translations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
-import 'package:interesting_things_collection/isar/database.dart';
-import 'package:interesting_things_collection/layout/desktop_layout.dart';
-import 'package:interesting_things_collection/notifier/color_notifier.dart';
-import 'package:interesting_things_collection/style/app_style.dart';
+import 'package:weaving/isar/database.dart';
+import 'package:weaving/layout/desktop_layout.dart';
+import 'package:weaving/notifier/color_notifier.dart';
+import 'package:weaving/style/app_style.dart';
 // ignore: depend_on_referenced_packages
 import 'package:flutter_localizations/flutter_localizations.dart';
 

@@ -1,4 +1,4 @@
-import 'package:interesting_things_collection/isar/thing.dart';
+import 'package:weaving/isar/thing.dart';
 
 class ThingsState {
   final int catalogId;

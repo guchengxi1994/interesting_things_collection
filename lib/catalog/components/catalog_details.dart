@@ -6,10 +6,10 @@ import 'package:flutter_rating_stars/flutter_rating_stars.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:flutter_tags_x/flutter_tags_x.dart';
-import 'package:interesting_things_collection/catalog/components/editor.dart';
-import 'package:interesting_things_collection/common/base64_utils.dart';
-import 'package:interesting_things_collection/isar/thing.dart';
-import 'package:interesting_things_collection/style/app_style.dart';
+import 'package:weaving/catalog/components/editor.dart';
+import 'package:weaving/common/base64_utils.dart';
+import 'package:weaving/isar/thing.dart';
+import 'package:weaving/style/app_style.dart';
 import 'package:popup_card/popup_card.dart';
 
 import '../notifiers/catalog_details_notifier.dart';

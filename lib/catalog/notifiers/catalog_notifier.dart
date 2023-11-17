@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:interesting_things_collection/common/app_params.dart';
-import 'package:interesting_things_collection/isar/catalog.dart';
-import 'package:interesting_things_collection/isar/database.dart';
+import 'package:weaving/common/app_params.dart';
+import 'package:weaving/isar/catalog.dart';
+import 'package:weaving/isar/database.dart';
 import 'package:isar/isar.dart';
 
 class CatalogNotifier extends ChangeNotifier {

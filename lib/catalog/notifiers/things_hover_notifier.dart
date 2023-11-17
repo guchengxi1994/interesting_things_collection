@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:interesting_things_collection/isar/database.dart';
-import 'package:interesting_things_collection/isar/thing.dart';
+import 'package:weaving/isar/database.dart';
+import 'package:weaving/isar/thing.dart';
 
 class ThingsHoverNotifier extends Notifier<int> {
   final IsarDatabase _database = IsarDatabase();

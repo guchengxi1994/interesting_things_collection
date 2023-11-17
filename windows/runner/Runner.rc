@@ -89,13 +89,13 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "org.xiaoshuyui" "\0"
-            VALUE "FileDescription", "interesting_things_collection" "\0"
+            VALUE "CompanyName", "com.example" "\0"
+            VALUE "FileDescription", "weaving" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "interesting_things_collection" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2023 org.xiaoshuyui. All rights reserved." "\0"
-            VALUE "OriginalFilename", "interesting_things_collection.exe" "\0"
-            VALUE "ProductName", "interesting_things_collection" "\0"
+            VALUE "InternalName", "weaving" "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2023 com.example. All rights reserved." "\0"
+            VALUE "OriginalFilename", "weaving.exe" "\0"
+            VALUE "ProductName", "weaving" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

@@ -1,5 +1,5 @@
-import 'package:interesting_things_collection/isar/catalog.dart';
-import 'package:interesting_things_collection/isar/thing.dart';
+import 'package:weaving/isar/catalog.dart';
+import 'package:weaving/isar/thing.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 

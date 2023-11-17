@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/interesting_things_collection.iml" filepath="$PROJECT_DIR$/interesting_things_collection.iml" />
-      <module fileurl="file://$PROJECT_DIR$/android/interesting_things_collection_android.iml" filepath="$PROJECT_DIR$/android/interesting_things_collection_android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/weaving.iml" filepath="$PROJECT_DIR$/weaving.iml" />
+      <module fileurl="file://$PROJECT_DIR$/android/weaving_android.iml" filepath="$PROJECT_DIR$/android/weaving_android.iml" />
     </modules>
   </component>
 </project>

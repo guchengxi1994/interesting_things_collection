@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:interesting_things_collection/common/local_storage.dart';
-import 'package:interesting_things_collection/notifier/settings_state.dart';
+import 'package:weaving/common/local_storage.dart';
+import 'package:weaving/notifier/settings_state.dart';
 
 class SettingsNotifier extends Notifier<SettingsState> {
   final LocalStorage localStorage = LocalStorage();

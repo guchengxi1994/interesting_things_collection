@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_stars/flutter_rating_stars.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
-import 'package:interesting_things_collection/catalog/notifiers/things_hover_notifier.dart';
-import 'package:interesting_things_collection/common/base64_utils.dart';
-import 'package:interesting_things_collection/isar/thing.dart';
-import 'package:interesting_things_collection/notifier/color_notifier.dart';
-import 'package:interesting_things_collection/notifier/settings_notifier.dart';
-import 'package:interesting_things_collection/style/app_style.dart';
+import 'package:weaving/catalog/notifiers/things_hover_notifier.dart';
+import 'package:weaving/common/base64_utils.dart';
+import 'package:weaving/isar/thing.dart';
+import 'package:weaving/notifier/color_notifier.dart';
+import 'package:weaving/notifier/settings_notifier.dart';
+import 'package:weaving/style/app_style.dart';
 import 'package:just_the_tooltip/just_the_tooltip.dart';
 import 'package:popup_card/popup_card.dart';
 

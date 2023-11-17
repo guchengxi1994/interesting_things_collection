@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hotkey_manager/hotkey_manager.dart';
-import 'package:interesting_things_collection/catalog/catalog_screen.dart';
-import 'package:interesting_things_collection/layout/expand_collapse_notifier.dart';
-import 'package:interesting_things_collection/notifier/color_notifier.dart';
-import 'package:interesting_things_collection/settings/settings_screen.dart';
-import 'package:interesting_things_collection/style/app_style.dart';
+import 'package:weaving/catalog/catalog_screen.dart';
+import 'package:weaving/layout/expand_collapse_notifier.dart';
+import 'package:weaving/notifier/color_notifier.dart';
+import 'package:weaving/settings/settings_screen.dart';
+import 'package:weaving/style/app_style.dart';
 import 'package:window_manager/window_manager.dart';
 
 class Layout extends ConsumerStatefulWidget {

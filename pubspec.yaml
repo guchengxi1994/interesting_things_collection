@@ -1,4 +1,4 @@
-name: interesting_things_collection
+name: weaving
 description: A new Flutter project.
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -46,6 +46,8 @@ dev_dependencies:
 
   flutter_lints: ^2.0.0
   isar_generator: ^3.1.0+1
+  flutter_rename_app_plus3: ^1.2.4
+
 
 dependency_overrides:  
   uuid: ^4.1.0

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:interesting_things_collection/notifier/color_notifier.dart';
-import 'package:interesting_things_collection/notifier/settings_notifier.dart';
-import 'package:interesting_things_collection/style/app_style.dart';
+import 'package:weaving/notifier/color_notifier.dart';
+import 'package:weaving/notifier/settings_notifier.dart';
+import 'package:weaving/style/app_style.dart';
 // ignore: unused_import, depend_on_referenced_packages
 import 'package:collection/collection.dart';
 

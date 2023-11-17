@@ -1,4 +1,4 @@
-package org.xiaoshuyui.interesting_things_collection
+package cn.xiaoshuyui.weaving
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:interesting_things_collection/catalog/notifiers/catalog_notifier.dart';
-import 'package:interesting_things_collection/catalog/components/catalog_card.dart';
-import 'package:interesting_things_collection/isar/catalog.dart';
+import 'package:weaving/catalog/notifiers/catalog_notifier.dart';
+import 'package:weaving/catalog/components/catalog_card.dart';
+import 'package:weaving/isar/catalog.dart';
 import 'package:reorderables/reorderables.dart';
 
 import 'components/add_catalog_dialog.dart';

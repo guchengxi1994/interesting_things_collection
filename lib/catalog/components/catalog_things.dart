@@ -1,9 +1,9 @@
 import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:interesting_things_collection/catalog/models/things_state.dart';
-import 'package:interesting_things_collection/catalog/notifiers/things_notifier.dart';
-import 'package:interesting_things_collection/isar/catalog.dart';
+import 'package:weaving/catalog/models/things_state.dart';
+import 'package:weaving/catalog/notifiers/things_notifier.dart';
+import 'package:weaving/isar/catalog.dart';
 
 import 'catalog_details.dart';
 import 'thing_widget.dart';

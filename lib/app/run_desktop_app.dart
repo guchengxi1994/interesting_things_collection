@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hotkey_manager/hotkey_manager.dart';
-import 'package:interesting_things_collection/app/app.dart';
+import 'package:weaving/app/app.dart';
 import 'package:window_manager/window_manager.dart';
 
 void runAPP() async {
