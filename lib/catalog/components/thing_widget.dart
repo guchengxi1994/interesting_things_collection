@@ -16,11 +16,17 @@ import 'package:popup_card/popup_card.dart';
 import 'editor.dart';
 
 typedef OnRatingChange = void Function(double);
+typedef OnDeleteClick = void Function(Thing);
 
 class ThingWidget extends ConsumerWidget {
-  const ThingWidget({super.key, required this.thing, this.onRatingChange});
+  const ThingWidget(
+      {super.key,
+      required this.thing,
+      this.onRatingChange,
+      this.onDeleteClick});
   final Thing thing;
   final OnRatingChange? onRatingChange;
+  final OnDeleteClick? onDeleteClick;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -61,9 +67,10 @@ class ThingWidget extends ConsumerWidget {
               : MediaQuery.of(context).size.height,
           child: Editor(
             savedData: thing.remark ?? "",
-            saveToJson: (p0) async {
+            saveToJson: (p0, p1) async {
               SmartDialog.showLoading();
               thing.remark = p0;
+              thing.name = p1;
               ref.read(thingsHoverNotifier.notifier).saveThing(thing);
               await Future.delayed(const Duration(seconds: 1));
               SmartDialog.dismiss();
@@ -121,41 +128,59 @@ class ThingWidget extends ConsumerWidget {
           height: currentIndex == thing.id
               ? 50 * AppStyle.catalogOnHoverFactor
               : 50,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: Row(
             children: [
-              Text(thing.name.toString()),
-              RatingStars(
-                value: thing.score ?? 0,
-                starBuilder: (index, color) => Icon(
-                  Icons.star,
-                  color: color,
+              Expanded(
+                  child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(thing.name.toString()),
+                  RatingStars(
+                    value: thing.score ?? 0,
+                    starBuilder: (index, color) => Icon(
+                      Icons.star,
+                      color: color,
+                    ),
+                    onValueChanged: (value) {
+                      // print(value);
+                      if (onRatingChange != null) {
+                        onRatingChange!(value);
+                      }
+                    },
+                    starCount: 5,
+                    starSize: 20,
+                    valueLabelColor: const Color(0xff9b9b9b),
+                    valueLabelTextStyle: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w400,
+                        fontStyle: FontStyle.normal,
+                        fontSize: 12.0),
+                    valueLabelRadius: 10,
+                    maxValue: 5,
+                    starSpacing: 2,
+                    maxValueVisibility: true,
+                    valueLabelVisibility: true,
+                    animationDuration: const Duration(milliseconds: 1000),
+                    valueLabelPadding:
+                        const EdgeInsets.symmetric(vertical: 1, horizontal: 8),
+                    valueLabelMargin: const EdgeInsets.only(right: 8),
+                    starOffColor: const Color(0xffe7e8ea),
+                    starColor: Colors.yellow,
+                  )
+                ],
+              )),
+              FittedBox(
+                child: InkWell(
+                  onTap: () {
+                    if (onDeleteClick != null) {
+                      onDeleteClick!(thing);
+                    }
+                  },
+                  child: const Icon(
+                    Icons.delete,
+                    color: Colors.red,
+                  ),
                 ),
-                onValueChanged: (value) {
-                  // print(value);
-                  if (onRatingChange != null) {
-                    onRatingChange!(value);
-                  }
-                },
-                starCount: 5,
-                starSize: 20,
-                valueLabelColor: const Color(0xff9b9b9b),
-                valueLabelTextStyle: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w400,
-                    fontStyle: FontStyle.normal,
-                    fontSize: 12.0),
-                valueLabelRadius: 10,
-                maxValue: 5,
-                starSpacing: 2,
-                maxValueVisibility: true,
-                valueLabelVisibility: true,
-                animationDuration: const Duration(milliseconds: 1000),
-                valueLabelPadding:
-                    const EdgeInsets.symmetric(vertical: 1, horizontal: 8),
-                valueLabelMargin: const EdgeInsets.only(right: 8),
-                starOffColor: const Color(0xffe7e8ea),
-                starColor: Colors.yellow,
               )
             ],
           ),

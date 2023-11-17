@@ -2,6 +2,8 @@ import 'package:isar/isar.dart';
 
 part 'thing.g.dart';
 
+final re = RegExp(r'\n|，|。|,|.|!|！|？|\?|;|；');
+
 @collection
 class Thing {
   Id id = Isar.autoIncrement; // 你也可以用 id = null 来表示 id 是自增的
@@ -30,4 +32,7 @@ class Thing {
 
   @override
   int get hashCode => id.hashCode;
+
+  @Index()
+  List<String> get remarkContent => (remark ?? "").split(re);
 }

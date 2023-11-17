@@ -9,7 +9,7 @@ import 'package:isar/isar.dart';
 
 class ThingsNotifier extends AsyncNotifier<ThingsState> {
   final IsarDatabase _database = IsarDatabase();
-  final Catalog catalog;
+  final CatalogCopy catalog;
   ThingsNotifier({required this.catalog});
 
   @override
@@ -78,6 +78,22 @@ class ThingsNotifier extends AsyncNotifier<ThingsState> {
           catalogId: state.value!.catalogId,
           pageId: state.value!.pageId,
           thingsList: state.value!.thingsList..add(thing));
+    });
+  }
+
+  Future deleteThing(Thing thing) async {
+    state = const AsyncValue.loading();
+    final index = state.value!.thingsList.indexOf(thing);
+
+    await _database.isar!.writeTxn(() async {
+      await _database.isar!.things.delete(thing.id);
+    });
+
+    state = await AsyncValue.guard(() async {
+      return ThingsState(
+          catalogId: state.value!.catalogId,
+          pageId: state.value!.pageId,
+          thingsList: state.value!.thingsList..removeAt(index));
     });
   }
 }

@@ -303,10 +303,10 @@ class AddCatalogDialogState extends ConsumerState<AddCatalogDialog> {
     );
   }
 
-  Future<Iterable<Catalog>> _buildOptions(
+  Future<Iterable<CatalogCopy>> _buildOptions(
       TextEditingValue textEditingValue) async {
     if (textEditingValue.text == '') {
-      return const Iterable<Catalog>.empty();
+      return const Iterable<CatalogCopy>.empty();
     }
     return ref
         .read(catalogNotifier)
@@ -314,8 +314,10 @@ class AddCatalogDialogState extends ConsumerState<AddCatalogDialog> {
         .where((element) => element.name!.contains(textEditingValue.text));
   }
 
-  Widget _buildOptionsView(BuildContext context,
-      AutocompleteOnSelected<Catalog> onSelected, Iterable<Catalog> options) {
+  Widget _buildOptionsView(
+      BuildContext context,
+      AutocompleteOnSelected<CatalogCopy> onSelected,
+      Iterable<CatalogCopy> options) {
     return Align(
       alignment: Alignment.topLeft,
       child: Padding(
@@ -331,7 +333,7 @@ class AddCatalogDialogState extends ConsumerState<AddCatalogDialog> {
             child: ListView.builder(
               padding: const EdgeInsets.all(10),
               itemBuilder: (_, index) {
-                final Catalog option = options.elementAt(index);
+                final CatalogCopy option = options.elementAt(index);
                 return InkWell(
                   onTap: () {
                     _textEditingController.text = option.name!;

@@ -17,7 +17,8 @@ class CatalogNotifier extends ChangeNotifier {
       ..name = name
       ..orderNum = 0
       ..remark = remark
-      ..tags = tags;
+      ..tags = tags
+      ..used = false;
 
     await database.isar!.writeTxn(() async {
       await database.isar!.catalogs.put(newCatalog);
@@ -26,10 +27,10 @@ class CatalogNotifier extends ChangeNotifier {
     queryAll();
   }
 
-  final StreamController<Set<Catalog>> streamController =
+  final StreamController<Set<CatalogCopy>> streamController =
       StreamController.broadcast();
 
-  Set<Catalog> datas = {};
+  Set<CatalogCopy> datas = {};
 
   queryAll() async {
     datas.clear();
@@ -42,7 +43,7 @@ class CatalogNotifier extends ChangeNotifier {
           .limit(AppParams.databaseQueryPageSize)
           .findAll();
 
-      datas.addAll(catalogs);
+      datas.addAll(catalogs.map((e) => e.toCatalogCopy()));
 
       streamController.sink.add(datas);
 
@@ -63,8 +64,8 @@ class CatalogNotifier extends ChangeNotifier {
     }
   }
 
-  Future<Catalog> getCatalogById(int id) async {
-    return (await database.isar!.catalogs.get(id))!;
+  Future<CatalogCopy> getCatalogById(int id) async {
+    return (await database.isar!.catalogs.get(id))!.toCatalogCopy();
   }
 
   deleteCatalog(int id) async {
@@ -92,7 +93,7 @@ class CatalogNotifier extends ChangeNotifier {
           final before = datas.elementAt(i);
           if (before != item) {
             before.orderNum = before.orderNum! - 1;
-            await database.isar!.catalogs.put(before);
+            await database.isar!.catalogs.put(Catalog.fromCopy(before));
           }
         }
       } else {
@@ -103,15 +104,22 @@ class CatalogNotifier extends ChangeNotifier {
           final after = datas.elementAt(j);
           if (after != item) {
             after.orderNum = after.orderNum! + 1;
-            await database.isar!.catalogs.put(after);
+            await database.isar!.catalogs.put(Catalog.fromCopy(after));
           }
         }
       }
 
-      await database.isar!.catalogs.put(item);
+      await database.isar!.catalogs.put(Catalog.fromCopy(item));
     });
     datas.clear();
     queryAll();
+  }
+
+  updateCatalog(CatalogCopy catalogCopy) async {
+    await database.isar!.writeTxn(() async {
+      Catalog c = Catalog.fromCopy(catalogCopy);
+      database.isar!.catalogs.put(c);
+    });
   }
 }
 

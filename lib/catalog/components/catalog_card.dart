@@ -6,6 +6,7 @@ import 'package:weaving/catalog/notifiers/catalog_notifier.dart';
 import 'package:weaving/gen/strings.g.dart';
 import 'package:weaving/isar/catalog.dart';
 import 'package:weaving/style/app_style.dart';
+import 'package:badges/badges.dart' as badges;
 
 typedef OnDoubleClick = VoidCallback;
 
@@ -24,7 +25,7 @@ class _CatalogCardState extends ConsumerState<CatalogCard> {
   // ignore: prefer_typing_uninitialized_variables
   var future;
   // ignore: avoid_init_to_null
-  late Catalog? catalog = null;
+  late CatalogCopy? catalog = null;
 
   @override
   void initState() {
@@ -75,7 +76,7 @@ class _CatalogCardState extends ConsumerState<CatalogCard> {
             }));
   }
 
-  Widget _mobile(Catalog catalog) {
+  Widget _mobile(CatalogCopy catalog) {
     return SizedBox(
       width: AppStyle.catalogCardWidth,
       height: AppStyle.catalogCardHeight,
@@ -83,12 +84,15 @@ class _CatalogCardState extends ConsumerState<CatalogCard> {
     );
   }
 
-  Widget _desktop(Catalog catalog) {
+  Widget _desktop(CatalogCopy catalog) {
     return GestureDetector(
       onDoubleTap: () {
         Future.delayed(const Duration(microseconds: 100)).then((value) {
           if (widget.onDoubleClick != null) {
             widget.onDoubleClick!();
+            setState(() {
+              catalog.used = true;
+            });
           }
         });
       },
@@ -107,13 +111,27 @@ class _CatalogCardState extends ConsumerState<CatalogCard> {
           height: ref.watch(catalogNotifier).onHoverCatalogId == catalog.id
               ? AppStyle.catalogCardHeight * AppStyle.catalogOnHoverFactor
               : AppStyle.catalogCardHeight,
-          child: _child(catalog),
+          child: catalog.used == false
+              ? badges.Badge(
+                  badgeContent: const FittedBox(
+                    child: Padding(
+                      padding: EdgeInsets.all(4),
+                      child: Text(
+                        "NEW",
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                  child: _child(catalog),
+                )
+              : _child(catalog),
         ),
       ),
     );
   }
 
-  Widget _child(Catalog catalog) {
+  Widget _child(CatalogCopy catalog) {
     final color = AppStyle.catalogCardBorderColors[catalog.name.hashCode % 8];
 
     return Container(
@@ -150,7 +168,7 @@ class _CatalogCardState extends ConsumerState<CatalogCard> {
     );
   }
 
-  Widget _createImage(Color color, Catalog catalog) {
+  Widget _createImage(Color color, CatalogCopy catalog) {
     if (widget.image == null) {
       var s = "";
       if (catalog.name!.length >= 2) {

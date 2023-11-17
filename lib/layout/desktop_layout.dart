@@ -40,7 +40,7 @@ class LayoutState extends ConsumerState<Layout> with TickerProviderStateMixin {
     }
   }
 
-  final HotKey _hotKey = HotKey(
+  final HotKey hotKey = HotKey(
     KeyCode.keyC,
     modifiers: [KeyModifier.control],
     scope: HotKeyScope.inapp, // Set as inapp-wide hotkey.

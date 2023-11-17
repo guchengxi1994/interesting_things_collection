@@ -9,6 +9,7 @@ environment:
   sdk: '>=3.1.0 <4.0.0'
 
 dependencies:
+  badges: ^3.1.2
   clipboard_watcher: ^0.2.0
   cupertino_icons: ^1.0.2
   date_format: ^2.0.7
@@ -38,7 +39,7 @@ dependencies:
   quill_html_converter: ^0.0.1-experimental.1
   reorderables: ^0.6.0
   shared_preferences: ^2.2.2
-  slang: ^3.25.0
+  slang: ^3.25.0  # dart run slang
   slang_flutter: ^3.25.0
   window_manager: ^0.3.7
 

@@ -10,7 +10,7 @@ import 'thing_widget.dart';
 
 class CatalogThingsWidget extends ConsumerStatefulWidget {
   const CatalogThingsWidget({super.key, required this.catalog});
-  final Catalog? catalog;
+  final CatalogCopy? catalog;
 
   @override
   ConsumerState<CatalogThingsWidget> createState() =>
@@ -90,6 +90,9 @@ class _CatalogThingsWidgetState extends ConsumerState<CatalogThingsWidget> {
                         onRatingChange: (p0) {
                           final t = value.thingsList[index]..score = p0;
                           ref.read(notifier!.notifier).updateThing(t);
+                        },
+                        onDeleteClick: (p0) {
+                          ref.read(notifier!.notifier).deleteThing(p0);
                         },
                       );
                     })),

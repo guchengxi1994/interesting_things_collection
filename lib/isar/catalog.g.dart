@@ -22,30 +22,30 @@ const CatalogSchema = CollectionSchema(
       name: r'createdAt',
       type: IsarType.long,
     ),
-    r'hashCode': PropertySchema(
-      id: 1,
-      name: r'hashCode',
-      type: IsarType.long,
-    ),
     r'name': PropertySchema(
-      id: 2,
+      id: 1,
       name: r'name',
       type: IsarType.string,
     ),
     r'orderNum': PropertySchema(
-      id: 3,
+      id: 2,
       name: r'orderNum',
       type: IsarType.long,
     ),
     r'remark': PropertySchema(
-      id: 4,
+      id: 3,
       name: r'remark',
       type: IsarType.string,
     ),
     r'tags': PropertySchema(
-      id: 5,
+      id: 4,
       name: r'tags',
       type: IsarType.stringList,
+    ),
+    r'used': PropertySchema(
+      id: 5,
+      name: r'used',
+      type: IsarType.bool,
     )
   },
   estimateSize: _catalogEstimateSize,
@@ -102,11 +102,11 @@ void _catalogSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeLong(offsets[0], object.createdAt);
-  writer.writeLong(offsets[1], object.hashCode);
-  writer.writeString(offsets[2], object.name);
-  writer.writeLong(offsets[3], object.orderNum);
-  writer.writeString(offsets[4], object.remark);
-  writer.writeStringList(offsets[5], object.tags);
+  writer.writeString(offsets[1], object.name);
+  writer.writeLong(offsets[2], object.orderNum);
+  writer.writeString(offsets[3], object.remark);
+  writer.writeStringList(offsets[4], object.tags);
+  writer.writeBool(offsets[5], object.used);
 }
 
 Catalog _catalogDeserialize(
@@ -118,10 +118,11 @@ Catalog _catalogDeserialize(
   final object = Catalog();
   object.createdAt = reader.readLongOrNull(offsets[0]);
   object.id = id;
-  object.name = reader.readStringOrNull(offsets[2]);
-  object.orderNum = reader.readLongOrNull(offsets[3]);
-  object.remark = reader.readStringOrNull(offsets[4]);
-  object.tags = reader.readStringList(offsets[5]);
+  object.name = reader.readStringOrNull(offsets[1]);
+  object.orderNum = reader.readLongOrNull(offsets[2]);
+  object.remark = reader.readStringOrNull(offsets[3]);
+  object.tags = reader.readStringList(offsets[4]);
+  object.used = reader.readBool(offsets[5]);
   return object;
 }
 
@@ -135,15 +136,15 @@ P _catalogDeserializeProp<P>(
     case 0:
       return (reader.readLongOrNull(offset)) as P;
     case 1:
-      return (reader.readLong(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 2:
-      return (reader.readStringOrNull(offset)) as P;
-    case 3:
       return (reader.readLongOrNull(offset)) as P;
-    case 4:
+    case 3:
       return (reader.readStringOrNull(offset)) as P;
-    case 5:
+    case 4:
       return (reader.readStringList(offset)) as P;
+    case 5:
+      return (reader.readBool(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -299,59 +300,6 @@ extension CatalogQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
         property: r'createdAt',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
-    });
-  }
-
-  QueryBuilder<Catalog, Catalog, QAfterFilterCondition> hashCodeEqualTo(
-      int value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'hashCode',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Catalog, Catalog, QAfterFilterCondition> hashCodeGreaterThan(
-    int value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'hashCode',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Catalog, Catalog, QAfterFilterCondition> hashCodeLessThan(
-    int value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'hashCode',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<Catalog, Catalog, QAfterFilterCondition> hashCodeBetween(
-    int lower,
-    int upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'hashCode',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -1003,6 +951,16 @@ extension CatalogQueryFilter
       );
     });
   }
+
+  QueryBuilder<Catalog, Catalog, QAfterFilterCondition> usedEqualTo(
+      bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'used',
+        value: value,
+      ));
+    });
+  }
 }
 
 extension CatalogQueryObject
@@ -1021,18 +979,6 @@ extension CatalogQuerySortBy on QueryBuilder<Catalog, Catalog, QSortBy> {
   QueryBuilder<Catalog, Catalog, QAfterSortBy> sortByCreatedAtDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'createdAt', Sort.desc);
-    });
-  }
-
-  QueryBuilder<Catalog, Catalog, QAfterSortBy> sortByHashCode() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'hashCode', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Catalog, Catalog, QAfterSortBy> sortByHashCodeDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'hashCode', Sort.desc);
     });
   }
 
@@ -1071,6 +1017,18 @@ extension CatalogQuerySortBy on QueryBuilder<Catalog, Catalog, QSortBy> {
       return query.addSortBy(r'remark', Sort.desc);
     });
   }
+
+  QueryBuilder<Catalog, Catalog, QAfterSortBy> sortByUsed() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'used', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Catalog, Catalog, QAfterSortBy> sortByUsedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'used', Sort.desc);
+    });
+  }
 }
 
 extension CatalogQuerySortThenBy
@@ -1084,18 +1042,6 @@ extension CatalogQuerySortThenBy
   QueryBuilder<Catalog, Catalog, QAfterSortBy> thenByCreatedAtDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'createdAt', Sort.desc);
-    });
-  }
-
-  QueryBuilder<Catalog, Catalog, QAfterSortBy> thenByHashCode() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'hashCode', Sort.asc);
-    });
-  }
-
-  QueryBuilder<Catalog, Catalog, QAfterSortBy> thenByHashCodeDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'hashCode', Sort.desc);
     });
   }
 
@@ -1146,6 +1092,18 @@ extension CatalogQuerySortThenBy
       return query.addSortBy(r'remark', Sort.desc);
     });
   }
+
+  QueryBuilder<Catalog, Catalog, QAfterSortBy> thenByUsed() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'used', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Catalog, Catalog, QAfterSortBy> thenByUsedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'used', Sort.desc);
+    });
+  }
 }
 
 extension CatalogQueryWhereDistinct
@@ -1153,12 +1111,6 @@ extension CatalogQueryWhereDistinct
   QueryBuilder<Catalog, Catalog, QDistinct> distinctByCreatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'createdAt');
-    });
-  }
-
-  QueryBuilder<Catalog, Catalog, QDistinct> distinctByHashCode() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'hashCode');
     });
   }
 
@@ -1187,6 +1139,12 @@ extension CatalogQueryWhereDistinct
       return query.addDistinctBy(r'tags');
     });
   }
+
+  QueryBuilder<Catalog, Catalog, QDistinct> distinctByUsed() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'used');
+    });
+  }
 }
 
 extension CatalogQueryProperty
@@ -1200,12 +1158,6 @@ extension CatalogQueryProperty
   QueryBuilder<Catalog, int?, QQueryOperations> createdAtProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'createdAt');
-    });
-  }
-
-  QueryBuilder<Catalog, int, QQueryOperations> hashCodeProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'hashCode');
     });
   }
 
@@ -1230,6 +1182,12 @@ extension CatalogQueryProperty
   QueryBuilder<Catalog, List<String>?, QQueryOperations> tagsProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'tags');
+    });
+  }
+
+  QueryBuilder<Catalog, bool, QQueryOperations> usedProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'used');
     });
   }
 }

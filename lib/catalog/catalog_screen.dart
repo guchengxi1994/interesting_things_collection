@@ -38,7 +38,7 @@ class CatalogScreenState extends ConsumerState<CatalogScreen> {
   int currentDraggingId = -1;
 
   // ignore: avoid_init_to_null
-  Catalog? selectedCatalog = null;
+  CatalogCopy? selectedCatalog = null;
 
   @override
   Widget build(BuildContext context) {
@@ -103,6 +103,10 @@ class CatalogScreenState extends ConsumerState<CatalogScreen> {
                             onDoubleClick: () {
                               setState(() {
                                 selectedCatalog = e;
+                                e.used = true;
+                                ref
+                                    .read(catalogNotifier.notifier)
+                                    .updateCatalog(e);
                               });
                               globalKey.currentState!.openEndDrawer();
                             },

@@ -52,8 +52,13 @@ const ThingSchema = CollectionSchema(
       name: r'remark',
       type: IsarType.string,
     ),
-    r'score': PropertySchema(
+    r'remarkContent': PropertySchema(
       id: 7,
+      name: r'remarkContent',
+      type: IsarType.stringList,
+    ),
+    r'score': PropertySchema(
+      id: 8,
       name: r'score',
       type: IsarType.double,
     )
@@ -63,7 +68,21 @@ const ThingSchema = CollectionSchema(
   deserialize: _thingDeserialize,
   deserializeProp: _thingDeserializeProp,
   idName: r'id',
-  indexes: {},
+  indexes: {
+    r'remarkContent': IndexSchema(
+      id: 7642275241072716950,
+      name: r'remarkContent',
+      unique: false,
+      replace: false,
+      properties: [
+        IndexPropertySchema(
+          name: r'remarkContent',
+          type: IndexType.hash,
+          caseSensitive: true,
+        )
+      ],
+    )
+  },
   links: {},
   embeddedSchemas: {},
   getId: _thingGetId,
@@ -96,6 +115,13 @@ int _thingEstimateSize(
       bytesCount += 3 + value.length * 3;
     }
   }
+  bytesCount += 3 + object.remarkContent.length * 3;
+  {
+    for (var i = 0; i < object.remarkContent.length; i++) {
+      final value = object.remarkContent[i];
+      bytesCount += value.length * 3;
+    }
+  }
   return bytesCount;
 }
 
@@ -112,7 +138,8 @@ void _thingSerialize(
   writer.writeLong(offsets[4], object.orderNum);
   writer.writeString(offsets[5], object.preview);
   writer.writeString(offsets[6], object.remark);
-  writer.writeDouble(offsets[7], object.score);
+  writer.writeStringList(offsets[7], object.remarkContent);
+  writer.writeDouble(offsets[8], object.score);
 }
 
 Thing _thingDeserialize(
@@ -129,7 +156,7 @@ Thing _thingDeserialize(
   object.orderNum = reader.readLongOrNull(offsets[4]);
   object.preview = reader.readStringOrNull(offsets[5]);
   object.remark = reader.readStringOrNull(offsets[6]);
-  object.score = reader.readDoubleOrNull(offsets[7]);
+  object.score = reader.readDoubleOrNull(offsets[8]);
   return object;
 }
 
@@ -155,6 +182,8 @@ P _thingDeserializeProp<P>(
     case 6:
       return (reader.readStringOrNull(offset)) as P;
     case 7:
+      return (reader.readStringList(offset) ?? []) as P;
+    case 8:
       return (reader.readDoubleOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -244,6 +273,51 @@ extension ThingQueryWhere on QueryBuilder<Thing, Thing, QWhereClause> {
         upper: upperId,
         includeUpper: includeUpper,
       ));
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterWhereClause> remarkContentEqualTo(
+      List<String> remarkContent) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'remarkContent',
+        value: [remarkContent],
+      ));
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterWhereClause> remarkContentNotEqualTo(
+      List<String> remarkContent) {
+    return QueryBuilder.apply(this, (query) {
+      if (query.whereSort == Sort.asc) {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'remarkContent',
+              lower: [],
+              upper: [remarkContent],
+              includeUpper: false,
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'remarkContent',
+              lower: [remarkContent],
+              includeLower: false,
+              upper: [],
+            ));
+      } else {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'remarkContent',
+              lower: [remarkContent],
+              includeLower: false,
+              upper: [],
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'remarkContent',
+              lower: [],
+              upper: [remarkContent],
+              includeUpper: false,
+            ));
+      }
     });
   }
 }
@@ -995,6 +1069,226 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
+  QueryBuilder<Thing, Thing, QAfterFilterCondition> remarkContentElementEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'remarkContent',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterFilterCondition>
+      remarkContentElementGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'remarkContent',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterFilterCondition>
+      remarkContentElementLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'remarkContent',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterFilterCondition> remarkContentElementBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'remarkContent',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterFilterCondition>
+      remarkContentElementStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'remarkContent',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterFilterCondition>
+      remarkContentElementEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'remarkContent',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterFilterCondition>
+      remarkContentElementContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'remarkContent',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterFilterCondition> remarkContentElementMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'remarkContent',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterFilterCondition>
+      remarkContentElementIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'remarkContent',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterFilterCondition>
+      remarkContentElementIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'remarkContent',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterFilterCondition> remarkContentLengthEqualTo(
+      int length) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'remarkContent',
+        length,
+        true,
+        length,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterFilterCondition> remarkContentIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'remarkContent',
+        0,
+        true,
+        0,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterFilterCondition> remarkContentIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'remarkContent',
+        0,
+        false,
+        999999,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterFilterCondition> remarkContentLengthLessThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'remarkContent',
+        0,
+        true,
+        length,
+        include,
+      );
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterFilterCondition>
+      remarkContentLengthGreaterThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'remarkContent',
+        length,
+        include,
+        999999,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterFilterCondition> remarkContentLengthBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'remarkContent',
+        lower,
+        includeLower,
+        upper,
+        includeUpper,
+      );
+    });
+  }
+
   QueryBuilder<Thing, Thing, QAfterFilterCondition> scoreIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -1332,6 +1626,12 @@ extension ThingQueryWhereDistinct on QueryBuilder<Thing, Thing, QDistinct> {
     });
   }
 
+  QueryBuilder<Thing, Thing, QDistinct> distinctByRemarkContent() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'remarkContent');
+    });
+  }
+
   QueryBuilder<Thing, Thing, QDistinct> distinctByScore() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'score');
@@ -1385,6 +1685,12 @@ extension ThingQueryProperty on QueryBuilder<Thing, Thing, QQueryProperty> {
   QueryBuilder<Thing, String?, QQueryOperations> remarkProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'remark');
+    });
+  }
+
+  QueryBuilder<Thing, List<String>, QQueryOperations> remarkContentProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'remarkContent');
     });
   }
 

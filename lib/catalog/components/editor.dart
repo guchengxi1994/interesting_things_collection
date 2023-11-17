@@ -18,7 +18,7 @@ import 'dart:ui' as ui;
 
 import 'package:weaving/gen/strings.g.dart';
 
-typedef OnQuillSave = void Function(String);
+typedef OnQuillSave = void Function(String, String);
 typedef OnQuillPreviewImageSave = void Function(Uint8List);
 
 class Editor extends StatefulWidget {
@@ -197,9 +197,18 @@ class _EditorState extends State<Editor> {
         tooltip: t.catalogs.editor.saveAsJson,
         icon: const Icon(Icons.save),
         onPressed: () {
-          final j = jsonEncode(_controller.document.toDelta().toJson());
           if (widget.saveToJson != null) {
-            widget.saveToJson!(j);
+            final j = jsonEncode(_controller.document.toDelta().toJson());
+            final t = _controller.document.toPlainText();
+            // ignore: no_leading_underscores_for_local_identifiers
+            String _abstract;
+            if (t.length > 20) {
+              _abstract = t.substring(0, 20);
+            } else {
+              _abstract = t;
+            }
+            _abstract = "${_abstract.replaceAll("\n", "")} ...";
+            widget.saveToJson!(j, _abstract);
           }
           Navigator.of(context).pop();
         },
