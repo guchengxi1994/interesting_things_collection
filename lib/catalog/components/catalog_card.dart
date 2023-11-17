@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:weaving/catalog/notifiers/catalog_notifier.dart';
+import 'package:weaving/gen/strings.g.dart';
 import 'package:weaving/isar/catalog.dart';
 import 'package:weaving/style/app_style.dart';
 
@@ -138,7 +139,11 @@ class _CatalogCardState extends ConsumerState<CatalogCard> {
           children: [
             Expanded(flex: 2, child: _createImage(color, catalog)),
             const Divider(),
-            Expanded(flex: 1, child: Text("${catalog.tags?.length} tags"))
+            // ${catalog.tags?.length}
+            Expanded(
+                flex: 1,
+                child:
+                    Text(t.catalogs.card.tag(count: catalog.tags?.length ?? 0)))
           ],
         ),
       ),

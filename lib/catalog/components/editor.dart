@@ -16,6 +16,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
 import 'dart:ui' as ui;
 
+import 'package:weaving/gen/strings.g.dart';
+
 typedef OnQuillSave = void Function(String);
 typedef OnQuillPreviewImageSave = void Function(Uint8List);
 
@@ -75,7 +77,7 @@ class _EditorState extends State<Editor> {
           builder: (context, rawEditor) {
             return rawEditor;
           },
-          placeholder: 'Add content',
+          placeholder: t.catalogs.editor.addContent,
           readOnly: false,
           scrollable: true,
           autoFocus: false,
@@ -109,7 +111,7 @@ class _EditorState extends State<Editor> {
         builder: (context, rawEditor) {
           return rawEditor;
         },
-        placeholder: 'Add content',
+        placeholder: t.catalogs.editor.addContent,
         readOnly: false,
         autoFocus: false,
         enableSelectionToolbar: isMobile(supportWeb: false),
@@ -192,7 +194,7 @@ class _EditorState extends State<Editor> {
   QuillToolbar get quillToolbar {
     final customButtons = [
       QuillToolbarCustomButtonOptions(
-        tooltip: "Save as json",
+        tooltip: t.catalogs.editor.saveAsJson,
         icon: const Icon(Icons.save),
         onPressed: () {
           final j = jsonEncode(_controller.document.toDelta().toJson());
@@ -203,7 +205,7 @@ class _EditorState extends State<Editor> {
         },
       ),
       QuillToolbarCustomButtonOptions(
-        tooltip: "Save as image",
+        tooltip: t.catalogs.editor.savePreview,
         icon: const Icon(Icons.save_as),
         onPressed: () async {
           if (widget.savePreview != null) {
@@ -222,7 +224,7 @@ class _EditorState extends State<Editor> {
         },
       ),
       QuillToolbarCustomButtonOptions(
-        tooltip: "Exit without saving",
+        tooltip: t.catalogs.editor.exit,
         icon: const Icon(Icons.exit_to_app),
         onPressed: () {
           Navigator.of(context).pop();
@@ -328,9 +330,6 @@ class _EditorState extends State<Editor> {
           controller: _controller,
           sharedConfigurations: QuillSharedConfigurations(
             animationConfigurations: QuillAnimationConfigurations.enableAll(),
-            locale: const Locale(
-              'de',
-            ), // won't take affect since we defined FlutterQuillLocalizations.delegate
           ),
         ),
         child: Column(

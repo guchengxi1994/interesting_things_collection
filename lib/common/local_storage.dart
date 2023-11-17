@@ -30,4 +30,12 @@ class LocalStorage {
   Future setShowPreviewWhenHoverOnThings(bool b) async {
     await _storage!.setBool("showPreviewWhenHoverOnThings", b);
   }
+
+  String getCurrentLocale() {
+    return _storage!.getString("currentLocale") ?? "zh-CN";
+  }
+
+  Future setCurrentLocale(String locale) async {
+    await _storage!.setString("currentLocale", locale);
+  }
 }

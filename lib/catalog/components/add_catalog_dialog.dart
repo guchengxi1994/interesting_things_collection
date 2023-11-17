@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:weaving/catalog/notifiers/catalog_notifier.dart';
+import 'package:weaving/gen/strings.g.dart';
 import 'package:weaving/isar/catalog.dart';
 import 'package:weaving/notifier/color_notifier.dart';
 import 'package:weaving/style/app_style.dart';
@@ -93,9 +94,9 @@ class AddCatalogDialogState extends ConsumerState<AddCatalogDialog> {
   Widget _catalogName() {
     return Row(
       children: [
-        const SizedBox(
+        SizedBox(
           width: 100,
-          child: Text("Catalog Name"),
+          child: Text(t.catalogs.newC.name),
         ),
         Expanded(
             child: Autocomplete(
@@ -114,7 +115,7 @@ class AddCatalogDialogState extends ConsumerState<AddCatalogDialog> {
               keyboardType: TextInputType.text,
               decoration: InputDecoration(
                   counterText: "",
-                  hintText: "Max length 100",
+                  hintText: t.catalogs.newC.maxLength(count: 100),
                   fillColor: AppStyle.inputFillColor,
                   filled: true,
                   contentPadding: const EdgeInsets.only(left: 10, right: 10),
@@ -170,9 +171,9 @@ class AddCatalogDialogState extends ConsumerState<AddCatalogDialog> {
                         ),
                       ),
                     ),
-                    child: const Tooltip(
-                      message: "Add Emoji",
-                      child: Text(
+                    child: Tooltip(
+                      message: t.catalogs.newC.emoji,
+                      child: const Text(
                         "😀",
                         style: TextStyle(fontSize: 20),
                       ),
@@ -192,9 +193,9 @@ class AddCatalogDialogState extends ConsumerState<AddCatalogDialog> {
   Widget _catalogRemark() {
     return Row(
       children: [
-        const SizedBox(
+        SizedBox(
           width: 100,
-          child: Text("Catalog Remark"),
+          child: Text(t.catalogs.newC.remark),
         ),
         Expanded(
             child: TextField(
@@ -203,7 +204,7 @@ class AddCatalogDialogState extends ConsumerState<AddCatalogDialog> {
           controller: _remarkEditingController,
           keyboardType: TextInputType.multiline,
           decoration: InputDecoration(
-              hintText: "Max length 1024",
+              hintText: t.catalogs.newC.maxLength(count: 1024),
               counterText: "",
               fillColor: AppStyle.inputFillColor,
               filled: true,
@@ -245,7 +246,7 @@ class AddCatalogDialogState extends ConsumerState<AddCatalogDialog> {
                 Navigator.of(context).pop();
               });
             },
-            child: const Text("Create"))
+            child: Text(t.catalogs.newC.create))
       ],
     );
   }
@@ -255,9 +256,9 @@ class AddCatalogDialogState extends ConsumerState<AddCatalogDialog> {
   Widget _buildTags() {
     return Row(
       children: [
-        const SizedBox(
+        SizedBox(
           width: 100,
-          child: Text("Tags"),
+          child: Text(t.catalogs.newC.tags),
         ),
         Expanded(
             child: Align(

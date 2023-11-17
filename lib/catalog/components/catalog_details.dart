@@ -8,6 +8,7 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:flutter_tags_x/flutter_tags_x.dart';
 import 'package:weaving/catalog/components/editor.dart';
 import 'package:weaving/common/base64_utils.dart';
+import 'package:weaving/gen/strings.g.dart';
 import 'package:weaving/isar/thing.dart';
 import 'package:weaving/style/app_style.dart';
 import 'package:popup_card/popup_card.dart';
@@ -47,10 +48,10 @@ class CatalogDetails extends ConsumerWidget {
                 children: [
                   Row(
                     children: [
-                      const SizedBox(
+                      SizedBox(
                         width: textWidth,
                         child: Text(
-                          "Name",
+                          t.catalogs.details.name,
                           style: textStyle,
                         ),
                       ),
@@ -62,10 +63,10 @@ class CatalogDetails extends ConsumerWidget {
                   ),
                   Row(
                     children: [
-                      const SizedBox(
+                      SizedBox(
                         width: textWidth,
                         child: Text(
-                          "Tags",
+                          t.catalogs.details.tags,
                           style: textStyle,
                         ),
                       ),
@@ -121,10 +122,10 @@ class CatalogDetails extends ConsumerWidget {
                   ),
                   Row(
                     children: [
-                      const SizedBox(
+                      SizedBox(
                         width: textWidth,
                         child: Text(
-                          "Rating",
+                          t.catalogs.details.rating,
                           style: textStyle,
                         ),
                       ),
@@ -162,10 +163,10 @@ class CatalogDetails extends ConsumerWidget {
                   ),
                   Row(
                     children: [
-                      const SizedBox(
+                      SizedBox(
                         width: textWidth,
                         child: Text(
-                          "Create at",
+                          t.catalogs.details.createAt,
                           style: textStyle,
                         ),
                       ),
@@ -181,10 +182,10 @@ class CatalogDetails extends ConsumerWidget {
                   ),
                   Row(
                     children: [
-                      const SizedBox(
+                      SizedBox(
                         width: textWidth,
                         child: Text(
-                          "Operations",
+                          t.catalogs.details.operations,
                           style: textStyle,
                         ),
                       ),

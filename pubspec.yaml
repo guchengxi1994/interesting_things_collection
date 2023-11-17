@@ -3,7 +3,7 @@ description: A new Flutter project.
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 1.0.0-dev.1
+version: 1.0.0-dev.2
 
 environment:
   sdk: '>=3.1.0 <4.0.0'
@@ -12,6 +12,7 @@ dependencies:
   clipboard_watcher: ^0.2.0
   cupertino_icons: ^1.0.2
   date_format: ^2.0.7
+  dropdown_button2: ^2.3.9
   easy_refresh: ^3.3.2+4
   equatable: ^2.0.5
   flutter:
@@ -37,6 +38,8 @@ dependencies:
   quill_html_converter: ^0.0.1-experimental.1
   reorderables: ^0.6.0
   shared_preferences: ^2.2.2
+  slang: ^3.25.0
+  slang_flutter: ^3.25.0
   window_manager: ^0.3.7
 
 dev_dependencies:

@@ -1,0 +1,33 @@
+{
+    "settings":{
+        "showPreview":"Show preview image",
+        "colorTheme":"Color Theme",
+        "locale":"Language"
+    },
+    "catalogs":{
+        "card":{
+            "tag":"$count tags"
+        },
+        "details":{
+            "name":"Name",
+            "tags":"Tags",
+            "rating":"Rating",
+            "createAt":"CreateAt",
+            "operations":"Operations"
+        },
+        "editor":{
+            "saveAsJson":"Save as json",
+            "savePreview":"Save preview image",
+            "exit": "Exit without saving",
+            "addContent":"Add Content"
+        },
+        "newC":{
+            "name":"Catalog Name",
+            "remark":"Catalog Remark",
+            "tags":"Tags",
+            "create":"Create",
+            "emoji":"Add Emoji",
+            "maxLength":"Max length $count"
+        }
+    }
+}
