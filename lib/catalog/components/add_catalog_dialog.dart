@@ -127,8 +127,8 @@ class AddCatalogDialogState extends ConsumerState<AddCatalogDialog> {
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(
-                        color: AppStyle.catalogCardBorderColors[
-                            ref.read(colorNotifier).currentColor]),
+                        color: AppStyle
+                            .catalogCardBorderColors[ref.read(colorNotifier)]),
                     borderRadius: const BorderRadius.all(
                       Radius.circular(4),
                     ),
@@ -218,8 +218,8 @@ class AddCatalogDialogState extends ConsumerState<AddCatalogDialog> {
               ),
               focusedBorder: OutlineInputBorder(
                 borderSide: BorderSide(
-                    color: AppStyle.catalogCardBorderColors[
-                        ref.read(colorNotifier).currentColor]),
+                    color: AppStyle
+                        .catalogCardBorderColors[ref.read(colorNotifier)]),
                 borderRadius: const BorderRadius.all(
                   Radius.circular(4),
                 ),
@@ -328,8 +328,8 @@ class AddCatalogDialogState extends ConsumerState<AddCatalogDialog> {
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(4),
                 border: Border.all(
-                    color: AppStyle.catalogCardBorderColors[
-                        ref.read(colorNotifier).currentColor])),
+                    color: AppStyle
+                        .catalogCardBorderColors[ref.read(colorNotifier)])),
             child: ListView.builder(
               padding: const EdgeInsets.all(10),
               itemBuilder: (_, index) {

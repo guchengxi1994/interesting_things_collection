@@ -1,27 +1,26 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:weaving/common/local_storage.dart';
 
-class ColorNotifier extends ChangeNotifier {
-  late int currentColor = 0;
+class ColorNotifier extends Notifier<int> {
   final LocalStorage localStorage = LocalStorage();
 
-  init() {
-    currentColor = localStorage.getThemeColor();
-    notifyListeners();
-  }
-
   changeColor(int index) {
-    if (currentColor != index) {
-      currentColor = index;
+    if (state != index) {
+      state = index;
       Future.microtask(
         () async {
-          await localStorage.setThemeColor(currentColor);
+          await localStorage.setThemeColor(state);
         },
       );
-      notifyListeners();
     }
+  }
+
+  @override
+  int build() {
+    state = localStorage.getThemeColor();
+    return state;
   }
 }
 
-final colorNotifier = ChangeNotifierProvider((ref) => ColorNotifier());
+final colorNotifier =
+    NotifierProvider<ColorNotifier, int>(() => ColorNotifier());

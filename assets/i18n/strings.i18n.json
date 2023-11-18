@@ -2,7 +2,12 @@
     "settings":{
         "showPreview":"Show preview image",
         "colorTheme":"Color Theme",
-        "locale":"Language"
+        "locale":"Language",
+        "column":{
+            "color":"Color Settings",
+            "common":"Common Settings",
+            "language":"Language Settings"
+        }
     },
     "catalogs":{
         "card":{

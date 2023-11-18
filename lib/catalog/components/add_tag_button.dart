@@ -31,8 +31,7 @@ class _AddTagButtonState extends ConsumerState<AddTagButton> {
       padding: const EdgeInsets.all(6),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
-          color: AppStyle
-              .catalogCardBorderColors[ref.read(colorNotifier).currentColor]),
+          color: AppStyle.catalogCardBorderColors[ref.read(colorNotifier)]),
       child: FittedBox(
         child: !isActivate
             ? InkWell(
@@ -74,7 +73,7 @@ class _AddTagButtonState extends ConsumerState<AddTagButton> {
                           focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(
                                 color: AppStyle.catalogCardBorderColors[
-                                    ref.read(colorNotifier).currentColor]),
+                                    ref.read(colorNotifier)]),
                             borderRadius: const BorderRadius.all(
                               Radius.circular(4),
                             ),

@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 2
-/// Strings: 38 (19 per locale)
+/// Strings: 44 (22 per locale)
 ///
-/// Built on 2023-11-17 at 14:19 UTC
+/// Built on 2023-11-18 at 04:52 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -164,6 +164,7 @@ class _StringsSettingsEn {
 	String get showPreview => 'Show preview image';
 	String get colorTheme => 'Color Theme';
 	String get locale => 'Language';
+	late final _StringsSettingsColumnEn column = _StringsSettingsColumnEn._(_root);
 }
 
 // Path: catalogs
@@ -177,6 +178,18 @@ class _StringsCatalogsEn {
 	late final _StringsCatalogsDetailsEn details = _StringsCatalogsDetailsEn._(_root);
 	late final _StringsCatalogsEditorEn editor = _StringsCatalogsEditorEn._(_root);
 	late final _StringsCatalogsNewCEn newC = _StringsCatalogsNewCEn._(_root);
+}
+
+// Path: settings.column
+class _StringsSettingsColumnEn {
+	_StringsSettingsColumnEn._(this._root);
+
+	final _StringsEn _root; // ignore: unused_field
+
+	// Translations
+	String get color => 'Color Settings';
+	String get common => 'Common Settings';
+	String get language => 'Language Settings';
 }
 
 // Path: catalogs.card
@@ -267,9 +280,10 @@ class _StringsSettingsZhCn implements _StringsSettingsEn {
 	@override final _StringsZhCn _root; // ignore: unused_field
 
 	// Translations
-	@override String get showPreview => '展示预览图？';
+	@override String get showPreview => '展示预览图';
 	@override String get colorTheme => '主题色';
 	@override String get locale => '语言';
+	@override late final _StringsSettingsColumnZhCn column = _StringsSettingsColumnZhCn._(_root);
 }
 
 // Path: catalogs
@@ -283,6 +297,18 @@ class _StringsCatalogsZhCn implements _StringsCatalogsEn {
 	@override late final _StringsCatalogsDetailsZhCn details = _StringsCatalogsDetailsZhCn._(_root);
 	@override late final _StringsCatalogsEditorZhCn editor = _StringsCatalogsEditorZhCn._(_root);
 	@override late final _StringsCatalogsNewCZhCn newC = _StringsCatalogsNewCZhCn._(_root);
+}
+
+// Path: settings.column
+class _StringsSettingsColumnZhCn implements _StringsSettingsColumnEn {
+	_StringsSettingsColumnZhCn._(this._root);
+
+	@override final _StringsZhCn _root; // ignore: unused_field
+
+	// Translations
+	@override String get color => '颜色设置';
+	@override String get common => '通用设置';
+	@override String get language => '语言设置';
 }
 
 // Path: catalogs.card
@@ -346,6 +372,9 @@ extension on _StringsEn {
 			case 'settings.showPreview': return 'Show preview image';
 			case 'settings.colorTheme': return 'Color Theme';
 			case 'settings.locale': return 'Language';
+			case 'settings.column.color': return 'Color Settings';
+			case 'settings.column.common': return 'Common Settings';
+			case 'settings.column.language': return 'Language Settings';
 			case 'catalogs.card.tag': return ({required Object count}) => '${count} tags';
 			case 'catalogs.details.name': return 'Name';
 			case 'catalogs.details.tags': return 'Tags';
@@ -370,9 +399,12 @@ extension on _StringsEn {
 extension on _StringsZhCn {
 	dynamic _flatMapFunction(String path) {
 		switch (path) {
-			case 'settings.showPreview': return '展示预览图？';
+			case 'settings.showPreview': return '展示预览图';
 			case 'settings.colorTheme': return '主题色';
 			case 'settings.locale': return '语言';
+			case 'settings.column.color': return '颜色设置';
+			case 'settings.column.common': return '通用设置';
+			case 'settings.column.language': return '语言设置';
 			case 'catalogs.card.tag': return ({required Object count}) => '${count}个标签';
 			case 'catalogs.details.name': return '名称';
 			case 'catalogs.details.tags': return '标签';

@@ -108,8 +108,8 @@ class ThingWidget extends ConsumerWidget {
               borderRadius: BorderRadius.circular(10),
               boxShadow: [
                 BoxShadow(
-                  color: AppStyle.catalogCardBorderColors[
-                      ref.read(colorNotifier).currentColor],
+                  color:
+                      AppStyle.catalogCardBorderColors[ref.read(colorNotifier)],
                   blurRadius: 10,
                   spreadRadius: 2.5,
                 ),

@@ -1,8 +1,13 @@
 {
     "settings":{
-        "showPreview":"展示预览图？",
+        "showPreview":"展示预览图",
         "colorTheme":"主题色",
-        "locale":"语言"
+        "locale":"语言",
+        "column":{
+            "color":"颜色设置",
+            "common":"通用设置",
+            "language":"语言设置"
+        }
     },
     "catalogs":{
         "card":{

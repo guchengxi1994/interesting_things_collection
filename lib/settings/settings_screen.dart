@@ -1,12 +1,15 @@
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:weaving/notifier/color_notifier.dart';
-import 'package:weaving/notifier/settings_notifier.dart';
-import 'package:weaving/style/app_style.dart';
 // ignore: unused_import, depend_on_referenced_packages
 import 'package:collection/collection.dart';
 import 'package:weaving/gen/strings.g.dart';
+import 'package:weaving/notifier/settings_notifier.dart';
+import 'package:weaving/settings/components/colors_setting.dart';
+import 'package:weaving/settings/components/common_setting.dart';
+import 'package:weaving/settings/components/locale_setting.dart';
+import 'package:weaving/settings/settings_page_notifier.dart';
+
+import 'components/item.dart';
 
 const double textWidth = 200;
 
@@ -15,111 +18,47 @@ class SettingsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final _ = ref.watch(settingsNotifier);
+
     return Container(
       color: Colors.transparent,
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                SizedBox(
-                  width: 200,
-                  child: Text(t.settings.colorTheme),
-                ),
-                FittedBox(
-                  child: Row(
-                    children: AppStyle.catalogCardBorderColors
-                        .mapIndexed((i, e) => Container(
-                              margin: const EdgeInsets.only(right: 10),
-                              width: 30,
-                              height: 30,
-                              color: e,
-                              child: InkWell(
-                                onTap: () {
-                                  ref.read(colorNotifier).changeColor(i);
-                                },
-                              ),
-                            ))
-                        .toList(),
-                  ),
-                )
+      child: Row(
+        children: [
+          Container(
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(topLeft: Radius.circular(20)),
+              boxShadow: [
+                BoxShadow(
+                    color: Color.fromARGB(255, 236, 243, 236),
+                    offset: Offset(6.0, 0), //阴影y轴偏移量
+                    blurRadius: 2, //阴影模糊程度
+                    spreadRadius: 1 //阴影扩散程度
+                    )
               ],
             ),
-            Row(
+            padding: const EdgeInsets.all(20),
+            height: MediaQuery.of(context).size.height,
+            width: 200,
+            child: Column(
               children: [
-                SizedBox(
-                  width: 200,
-                  child: Text(t.settings.showPreview),
-                ),
-                Switch(
-                    value: ref
-                        .watch(settingsNotifier)
-                        .showPreviewWhenHoverOnThings,
-                    onChanged: (v) {
-                      ref
-                          .read(settingsNotifier.notifier)
-                          .changeShowPreviewWhenHoverOnThings(v);
-                    }),
-              ],
+                t.settings.column.color,
+                t.settings.column.common,
+                t.settings.column.language
+              ].mapIndexed((index, element) => Item(index, element)).toList(),
             ),
-            Row(
-              children: [
-                SizedBox(
-                  width: 200,
-                  child: Text(t.settings.locale),
-                ),
-                DropdownButtonHideUnderline(
-                  child: DropdownButton2<String>(
-                    isExpanded: true,
-                    hint: Text(
-                      'Select Item',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Theme.of(context).hintColor,
-                      ),
-                    ),
-                    items: ref
-                        .watch(settingsNotifier)
-                        .supportLocales
-                        .map((String item) => DropdownMenuItem<String>(
-                              value: item,
-                              child: Text(
-                                item,
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ))
-                        .toList(),
-                    value: ref.watch(settingsNotifier).currentLocale,
-                    onChanged: (String? value) {
-                      // print(value);
-                      if (value != null) {
-                        ref
-                            .read(settingsNotifier.notifier)
-                            .changeCurrentLocale(value);
-                      }
-                    },
-                    buttonStyleData: ButtonStyleData(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(4),
-                          color: const Color.fromARGB(255, 217, 211, 211)),
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      height: 40,
-                      width: 140,
-                    ),
-                    menuItemStyleData: const MenuItemStyleData(
-                      height: 40,
-                    ),
-                  ),
-                )
-              ],
-            )
-          ],
-        ),
+          ),
+          Expanded(
+              child: PageView(
+            controller:
+                ref.read(settingsPageController.notifier).pageController,
+            children: const [
+              ColorsSettingWidget(),
+              CommonSettingWidget(),
+              LocaleSettingWidget()
+            ],
+          ))
+        ],
       ),
     );
   }

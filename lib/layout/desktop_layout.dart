@@ -94,7 +94,7 @@ class LayoutState extends ConsumerState<Layout> with TickerProviderStateMixin {
                         selectedIcon: Icon(
                           Icons.book,
                           color: AppStyle.catalogCardBorderColors[
-                              ref.watch(colorNotifier).currentColor],
+                              ref.watch(colorNotifier)],
                         )),
                     NavigationRailDestination(
                         icon: const Icon(
@@ -104,7 +104,7 @@ class LayoutState extends ConsumerState<Layout> with TickerProviderStateMixin {
                         selectedIcon: Icon(
                           Icons.transform,
                           color: AppStyle.catalogCardBorderColors[
-                              ref.watch(colorNotifier).currentColor],
+                              ref.watch(colorNotifier)],
                         )),
                     NavigationRailDestination(
                         icon: const Icon(
@@ -114,7 +114,7 @@ class LayoutState extends ConsumerState<Layout> with TickerProviderStateMixin {
                         selectedIcon: Icon(
                           Icons.settings,
                           color: AppStyle.catalogCardBorderColors[
-                              ref.watch(colorNotifier).currentColor],
+                              ref.watch(colorNotifier)],
                         ))
                   ],
                   selectedIndex: selected,

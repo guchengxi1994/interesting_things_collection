@@ -117,18 +117,35 @@ class CatalogScreenState extends ConsumerState<CatalogScreen> {
             }
             return Container();
           }),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showGeneralDialog(
-              context: context,
-              pageBuilder: (c, a, b) {
-                return const Center(
-                  child: AddCatalogDialog(),
-                );
-              });
-        },
-        child: const Icon(Icons.add),
+      floatingActionButton: FittedBox(
+        child: Column(
+          children: [
+            FloatingActionButton(
+              onPressed: () {
+                showGeneralDialog(
+                    context: context,
+                    pageBuilder: (c, a, b) {
+                      return const Center(
+                        child: AddCatalogDialog(),
+                      );
+                    });
+              },
+              child: const Icon(Icons.add),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            FloatingActionButton(
+              onPressed: () {},
+              child: const Icon(Icons.search),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+          ],
+        ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       bottomSheet: bottomShow
           ? MouseRegion(
               onEnter: (event) async {

@@ -28,7 +28,6 @@ class MyAppState extends ConsumerState<MyApp> {
   void initState() {
     super.initState();
     future = Future(() async {
-      ref.read(colorNotifier).init();
       // ignore: unused_local_variable
       final IsarDatabase database = IsarDatabase();
       LocaleSettings.setLocaleRaw(ref.read(settingsNotifier).currentLocale);
@@ -54,8 +53,8 @@ class MyAppState extends ConsumerState<MyApp> {
             supportedLocales: FlutterQuillLocalizations.supportedLocales,
             theme: ThemeData(
               colorScheme: ColorScheme.fromSeed(
-                  seedColor: AppStyle.catalogCardBorderColors[
-                      ref.watch(colorNotifier).currentColor]),
+                  seedColor: AppStyle
+                      .catalogCardBorderColors[ref.watch(colorNotifier)]),
               useMaterial3: true,
             ),
             home: Scaffold(
@@ -65,11 +64,11 @@ class MyAppState extends ConsumerState<MyApp> {
                       begin: Alignment.topRight,
                       end: Alignment.bottomLeft,
                       colors: [
-                        AppStyle.catalogCardBorderColors[
-                                ref.watch(colorNotifier).currentColor]
+                        AppStyle
+                            .catalogCardBorderColors[ref.watch(colorNotifier)]
                             .withAlpha(200),
-                        AppStyle.catalogCardBorderColors[
-                                ref.watch(colorNotifier).currentColor]
+                        AppStyle
+                            .catalogCardBorderColors[ref.watch(colorNotifier)]
                             .withAlpha(50)
                       ]),
                 ),
