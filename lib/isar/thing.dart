@@ -32,8 +32,8 @@ class Thing {
   int get hashCode => id.hashCode;
 
   @ignore
-  final re = RegExp(r'\n|，|。|,|.|!|！|？|\?|;|；');
+  final re = RegExp(r'。');
 
-  @Index()
+  @Index(type: IndexType.value)
   List<String> get remarkContent => (remark ?? "").split(re);
 }

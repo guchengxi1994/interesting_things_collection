@@ -191,11 +191,11 @@ class CatalogDetails extends ConsumerWidget {
                       ),
                       // ElevatedButton(onPressed: () {}, child: Text("Add"))
                       PopupItemLauncher(
-                        tag: 'test-new',
+                        tag: 'test-new-$catalogId',
                         popUp: PopUpItem(
                           reservedAppbarHeight: AppStyle.appbarHeight,
                           alignment: Alignment.topRight,
-                          tag: 'test-new',
+                          tag: 'test-new-$catalogId',
                           child: Container(
                             color: Colors.white,
                             width: MediaQuery.of(context).size.width * .8,

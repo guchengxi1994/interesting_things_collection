@@ -5,6 +5,7 @@ import 'package:weaving/catalog/notifiers/catalog_notifier.dart';
 import 'package:weaving/catalog/components/catalog_card.dart';
 import 'package:weaving/isar/catalog.dart';
 import 'package:reorderables/reorderables.dart';
+import 'package:weaving/notifier/fast_search_region_notifier.dart';
 
 import 'components/add_catalog_dialog.dart';
 import 'components/catalog_things.dart';
@@ -136,7 +137,10 @@ class CatalogScreenState extends ConsumerState<CatalogScreen> {
               height: 20,
             ),
             FloatingActionButton(
-              onPressed: () {},
+              heroTag: "search",
+              onPressed: () {
+                ref.read(fastSearchNotifier.notifier).changeStatus(true);
+              },
               child: const Icon(Icons.search),
             ),
             const SizedBox(

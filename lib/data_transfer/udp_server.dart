@@ -57,8 +57,11 @@ class UdpServer {
             // 处理单个分片逻辑
           } else {
             datas.add(model);
+            // 最后一个分片, 这里先不考虑并发情况
+
+            /// TODO 并发的话需要每一次获取到数据都判断切片数量是不是对的
+            /// 然后合并
             if (model.id == model.count! - 1) {
-              // 最后一个分片
               List<DataTransferModel> _d = datas.getByUUID(model.uuid!);
               String? s = _d.restore();
               // print(s);

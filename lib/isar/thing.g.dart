@@ -77,7 +77,7 @@ const ThingSchema = CollectionSchema(
       properties: [
         IndexPropertySchema(
           name: r'remarkContent',
-          type: IndexType.hash,
+          type: IndexType.value,
           caseSensitive: true,
         )
       ],
@@ -208,6 +208,14 @@ extension ThingQueryWhereSort on QueryBuilder<Thing, Thing, QWhere> {
       return query.addWhereClause(const IdWhereClause.any());
     });
   }
+
+  QueryBuilder<Thing, Thing, QAfterWhere> anyRemarkContentElement() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(
+        const IndexWhereClause.any(indexName: r'remarkContent'),
+      );
+    });
+  }
 }
 
 extension ThingQueryWhere on QueryBuilder<Thing, Thing, QWhereClause> {
@@ -276,30 +284,30 @@ extension ThingQueryWhere on QueryBuilder<Thing, Thing, QWhereClause> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterWhereClause> remarkContentEqualTo(
-      List<String> remarkContent) {
+  QueryBuilder<Thing, Thing, QAfterWhereClause> remarkContentElementEqualTo(
+      String remarkContentElement) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(IndexWhereClause.equalTo(
         indexName: r'remarkContent',
-        value: [remarkContent],
+        value: [remarkContentElement],
       ));
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterWhereClause> remarkContentNotEqualTo(
-      List<String> remarkContent) {
+  QueryBuilder<Thing, Thing, QAfterWhereClause> remarkContentElementNotEqualTo(
+      String remarkContentElement) {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
         return query
             .addWhereClause(IndexWhereClause.between(
               indexName: r'remarkContent',
               lower: [],
-              upper: [remarkContent],
+              upper: [remarkContentElement],
               includeUpper: false,
             ))
             .addWhereClause(IndexWhereClause.between(
               indexName: r'remarkContent',
-              lower: [remarkContent],
+              lower: [remarkContentElement],
               includeLower: false,
               upper: [],
             ));
@@ -307,15 +315,107 @@ extension ThingQueryWhere on QueryBuilder<Thing, Thing, QWhereClause> {
         return query
             .addWhereClause(IndexWhereClause.between(
               indexName: r'remarkContent',
-              lower: [remarkContent],
+              lower: [remarkContentElement],
               includeLower: false,
               upper: [],
             ))
             .addWhereClause(IndexWhereClause.between(
               indexName: r'remarkContent',
               lower: [],
-              upper: [remarkContent],
+              upper: [remarkContentElement],
               includeUpper: false,
+            ));
+      }
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterWhereClause> remarkContentElementGreaterThan(
+    String remarkContentElement, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'remarkContent',
+        lower: [remarkContentElement],
+        includeLower: include,
+        upper: [],
+      ));
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterWhereClause> remarkContentElementLessThan(
+    String remarkContentElement, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'remarkContent',
+        lower: [],
+        upper: [remarkContentElement],
+        includeUpper: include,
+      ));
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterWhereClause> remarkContentElementBetween(
+    String lowerRemarkContentElement,
+    String upperRemarkContentElement, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'remarkContent',
+        lower: [lowerRemarkContentElement],
+        includeLower: includeLower,
+        upper: [upperRemarkContentElement],
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterWhereClause> remarkContentElementStartsWith(
+      String RemarkContentElementPrefix) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.between(
+        indexName: r'remarkContent',
+        lower: [RemarkContentElementPrefix],
+        upper: ['$RemarkContentElementPrefix\u{FFFFF}'],
+      ));
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterWhereClause> remarkContentElementIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'remarkContent',
+        value: [''],
+      ));
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterWhereClause>
+      remarkContentElementIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      if (query.whereSort == Sort.asc) {
+        return query
+            .addWhereClause(IndexWhereClause.lessThan(
+              indexName: r'remarkContent',
+              upper: [''],
+            ))
+            .addWhereClause(IndexWhereClause.greaterThan(
+              indexName: r'remarkContent',
+              lower: [''],
+            ));
+      } else {
+        return query
+            .addWhereClause(IndexWhereClause.greaterThan(
+              indexName: r'remarkContent',
+              lower: [''],
+            ))
+            .addWhereClause(IndexWhereClause.lessThan(
+              indexName: r'remarkContent',
+              upper: [''],
             ));
       }
     });

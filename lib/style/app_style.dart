@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class AppStyle {
   static const double appbarHeight = 40;
+  static const double sidebarWidth = 150;
 
   AppStyle._();
 
