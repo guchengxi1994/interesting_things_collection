@@ -10,3 +10,4 @@
 
 * [isar](https://pub.dev/packages/isar)
 * [flutter_riverpod](https://pub.dev/packages/flutter_riverpod)
+* [flutter_quill](https://pub-web.flutter-io.cn/packages/flutter_quill)
