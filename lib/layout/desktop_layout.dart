@@ -3,8 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hotkey_manager/hotkey_manager.dart';
 import 'package:weaving/catalog/catalog_screen.dart';
 import 'package:weaving/data_transfer/data_transfer_screen.dart';
+import 'package:weaving/gen/strings.g.dart';
 import 'package:weaving/layout/expand_collapse_notifier.dart';
 import 'package:weaving/notifier/color_notifier.dart';
+import 'package:weaving/notifier/settings_notifier.dart';
 import 'package:weaving/settings/settings_screen.dart';
 import 'package:weaving/style/app_style.dart';
 import 'package:window_manager/window_manager.dart';
@@ -61,6 +63,8 @@ class LayoutState extends ConsumerState<Layout> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    final _ = ref.watch(settingsNotifier);
+
     return Scaffold(
       backgroundColor: Colors.transparent,
       appBar: const PreferredSize(
@@ -91,7 +95,7 @@ class LayoutState extends ConsumerState<Layout> with TickerProviderStateMixin {
                         icon: const Icon(
                           Icons.book,
                         ),
-                        label: const Text("Catalogs"),
+                        label: Text(t.layout.catalog),
                         selectedIcon: Icon(
                           Icons.book,
                           color: AppStyle.catalogCardBorderColors[
@@ -99,9 +103,19 @@ class LayoutState extends ConsumerState<Layout> with TickerProviderStateMixin {
                         )),
                     NavigationRailDestination(
                         icon: const Icon(
+                          Icons.note_add,
+                        ),
+                        label: Text(t.layout.fastNote),
+                        selectedIcon: Icon(
+                          Icons.note_add,
+                          color: AppStyle.catalogCardBorderColors[
+                              ref.watch(colorNotifier)],
+                        )),
+                    NavigationRailDestination(
+                        icon: const Icon(
                           Icons.transform,
                         ),
-                        label: const Text("Data Transfer"),
+                        label: Text(t.layout.dataTransfer),
                         selectedIcon: Icon(
                           Icons.transform,
                           color: AppStyle.catalogCardBorderColors[
@@ -111,7 +125,7 @@ class LayoutState extends ConsumerState<Layout> with TickerProviderStateMixin {
                         icon: const Icon(
                           Icons.settings,
                         ),
-                        label: const Text("Settings"),
+                        label: Text(t.layout.setting),
                         selectedIcon: Icon(
                           Icons.settings,
                           color: AppStyle.catalogCardBorderColors[
@@ -135,6 +149,7 @@ class LayoutState extends ConsumerState<Layout> with TickerProviderStateMixin {
                   controller: controller,
                   children: const [
                     CatalogScreen(),
+                    SizedBox(),
                     DataTransferScreen(),
                     SettingsScreen(),
                   ],

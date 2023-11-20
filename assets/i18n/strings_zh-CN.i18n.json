@@ -1,38 +1,44 @@
 {
-    "settings":{
-        "showPreview":"展示预览图",
-        "colorTheme":"主题色",
-        "locale":"语言",
-        "column":{
-            "color":"颜色设置",
-            "common":"通用设置",
-            "language":"语言设置"
+    "settings": {
+        "showPreview": "展示预览图",
+        "colorTheme": "主题色",
+        "locale": "语言",
+        "column": {
+            "color": "颜色设置",
+            "common": "通用设置",
+            "language": "语言设置"
         }
     },
-    "catalogs":{
-        "card":{
-            "tag":"$count个标签"
+    "layout": {
+        "catalog": "分类",
+        "fastNote": "快速笔记",
+        "dataTransfer": "数据迁移",
+        "setting": "设置"
+    },
+    "catalogs": {
+        "card": {
+            "tag": "$count个标签"
         },
-        "details":{
-            "name":"名称",
-            "tags":"标签",
-            "rating":"评分",
-            "createAt":"创建时间",
-            "operations":"操作"
+        "details": {
+            "name": "名称",
+            "tags": "标签",
+            "rating": "评分",
+            "createAt": "创建时间",
+            "operations": "操作"
         },
-        "editor":{
-            "saveAsJson":"以json保存文件",
-            "savePreview":"保存预览图",
+        "editor": {
+            "saveAsJson": "以json保存文件",
+            "savePreview": "保存预览图",
             "exit": "退出但不保存",
-            "addContent":"添加内容"
+            "addContent": "添加内容"
         },
-        "newC":{
-            "name":"输入名称",
-            "remark":"输入备注",
-            "tags":"标签",
-            "create":"创建",
-            "emoji":"添加表情",
-            "maxLength":"长度限制$count"
+        "newC": {
+            "name": "输入名称",
+            "remark": "输入备注",
+            "tags": "标签",
+            "create": "创建",
+            "emoji": "添加表情",
+            "maxLength": "长度限制$count"
         }
     }
 }

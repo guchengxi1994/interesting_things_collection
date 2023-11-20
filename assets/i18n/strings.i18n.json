@@ -1,38 +1,44 @@
 {
-    "settings":{
-        "showPreview":"Show preview image",
-        "colorTheme":"Color Theme",
-        "locale":"Language",
-        "column":{
-            "color":"Color Settings",
-            "common":"Common Settings",
-            "language":"Language Settings"
+    "settings": {
+        "showPreview": "Show preview image",
+        "colorTheme": "Color Theme",
+        "locale": "Language",
+        "column": {
+            "color": "Color Settings",
+            "common": "Common Settings",
+            "language": "Language Settings"
         }
     },
-    "catalogs":{
-        "card":{
-            "tag":"$count tags"
+    "layout": {
+        "catalog": "Catalogs",
+        "fastNote": "Fast Note",
+        "dataTransfer": "Data Transfer",
+        "setting": "Settings"
+    },
+    "catalogs": {
+        "card": {
+            "tag": "$count tags"
         },
-        "details":{
-            "name":"Name",
-            "tags":"Tags",
-            "rating":"Rating",
-            "createAt":"CreateAt",
-            "operations":"Operations"
+        "details": {
+            "name": "Name",
+            "tags": "Tags",
+            "rating": "Rating",
+            "createAt": "CreateAt",
+            "operations": "Operations"
         },
-        "editor":{
-            "saveAsJson":"Save as json",
-            "savePreview":"Save preview image",
+        "editor": {
+            "saveAsJson": "Save as json",
+            "savePreview": "Save preview image",
             "exit": "Exit without saving",
-            "addContent":"Add Content"
+            "addContent": "Add Content"
         },
-        "newC":{
-            "name":"Catalog Name",
-            "remark":"Catalog Remark",
-            "tags":"Tags",
-            "create":"Create",
-            "emoji":"Add Emoji",
-            "maxLength":"Max length $count"
+        "newC": {
+            "name": "Catalog Name",
+            "remark": "Catalog Remark",
+            "tags": "Tags",
+            "create": "Create",
+            "emoji": "Add Emoji",
+            "maxLength": "Max length $count"
         }
     }
 }

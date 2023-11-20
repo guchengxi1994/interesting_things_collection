@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 2
-/// Strings: 44 (22 per locale)
+/// Strings: 52 (26 per locale)
 ///
-/// Built on 2023-11-18 at 04:52 UTC
+/// Built on 2023-11-20 at 09:41 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -151,6 +151,7 @@ class _StringsEn implements BaseTranslations<AppLocale, _StringsEn> {
 
 	// Translations
 	late final _StringsSettingsEn settings = _StringsSettingsEn._(_root);
+	late final _StringsLayoutEn layout = _StringsLayoutEn._(_root);
 	late final _StringsCatalogsEn catalogs = _StringsCatalogsEn._(_root);
 }
 
@@ -165,6 +166,19 @@ class _StringsSettingsEn {
 	String get colorTheme => 'Color Theme';
 	String get locale => 'Language';
 	late final _StringsSettingsColumnEn column = _StringsSettingsColumnEn._(_root);
+}
+
+// Path: layout
+class _StringsLayoutEn {
+	_StringsLayoutEn._(this._root);
+
+	final _StringsEn _root; // ignore: unused_field
+
+	// Translations
+	String get catalog => 'Catalogs';
+	String get fastNote => 'Fast Note';
+	String get dataTransfer => 'Data Transfer';
+	String get setting => 'Settings';
 }
 
 // Path: catalogs
@@ -270,6 +284,7 @@ class _StringsZhCn implements _StringsEn {
 
 	// Translations
 	@override late final _StringsSettingsZhCn settings = _StringsSettingsZhCn._(_root);
+	@override late final _StringsLayoutZhCn layout = _StringsLayoutZhCn._(_root);
 	@override late final _StringsCatalogsZhCn catalogs = _StringsCatalogsZhCn._(_root);
 }
 
@@ -284,6 +299,19 @@ class _StringsSettingsZhCn implements _StringsSettingsEn {
 	@override String get colorTheme => '主题色';
 	@override String get locale => '语言';
 	@override late final _StringsSettingsColumnZhCn column = _StringsSettingsColumnZhCn._(_root);
+}
+
+// Path: layout
+class _StringsLayoutZhCn implements _StringsLayoutEn {
+	_StringsLayoutZhCn._(this._root);
+
+	@override final _StringsZhCn _root; // ignore: unused_field
+
+	// Translations
+	@override String get catalog => '分类';
+	@override String get fastNote => '快速笔记';
+	@override String get dataTransfer => '数据迁移';
+	@override String get setting => '设置';
 }
 
 // Path: catalogs
@@ -375,6 +403,10 @@ extension on _StringsEn {
 			case 'settings.column.color': return 'Color Settings';
 			case 'settings.column.common': return 'Common Settings';
 			case 'settings.column.language': return 'Language Settings';
+			case 'layout.catalog': return 'Catalogs';
+			case 'layout.fastNote': return 'Fast Note';
+			case 'layout.dataTransfer': return 'Data Transfer';
+			case 'layout.setting': return 'Settings';
 			case 'catalogs.card.tag': return ({required Object count}) => '${count} tags';
 			case 'catalogs.details.name': return 'Name';
 			case 'catalogs.details.tags': return 'Tags';
@@ -405,6 +437,10 @@ extension on _StringsZhCn {
 			case 'settings.column.color': return '颜色设置';
 			case 'settings.column.common': return '通用设置';
 			case 'settings.column.language': return '语言设置';
+			case 'layout.catalog': return '分类';
+			case 'layout.fastNote': return '快速笔记';
+			case 'layout.dataTransfer': return '数据迁移';
+			case 'layout.setting': return '设置';
 			case 'catalogs.card.tag': return ({required Object count}) => '${count}个标签';
 			case 'catalogs.details.name': return '名称';
 			case 'catalogs.details.tags': return '标签';
