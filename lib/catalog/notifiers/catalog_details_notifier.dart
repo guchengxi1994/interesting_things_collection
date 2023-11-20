@@ -52,7 +52,10 @@ class CatalogDetailsNotifier extends AsyncNotifier<CatalogDetailsState> {
       });
 
       return CatalogDetailsState(
-          catalogName: name, rating: state.value!.rating, tags: tags);
+          catalogName: name,
+          rating: state.value!.rating,
+          tags: tags,
+          createAt: state.value!.createAt);
     });
 
     ref.read(catalogNotifier.notifier).queryAll();
