@@ -1,4 +1,5 @@
 import 'package:weaving/isar/catalog.dart';
+import 'package:weaving/isar/password.dart';
 import 'package:weaving/isar/thing.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
@@ -21,8 +22,8 @@ class IsarDatabase {
     }
     final dir = await getApplicationDocumentsDirectory();
     isar = await Isar.open(
-      [CatalogSchema, ThingSchema],
-      name: "interesting_things",
+      [CatalogSchema, ThingSchema, PasswordSchema],
+      name: "weaving_db",
       directory: dir.path,
     );
   }

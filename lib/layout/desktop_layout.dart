@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hotkey_manager/hotkey_manager.dart';
 import 'package:weaving/catalog/catalog_screen.dart';
 import 'package:weaving/data_transfer/data_transfer_screen.dart';
+import 'package:weaving/fast_note/fast_note_screen.dart';
 import 'package:weaving/gen/strings.g.dart';
 import 'package:weaving/layout/expand_collapse_notifier.dart';
 import 'package:weaving/notifier/color_notifier.dart';
@@ -149,7 +150,7 @@ class LayoutState extends ConsumerState<Layout> with TickerProviderStateMixin {
                   controller: controller,
                   children: const [
                     CatalogScreen(),
-                    SizedBox(),
+                    FastNoteScreen(),
                     DataTransferScreen(),
                     SettingsScreen(),
                   ],
