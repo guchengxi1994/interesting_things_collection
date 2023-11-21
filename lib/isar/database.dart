@@ -1,3 +1,4 @@
+import 'package:weaving/common/sm_utils.dart';
 import 'package:weaving/isar/catalog.dart';
 import 'package:weaving/isar/password.dart';
 import 'package:weaving/isar/thing.dart';
@@ -26,5 +27,7 @@ class IsarDatabase {
       name: "weaving_db",
       directory: dir.path,
     );
+    // ignore: non_constant_identifier_names
+    final SMUtils __ = SMUtils();
   }
 }

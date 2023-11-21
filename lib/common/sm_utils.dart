@@ -10,7 +10,7 @@ class SMUtils {
   String? _internalPassword = null;
 
   String get internalPassword => _internalPassword!;
-  final IsarDatabase _isarDatabase = IsarDatabase();
+  late IsarDatabase _isarDatabase;
 
   static final SMUtils _instance = SMUtils._internal();
 
@@ -27,6 +27,8 @@ class SMUtils {
   }
 
   loadPassword() async {
+    _isarDatabase = IsarDatabase();
+
     final pwd =
         await _isarDatabase.isar!.passwords.where(sort: Sort.desc).findFirst();
 

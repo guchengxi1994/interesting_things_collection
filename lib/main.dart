@@ -6,13 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:weaving/app/run_mobile_app.dart' as m;
 import 'package:weaving/app/run_desktop_app.dart' as d;
 import 'package:weaving/common/local_storage.dart';
-import 'package:weaving/common/sm_utils.dart';
+import 'package:weaving/isar/database.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final LocalStorage _ = LocalStorage();
   // ignore: non_constant_identifier_names
-  final SMUtils __ = SMUtils();
+  final IsarDatabase ___ = IsarDatabase();
 
   if (Platform.isAndroid || Platform.isIOS) {
     m.runAPP();

@@ -13,11 +13,26 @@ import 'components/item.dart';
 
 const double textWidth = 200;
 
-class SettingsScreen extends ConsumerWidget {
+class SettingsScreen extends ConsumerStatefulWidget {
   const SettingsScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<SettingsScreen> createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends ConsumerState<SettingsScreen> {
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() {
+      ref
+          .read(settingsPageController.notifier)
+          .changePageIndex(ref.read(settingsPageController).$1);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final _ = ref.watch(settingsNotifier);
 
     return Container(
