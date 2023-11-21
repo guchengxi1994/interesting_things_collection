@@ -20,6 +20,8 @@ class Thing {
 
   String? preview;
 
+  String? fullText;
+
   @override
   bool operator ==(Object other) {
     if (other is! Thing) {
@@ -30,10 +32,4 @@ class Thing {
 
   @override
   int get hashCode => id.hashCode;
-
-  @ignore
-  final re = RegExp(r'。');
-
-  @Index(type: IndexType.value)
-  List<String> get remarkContent => (remark ?? "").split(re);
 }

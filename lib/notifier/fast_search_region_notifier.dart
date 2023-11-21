@@ -23,9 +23,8 @@ class FastSearchRegionNotifier extends Notifier<bool> {
     }
 
     final things = await isarDatabase.isar!.things
-        .where()
-        .remarkContentElementStartsWith('text')
-        .distinctByCreatedAt()
+        .filter()
+        .fullTextContains(text)
         .findAll();
 
     for (final i in things) {

@@ -62,8 +62,8 @@ class UdpServer {
             /// TODO 并发的话需要每一次获取到数据都判断切片数量是不是对的
             /// 然后合并
             if (model.id == model.count! - 1) {
-              List<DataTransferModel> _d = datas.getByUUID(model.uuid!);
-              String? s = _d.restore();
+              List<DataTransferModel> d0 = datas.getByUUID(model.uuid!);
+              String? s = d0.restore();
               // print(s);
 
               datas.retainWhere((element) => element.uuid != model.uuid);

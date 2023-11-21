@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:isar/isar.dart';
 import 'package:weaving/isar/database.dart';
 import 'package:weaving/isar/password.dart';
@@ -44,5 +46,23 @@ class SMUtils {
       await _isarDatabase.isar!.passwords.put(password);
     });
     _internalPassword = s;
+  }
+
+  static const _randomChars =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+  static const _numChars = "0123456789";
+
+  static final Random _rnd = Random();
+
+  static String generateRandomString(
+      {int length = 32, bool numberOnly = false}) {
+    if (numberOnly) {
+      return String.fromCharCodes(Iterable.generate(length,
+          (_) => _randomChars.codeUnitAt(_rnd.nextInt(_numChars.length))));
+    }
+
+    return String.fromCharCodes(Iterable.generate(length,
+        (_) => _randomChars.codeUnitAt(_rnd.nextInt(_randomChars.length))));
   }
 }

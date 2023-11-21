@@ -67,10 +67,11 @@ class ThingWidget extends ConsumerWidget {
               : MediaQuery.of(context).size.height,
           child: Editor(
             savedData: thing.remark ?? "",
-            saveToJson: (p0, p1) async {
+            saveToJson: (p0, p1, p2) async {
               SmartDialog.showLoading();
               thing.remark = p0;
-              thing.name = p1;
+              thing.name = p2;
+              thing.fullText = p1;
               ref.read(thingsHoverNotifier.notifier).saveThing(thing);
               await Future.delayed(const Duration(seconds: 1));
               SmartDialog.dismiss();

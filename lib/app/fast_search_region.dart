@@ -157,7 +157,7 @@ class _FastSearchRegionState extends ConsumerState<FastSearchRegion> {
                                 ),
                               ),
                             ))),
-                    Expanded(child: SizedBox())
+                    const Expanded(child: SizedBox())
                   ],
                 ),
               ),

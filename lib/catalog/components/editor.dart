@@ -18,7 +18,7 @@ import 'dart:ui' as ui;
 
 import 'package:weaving/gen/strings.g.dart';
 
-typedef OnQuillSave = void Function(String, String);
+typedef OnQuillSave = void Function(String, String, String);
 typedef OnQuillPreviewImageSave = void Function(Uint8List);
 
 class Editor extends StatefulWidget {
@@ -208,7 +208,7 @@ class _EditorState extends State<Editor> {
               _abstract = t;
             }
             _abstract = "${_abstract.replaceAll("\n", "")} ...";
-            widget.saveToJson!(j, _abstract);
+            widget.saveToJson!(j, t, _abstract);
           }
           Navigator.of(context).pop();
         },
