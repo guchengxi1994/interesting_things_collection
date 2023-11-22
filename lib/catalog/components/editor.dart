@@ -245,7 +245,7 @@ class _EditorState extends State<Editor> {
         configurations: QuillToolbarConfigurations(
           customButtons: customButtons,
           embedButtons: FlutterQuillEmbeds.toolbarButtons(
-            formulaButtonOptions: const QuillToolbarFormulaButtonOptions(),
+            // formulaButtonOptions: const QuillToolbarFormulaButtonOptions(),
             cameraButtonOptions: const QuillToolbarCameraButtonOptions(),
             imageButtonOptions: QuillToolbarImageButtonOptions(
               imageButtonConfigurations: QuillToolbarImageConfigurations(
@@ -291,7 +291,7 @@ class _EditorState extends State<Editor> {
       configurations: QuillToolbarConfigurations(
         customButtons: customButtons,
         embedButtons: FlutterQuillEmbeds.toolbarButtons(
-          formulaButtonOptions: const QuillToolbarFormulaButtonOptions(),
+          // formulaButtonOptions: const QuillToolbarFormulaButtonOptions(),
           cameraButtonOptions: const QuillToolbarCameraButtonOptions(),
           videoButtonOptions: QuillToolbarVideoButtonOptions(
             videoConfigurations: QuillToolbarVideoConfigurations(

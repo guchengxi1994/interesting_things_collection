@@ -18,12 +18,18 @@ class HighlightText {
       for (int i = 0; i < parts.length; i++) {
         if (i > 0 && parts[i].length > 20) {
           if (parts[i - 1] == "") {
-            span.add(TextSpan(text: "${parts[i].substring(0, 20)}..."));
+            print(1);
+            span.add(TextSpan(text: "${parts[i + 1].substring(0, 20)}..."));
+          } else if (parts.length > i && parts[i] == "") {
+            print(2);
+            span.add(TextSpan(
+                text: "...${parts[i].substring(parts[i].length - 20)}"));
           } else {
+            print(3);
             span.add(const TextSpan(text: "..."));
           }
         } else {
-          span.add(TextSpan(text: parts[i]));
+          span.add(const TextSpan(text: "..."));
         }
 
         if (i != parts.length - 1) {
