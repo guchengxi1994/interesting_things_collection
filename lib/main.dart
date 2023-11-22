@@ -3,6 +3,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
 import 'package:weaving/app/run_mobile_app.dart' as m;
 import 'package:weaving/app/run_desktop_app.dart' as d;
 import 'package:weaving/common/local_storage.dart';
@@ -10,6 +11,12 @@ import 'package:weaving/isar/database.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  Logger.root.level = Level.ALL; // defaults to Level.INFO
+  Logger.root.onRecord.listen((record) {
+    // ignore: avoid_print
+    print('${record.level.name}: ${record.time}: ${record.message}');
+  });
+
   final LocalStorage _ = LocalStorage();
   // ignore: non_constant_identifier_names
   final IsarDatabase ___ = IsarDatabase();

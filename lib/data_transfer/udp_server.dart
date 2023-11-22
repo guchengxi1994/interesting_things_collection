@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:isolate';
 
 import 'package:flutter/foundation.dart';
+import 'package:weaving/common/logger.dart';
 
 import 'data_transfer_model.dart';
 
@@ -41,7 +42,7 @@ class UdpServer {
     RawDatagramSocket.bind(InternetAddress.anyIPv4, 15234)
         .then((RawDatagramSocket socket) {
       if (kDebugMode) {
-        print('UDP 服务器已启动');
+        logger.info('UDP 服务器已启动');
       }
       socket.listen((RawSocketEvent e) {
         Datagram? d = socket.receive();

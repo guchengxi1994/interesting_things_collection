@@ -17,9 +17,9 @@ class FastSearchRegionNotifier extends Notifier<bool> {
 
   final IsarDatabase isarDatabase = IsarDatabase();
 
-  queryAll(String text) async {
+  Future<List<Thing>> queryAll(String text) async {
     if (text == "") {
-      return;
+      return [];
     }
 
     final things = await isarDatabase.isar!.things
@@ -27,9 +27,10 @@ class FastSearchRegionNotifier extends Notifier<bool> {
         .fullTextContains(text)
         .findAll();
 
-    for (final i in things) {
-      print(i.remark);
-    }
+    // for (final i in things) {
+    //   logger.info(i.fullText);
+    // }
+    return things;
   }
 }
 

@@ -33,7 +33,7 @@ class CommonSettingWidget extends ConsumerWidget {
             ),
             Row(
               children: [
-                SizedBox(
+                const SizedBox(
                   width: 200,
                   child: Text("Enable unlock password"),
                 ),
