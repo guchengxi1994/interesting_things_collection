@@ -26,8 +26,8 @@ dependencies:
   flutter_smart_dialog: ^4.9.4
   flutter_tags_x: ^1.1.0
   hotkey_manager: ^0.1.8
-  # https://isar.dev/zh/tutorials/quickstart.html
   image_cropper: ^5.0.0
+  # https://isar.dev/zh/tutorials/quickstart.html
   isar: ^3.1.0+1  # run `flutter pub run build_runner build` to generate codes
   isar_flutter_libs: ^3.1.0+1
   just_the_tooltip: ^0.0.12
