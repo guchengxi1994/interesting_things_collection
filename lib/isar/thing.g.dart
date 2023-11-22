@@ -27,35 +27,35 @@ const ThingSchema = CollectionSchema(
       name: r'createdAt',
       type: IsarType.long,
     ),
-    r'hashCode': PropertySchema(
+    r'fullText': PropertySchema(
       id: 2,
+      name: r'fullText',
+      type: IsarType.string,
+    ),
+    r'hashCode': PropertySchema(
+      id: 3,
       name: r'hashCode',
       type: IsarType.long,
     ),
     r'name': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'name',
       type: IsarType.string,
     ),
     r'orderNum': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'orderNum',
       type: IsarType.long,
     ),
     r'preview': PropertySchema(
-      id: 5,
+      id: 6,
       name: r'preview',
       type: IsarType.string,
     ),
     r'remark': PropertySchema(
-      id: 6,
+      id: 7,
       name: r'remark',
       type: IsarType.string,
-    ),
-    r'remarkContent': PropertySchema(
-      id: 7,
-      name: r'remarkContent',
-      type: IsarType.stringList,
     ),
     r'score': PropertySchema(
       id: 8,
@@ -68,21 +68,7 @@ const ThingSchema = CollectionSchema(
   deserialize: _thingDeserialize,
   deserializeProp: _thingDeserializeProp,
   idName: r'id',
-  indexes: {
-    r'remarkContent': IndexSchema(
-      id: 7642275241072716950,
-      name: r'remarkContent',
-      unique: false,
-      replace: false,
-      properties: [
-        IndexPropertySchema(
-          name: r'remarkContent',
-          type: IndexType.value,
-          caseSensitive: true,
-        )
-      ],
-    )
-  },
+  indexes: {},
   links: {},
   embeddedSchemas: {},
   getId: _thingGetId,
@@ -97,6 +83,12 @@ int _thingEstimateSize(
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
+  {
+    final value = object.fullText;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   {
     final value = object.name;
     if (value != null) {
@@ -115,13 +107,6 @@ int _thingEstimateSize(
       bytesCount += 3 + value.length * 3;
     }
   }
-  bytesCount += 3 + object.remarkContent.length * 3;
-  {
-    for (var i = 0; i < object.remarkContent.length; i++) {
-      final value = object.remarkContent[i];
-      bytesCount += value.length * 3;
-    }
-  }
   return bytesCount;
 }
 
@@ -133,12 +118,12 @@ void _thingSerialize(
 ) {
   writer.writeLong(offsets[0], object.catalogId);
   writer.writeLong(offsets[1], object.createdAt);
-  writer.writeLong(offsets[2], object.hashCode);
-  writer.writeString(offsets[3], object.name);
-  writer.writeLong(offsets[4], object.orderNum);
-  writer.writeString(offsets[5], object.preview);
-  writer.writeString(offsets[6], object.remark);
-  writer.writeStringList(offsets[7], object.remarkContent);
+  writer.writeString(offsets[2], object.fullText);
+  writer.writeLong(offsets[3], object.hashCode);
+  writer.writeString(offsets[4], object.name);
+  writer.writeLong(offsets[5], object.orderNum);
+  writer.writeString(offsets[6], object.preview);
+  writer.writeString(offsets[7], object.remark);
   writer.writeDouble(offsets[8], object.score);
 }
 
@@ -151,11 +136,12 @@ Thing _thingDeserialize(
   final object = Thing();
   object.catalogId = reader.readLongOrNull(offsets[0]);
   object.createdAt = reader.readLongOrNull(offsets[1]);
+  object.fullText = reader.readStringOrNull(offsets[2]);
   object.id = id;
-  object.name = reader.readStringOrNull(offsets[3]);
-  object.orderNum = reader.readLongOrNull(offsets[4]);
-  object.preview = reader.readStringOrNull(offsets[5]);
-  object.remark = reader.readStringOrNull(offsets[6]);
+  object.name = reader.readStringOrNull(offsets[4]);
+  object.orderNum = reader.readLongOrNull(offsets[5]);
+  object.preview = reader.readStringOrNull(offsets[6]);
+  object.remark = reader.readStringOrNull(offsets[7]);
   object.score = reader.readDoubleOrNull(offsets[8]);
   return object;
 }
@@ -172,17 +158,17 @@ P _thingDeserializeProp<P>(
     case 1:
       return (reader.readLongOrNull(offset)) as P;
     case 2:
-      return (reader.readLong(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 3:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readLong(offset)) as P;
     case 4:
-      return (reader.readLongOrNull(offset)) as P;
-    case 5:
       return (reader.readStringOrNull(offset)) as P;
+    case 5:
+      return (reader.readLongOrNull(offset)) as P;
     case 6:
       return (reader.readStringOrNull(offset)) as P;
     case 7:
-      return (reader.readStringList(offset) ?? []) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 8:
       return (reader.readDoubleOrNull(offset)) as P;
     default:
@@ -206,14 +192,6 @@ extension ThingQueryWhereSort on QueryBuilder<Thing, Thing, QWhere> {
   QueryBuilder<Thing, Thing, QAfterWhere> anyId() {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(const IdWhereClause.any());
-    });
-  }
-
-  QueryBuilder<Thing, Thing, QAfterWhere> anyRemarkContentElement() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(
-        const IndexWhereClause.any(indexName: r'remarkContent'),
-      );
     });
   }
 }
@@ -281,143 +259,6 @@ extension ThingQueryWhere on QueryBuilder<Thing, Thing, QWhereClause> {
         upper: upperId,
         includeUpper: includeUpper,
       ));
-    });
-  }
-
-  QueryBuilder<Thing, Thing, QAfterWhereClause> remarkContentElementEqualTo(
-      String remarkContentElement) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.equalTo(
-        indexName: r'remarkContent',
-        value: [remarkContentElement],
-      ));
-    });
-  }
-
-  QueryBuilder<Thing, Thing, QAfterWhereClause> remarkContentElementNotEqualTo(
-      String remarkContentElement) {
-    return QueryBuilder.apply(this, (query) {
-      if (query.whereSort == Sort.asc) {
-        return query
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'remarkContent',
-              lower: [],
-              upper: [remarkContentElement],
-              includeUpper: false,
-            ))
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'remarkContent',
-              lower: [remarkContentElement],
-              includeLower: false,
-              upper: [],
-            ));
-      } else {
-        return query
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'remarkContent',
-              lower: [remarkContentElement],
-              includeLower: false,
-              upper: [],
-            ))
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'remarkContent',
-              lower: [],
-              upper: [remarkContentElement],
-              includeUpper: false,
-            ));
-      }
-    });
-  }
-
-  QueryBuilder<Thing, Thing, QAfterWhereClause> remarkContentElementGreaterThan(
-    String remarkContentElement, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.between(
-        indexName: r'remarkContent',
-        lower: [remarkContentElement],
-        includeLower: include,
-        upper: [],
-      ));
-    });
-  }
-
-  QueryBuilder<Thing, Thing, QAfterWhereClause> remarkContentElementLessThan(
-    String remarkContentElement, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.between(
-        indexName: r'remarkContent',
-        lower: [],
-        upper: [remarkContentElement],
-        includeUpper: include,
-      ));
-    });
-  }
-
-  QueryBuilder<Thing, Thing, QAfterWhereClause> remarkContentElementBetween(
-    String lowerRemarkContentElement,
-    String upperRemarkContentElement, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.between(
-        indexName: r'remarkContent',
-        lower: [lowerRemarkContentElement],
-        includeLower: includeLower,
-        upper: [upperRemarkContentElement],
-        includeUpper: includeUpper,
-      ));
-    });
-  }
-
-  QueryBuilder<Thing, Thing, QAfterWhereClause> remarkContentElementStartsWith(
-      String RemarkContentElementPrefix) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.between(
-        indexName: r'remarkContent',
-        lower: [RemarkContentElementPrefix],
-        upper: ['$RemarkContentElementPrefix\u{FFFFF}'],
-      ));
-    });
-  }
-
-  QueryBuilder<Thing, Thing, QAfterWhereClause> remarkContentElementIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.equalTo(
-        indexName: r'remarkContent',
-        value: [''],
-      ));
-    });
-  }
-
-  QueryBuilder<Thing, Thing, QAfterWhereClause>
-      remarkContentElementIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      if (query.whereSort == Sort.asc) {
-        return query
-            .addWhereClause(IndexWhereClause.lessThan(
-              indexName: r'remarkContent',
-              upper: [''],
-            ))
-            .addWhereClause(IndexWhereClause.greaterThan(
-              indexName: r'remarkContent',
-              lower: [''],
-            ));
-      } else {
-        return query
-            .addWhereClause(IndexWhereClause.greaterThan(
-              indexName: r'remarkContent',
-              lower: [''],
-            ))
-            .addWhereClause(IndexWhereClause.lessThan(
-              indexName: r'remarkContent',
-              upper: [''],
-            ));
-      }
     });
   }
 }
@@ -557,6 +398,152 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterFilterCondition> fullTextIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'fullText',
+      ));
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterFilterCondition> fullTextIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'fullText',
+      ));
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterFilterCondition> fullTextEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'fullText',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterFilterCondition> fullTextGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'fullText',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterFilterCondition> fullTextLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'fullText',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterFilterCondition> fullTextBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'fullText',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterFilterCondition> fullTextStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'fullText',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterFilterCondition> fullTextEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'fullText',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterFilterCondition> fullTextContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'fullText',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterFilterCondition> fullTextMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'fullText',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterFilterCondition> fullTextIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'fullText',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterFilterCondition> fullTextIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'fullText',
+        value: '',
       ));
     });
   }
@@ -1169,226 +1156,6 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> remarkContentElementEqualTo(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'remarkContent',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Thing, Thing, QAfterFilterCondition>
-      remarkContentElementGreaterThan(
-    String value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'remarkContent',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Thing, Thing, QAfterFilterCondition>
-      remarkContentElementLessThan(
-    String value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'remarkContent',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> remarkContentElementBetween(
-    String lower,
-    String upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'remarkContent',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Thing, Thing, QAfterFilterCondition>
-      remarkContentElementStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'remarkContent',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Thing, Thing, QAfterFilterCondition>
-      remarkContentElementEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'remarkContent',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Thing, Thing, QAfterFilterCondition>
-      remarkContentElementContains(String value, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'remarkContent',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> remarkContentElementMatches(
-      String pattern,
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'remarkContent',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Thing, Thing, QAfterFilterCondition>
-      remarkContentElementIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'remarkContent',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<Thing, Thing, QAfterFilterCondition>
-      remarkContentElementIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'remarkContent',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> remarkContentLengthEqualTo(
-      int length) {
-    return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'remarkContent',
-        length,
-        true,
-        length,
-        true,
-      );
-    });
-  }
-
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> remarkContentIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'remarkContent',
-        0,
-        true,
-        0,
-        true,
-      );
-    });
-  }
-
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> remarkContentIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'remarkContent',
-        0,
-        false,
-        999999,
-        true,
-      );
-    });
-  }
-
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> remarkContentLengthLessThan(
-    int length, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'remarkContent',
-        0,
-        true,
-        length,
-        include,
-      );
-    });
-  }
-
-  QueryBuilder<Thing, Thing, QAfterFilterCondition>
-      remarkContentLengthGreaterThan(
-    int length, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'remarkContent',
-        length,
-        include,
-        999999,
-        true,
-      );
-    });
-  }
-
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> remarkContentLengthBetween(
-    int lower,
-    int upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'remarkContent',
-        lower,
-        includeLower,
-        upper,
-        includeUpper,
-      );
-    });
-  }
-
   QueryBuilder<Thing, Thing, QAfterFilterCondition> scoreIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -1497,6 +1264,18 @@ extension ThingQuerySortBy on QueryBuilder<Thing, Thing, QSortBy> {
     });
   }
 
+  QueryBuilder<Thing, Thing, QAfterSortBy> sortByFullText() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'fullText', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterSortBy> sortByFullTextDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'fullText', Sort.desc);
+    });
+  }
+
   QueryBuilder<Thing, Thing, QAfterSortBy> sortByHashCode() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'hashCode', Sort.asc);
@@ -1592,6 +1371,18 @@ extension ThingQuerySortThenBy on QueryBuilder<Thing, Thing, QSortThenBy> {
   QueryBuilder<Thing, Thing, QAfterSortBy> thenByCreatedAtDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'createdAt', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterSortBy> thenByFullText() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'fullText', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Thing, Thing, QAfterSortBy> thenByFullTextDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'fullText', Sort.desc);
     });
   }
 
@@ -1693,6 +1484,13 @@ extension ThingQueryWhereDistinct on QueryBuilder<Thing, Thing, QDistinct> {
     });
   }
 
+  QueryBuilder<Thing, Thing, QDistinct> distinctByFullText(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'fullText', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<Thing, Thing, QDistinct> distinctByHashCode() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'hashCode');
@@ -1726,12 +1524,6 @@ extension ThingQueryWhereDistinct on QueryBuilder<Thing, Thing, QDistinct> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QDistinct> distinctByRemarkContent() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'remarkContent');
-    });
-  }
-
   QueryBuilder<Thing, Thing, QDistinct> distinctByScore() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'score');
@@ -1755,6 +1547,12 @@ extension ThingQueryProperty on QueryBuilder<Thing, Thing, QQueryProperty> {
   QueryBuilder<Thing, int?, QQueryOperations> createdAtProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'createdAt');
+    });
+  }
+
+  QueryBuilder<Thing, String?, QQueryOperations> fullTextProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'fullText');
     });
   }
 
@@ -1785,12 +1583,6 @@ extension ThingQueryProperty on QueryBuilder<Thing, Thing, QQueryProperty> {
   QueryBuilder<Thing, String?, QQueryOperations> remarkProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'remark');
-    });
-  }
-
-  QueryBuilder<Thing, List<String>, QQueryOperations> remarkContentProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'remarkContent');
     });
   }
 

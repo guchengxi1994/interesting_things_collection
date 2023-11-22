@@ -205,10 +205,11 @@ class CatalogDetails extends ConsumerWidget {
                                 : MediaQuery.of(context).size.height,
                             child: Editor(
                               savedData: "",
-                              saveToJson: (p0, p1) async {
+                              saveToJson: (p0, p1, p2) async {
                                 SmartDialog.showLoading();
                                 thing.catalogId = catalogId;
-                                thing.name = p1;
+                                thing.name = p2;
+                                thing.fullText = p1;
                                 thing.remark = p0;
 
                                 if (onNewThing != null) {
