@@ -178,11 +178,23 @@ class _FastSearchRegionState extends ConsumerState<FastSearchRegion> {
                                 collapsedShape: RoundedRectangleBorder(
                                     side: const BorderSide(color: Colors.blue),
                                     borderRadius: BorderRadius.circular(15)),
-                                title: Text(searched[i].name ?? ""),
+                                title: Text(
+                                  searched[i].name ?? "",
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold),
+                                ),
                                 children: [
-                                  Text.rich(HighlightText.formSpan(
-                                      searched[i].fullText!,
-                                      textEditingController.text))
+                                  Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 15, right: 15, bottom: 15),
+                                        child: Text.rich(
+                                          HighlightText.formSpan(
+                                              searched[i].fullText!,
+                                              textEditingController.text),
+                                        ),
+                                      ))
                                 ],
                               );
                             }))

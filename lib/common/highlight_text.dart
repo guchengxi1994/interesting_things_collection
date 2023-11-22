@@ -16,20 +16,14 @@ class HighlightText {
     List<String> parts = src.split(pattern);
     if (parts.length > 1) {
       for (int i = 0; i < parts.length; i++) {
-        if (i > 0 && parts[i].length > 20) {
-          if (parts[i - 1] == "") {
-            print(1);
-            span.add(TextSpan(text: "${parts[i + 1].substring(0, 20)}..."));
-          } else if (parts.length > i && parts[i] == "") {
-            print(2);
-            span.add(TextSpan(
-                text: "...${parts[i].substring(parts[i].length - 20)}"));
-          } else {
-            print(3);
-            span.add(const TextSpan(text: "..."));
-          }
+        if (parts[i].length <= 20) {
+          span.add(TextSpan(text: parts[i]));
         } else {
-          span.add(const TextSpan(text: "..."));
+          String left = parts[i].substring(0, 10);
+          String right = parts[i].substring(parts[i].length - 10);
+
+          String r = "$left...$right";
+          span.add(TextSpan(text: r));
         }
 
         if (i != parts.length - 1) {
