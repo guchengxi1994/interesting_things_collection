@@ -1,27 +1,26 @@
 import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:weaving/catalog/models/things_state.dart';
-import 'package:weaving/catalog/notifiers/things_notifier.dart';
+import 'package:weaving/catalog/models/catalog_items_state.dart';
+import 'package:weaving/catalog/notifiers/items_notifier.dart';
 import 'package:weaving/isar/catalog.dart';
 
 import 'catalog_details.dart';
-import 'thing_widget.dart';
+import 'catalog_item_widget.dart';
 
-class CatalogThingsWidget extends ConsumerStatefulWidget {
-  const CatalogThingsWidget({super.key, required this.catalog});
+class CatalogItemsWidget extends ConsumerStatefulWidget {
+  const CatalogItemsWidget({super.key, required this.catalog});
   final CatalogCopy? catalog;
 
   @override
-  ConsumerState<CatalogThingsWidget> createState() =>
-      _CatalogThingsWidgetState();
+  ConsumerState<CatalogItemsWidget> createState() => _CatalogItemsWidgetState();
 }
 
-class _CatalogThingsWidgetState extends ConsumerState<CatalogThingsWidget> {
+class _CatalogItemsWidgetState extends ConsumerState<CatalogItemsWidget> {
   late final notifier = widget.catalog == null
       ? null
-      : AsyncNotifierProvider<ThingsNotifier, ThingsState>(() {
-          return ThingsNotifier(catalog: widget.catalog!);
+      : AsyncNotifierProvider<ItemsNotifier, CatalogItemsState>(() {
+          return ItemsNotifier(catalog: widget.catalog!);
         });
 
   final ScrollController scrollController = ScrollController();
@@ -51,7 +50,7 @@ class _CatalogThingsWidgetState extends ConsumerState<CatalogThingsWidget> {
       return Container();
     }
 
-    final things = ref.watch(notifier!);
+    final items = ref.watch(notifier!);
 
     return Column(
       children: [
@@ -65,34 +64,30 @@ class _CatalogThingsWidgetState extends ConsumerState<CatalogThingsWidget> {
               ? const SizedBox()
               : CatalogDetails(
                   catalogId: widget.catalog!.id,
-                  onNewThing: (p0) {
-                    ref.read(notifier!.notifier).newThing(p0);
+                  onNewItem: (p0) {
+                    ref.read(notifier!.notifier).newItem(p0);
                   },
                 ),
         ),
         Expanded(child: Builder(builder: (c) {
-          return switch (things) {
-            AsyncValue<ThingsState>(:final value?) => EasyRefresh(
+          return switch (items) {
+            AsyncValue<CatalogItemsState>(:final value?) => EasyRefresh(
                 controller: easyRefreshController,
                 onLoad: () {
                   ref.read(notifier!.notifier).queryMore();
                 },
                 child: ListView.builder(
                     controller: scrollController,
-                    itemCount: value.thingsList.length,
+                    itemCount: value.list.length,
                     itemBuilder: (c, index) {
-                      // return SizedBox(
-                      //   height: 200,
-                      //   child: Text(value.thingsList[index].name.toString()),
-                      // );
-                      return ThingWidget(
-                        thing: value.thingsList[index],
+                      return CatalogItemWidget(
+                        item: value.list[index],
                         onRatingChange: (p0) {
-                          final t = value.thingsList[index]..score = p0;
-                          ref.read(notifier!.notifier).updateThing(t);
+                          final t = value.list[index]..score = p0;
+                          ref.read(notifier!.notifier).updateItem(t);
                         },
                         onDeleteClick: (p0) {
-                          ref.read(notifier!.notifier).deleteThing(p0);
+                          ref.read(notifier!.notifier).deleteItem(p0);
                         },
                       );
                     })),

@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:weaving/common/highlight_text.dart';
-import 'package:weaving/isar/thing.dart';
+import 'package:weaving/isar/catalog_item.dart';
 import 'package:weaving/notifier/fast_search_region_notifier.dart';
 
 class FastSearchRegion extends ConsumerStatefulWidget {
@@ -36,7 +36,7 @@ class _FastSearchRegionState extends ConsumerState<FastSearchRegion> {
   final TextEditingController textEditingController = TextEditingController();
 
   bool clearButtonVisible = false;
-  List<Thing> searched = [];
+  List<CatalogItem> searched = [];
 
   @override
   Widget build(BuildContext context) {

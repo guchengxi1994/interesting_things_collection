@@ -9,7 +9,7 @@ import 'package:flutter_tags_x/flutter_tags_x.dart';
 import 'package:weaving/catalog/components/editor.dart';
 import 'package:weaving/common/base64_utils.dart';
 import 'package:weaving/gen/strings.g.dart';
-import 'package:weaving/isar/thing.dart';
+import 'package:weaving/isar/catalog_item.dart';
 import 'package:weaving/style/app_style.dart';
 import 'package:popup_card/popup_card.dart';
 
@@ -19,21 +19,20 @@ import 'add_tag_button.dart';
 
 const double textWidth = 80;
 const TextStyle textStyle = TextStyle(fontWeight: FontWeight.bold);
-typedef OnNewThing = void Function(Thing);
+typedef OnNewItem = void Function(CatalogItem);
 
 // ignore: must_be_immutable
 class CatalogDetails extends ConsumerWidget {
-  CatalogDetails({super.key, required this.catalogId, this.onNewThing});
+  CatalogDetails({super.key, required this.catalogId, this.onNewItem});
   final int catalogId;
-  final OnNewThing? onNewThing;
+  final OnNewItem? onNewItem;
 
   late final notifier =
       AsyncNotifierProvider<CatalogDetailsNotifier, CatalogDetailsState>(() {
     return CatalogDetailsNotifier(catalogId: catalogId);
   });
 
-  // ignore: avoid_init_to_null
-  late Thing thing = Thing();
+  late CatalogItem item = CatalogItem();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -202,13 +201,13 @@ class CatalogDetails extends ConsumerWidget {
                             savedData: "",
                             saveToJson: (p0, p1, p2) async {
                               SmartDialog.showLoading();
-                              thing.catalogId = catalogId;
-                              thing.name = p2;
-                              thing.fullText = p1;
-                              thing.remark = p0;
+                              item.catalogId = catalogId;
+                              item.name = p2;
+                              item.fullText = p1;
+                              item.remark = p0;
 
-                              if (onNewThing != null) {
-                                onNewThing!(thing);
+                              if (onNewItem != null) {
+                                onNewItem!(item);
                               }
 
                               await Future.delayed(const Duration(seconds: 1));
@@ -216,7 +215,7 @@ class CatalogDetails extends ConsumerWidget {
                             },
                             savePreview: (p0) async {
                               SmartDialog.showLoading();
-                              thing.preview = Base64Utils.uint8List2Base64(p0);
+                              item.preview = Base64Utils.uint8List2Base64(p0);
                               await Future.delayed(const Duration(seconds: 1));
                               SmartDialog.dismiss();
                             },

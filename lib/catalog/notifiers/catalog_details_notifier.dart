@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:weaving/isar/catalog.dart';
 import 'package:weaving/isar/database.dart';
-import 'package:weaving/isar/thing.dart';
+import 'package:weaving/isar/catalog_item.dart';
 import 'package:isar/isar.dart';
 
 import 'catalog_details_state.dart';
@@ -18,18 +18,18 @@ class CatalogDetailsNotifier extends AsyncNotifier<CatalogDetailsState> {
   @override
   FutureOr<CatalogDetailsState> build() async {
     final catalog = await database.isar!.catalogs.get(catalogId);
-    final things = await database.isar!.things
+    final items = await database.isar!.catalogItems
         .filter()
         .catalogIdEqualTo(catalogId)
         .findAll();
 
     double rating = 0;
 
-    if (things.isNotEmpty) {
-      rating = things
+    if (items.isNotEmpty) {
+      rating = items
               .map((e) => e.score ?? 0)
               .reduce((value, element) => value + element) /
-          things.length;
+          items.length;
     }
 
     return CatalogDetailsState(

@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'thing.dart';
+part of 'catalog_item.dart';
 
 // **************************************************************************
 // IsarCollectionGenerator
@@ -9,13 +9,13 @@ part of 'thing.dart';
 // coverage:ignore-file
 // ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types
 
-extension GetThingCollection on Isar {
-  IsarCollection<Thing> get things => this.collection();
+extension GetCatalogItemCollection on Isar {
+  IsarCollection<CatalogItem> get catalogItems => this.collection();
 }
 
-const ThingSchema = CollectionSchema(
-  name: r'Thing',
-  id: -3725463572457949598,
+const CatalogItemSchema = CollectionSchema(
+  name: r'CatalogItem',
+  id: 7586471786704941128,
   properties: {
     r'catalogId': PropertySchema(
       id: 0,
@@ -63,22 +63,22 @@ const ThingSchema = CollectionSchema(
       type: IsarType.double,
     )
   },
-  estimateSize: _thingEstimateSize,
-  serialize: _thingSerialize,
-  deserialize: _thingDeserialize,
-  deserializeProp: _thingDeserializeProp,
+  estimateSize: _catalogItemEstimateSize,
+  serialize: _catalogItemSerialize,
+  deserialize: _catalogItemDeserialize,
+  deserializeProp: _catalogItemDeserializeProp,
   idName: r'id',
   indexes: {},
   links: {},
   embeddedSchemas: {},
-  getId: _thingGetId,
-  getLinks: _thingGetLinks,
-  attach: _thingAttach,
+  getId: _catalogItemGetId,
+  getLinks: _catalogItemGetLinks,
+  attach: _catalogItemAttach,
   version: '3.1.0+1',
 );
 
-int _thingEstimateSize(
-  Thing object,
+int _catalogItemEstimateSize(
+  CatalogItem object,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
@@ -110,8 +110,8 @@ int _thingEstimateSize(
   return bytesCount;
 }
 
-void _thingSerialize(
-  Thing object,
+void _catalogItemSerialize(
+  CatalogItem object,
   IsarWriter writer,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
@@ -127,13 +127,13 @@ void _thingSerialize(
   writer.writeDouble(offsets[8], object.score);
 }
 
-Thing _thingDeserialize(
+CatalogItem _catalogItemDeserialize(
   Id id,
   IsarReader reader,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  final object = Thing();
+  final object = CatalogItem();
   object.catalogId = reader.readLongOrNull(offsets[0]);
   object.createdAt = reader.readLongOrNull(offsets[1]);
   object.fullText = reader.readStringOrNull(offsets[2]);
@@ -146,7 +146,7 @@ Thing _thingDeserialize(
   return object;
 }
 
-P _thingDeserializeProp<P>(
+P _catalogItemDeserializeProp<P>(
   IsarReader reader,
   int propertyId,
   int offset,
@@ -176,28 +176,31 @@ P _thingDeserializeProp<P>(
   }
 }
 
-Id _thingGetId(Thing object) {
+Id _catalogItemGetId(CatalogItem object) {
   return object.id;
 }
 
-List<IsarLinkBase<dynamic>> _thingGetLinks(Thing object) {
+List<IsarLinkBase<dynamic>> _catalogItemGetLinks(CatalogItem object) {
   return [];
 }
 
-void _thingAttach(IsarCollection<dynamic> col, Id id, Thing object) {
+void _catalogItemAttach(
+    IsarCollection<dynamic> col, Id id, CatalogItem object) {
   object.id = id;
 }
 
-extension ThingQueryWhereSort on QueryBuilder<Thing, Thing, QWhere> {
-  QueryBuilder<Thing, Thing, QAfterWhere> anyId() {
+extension CatalogItemQueryWhereSort
+    on QueryBuilder<CatalogItem, CatalogItem, QWhere> {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterWhere> anyId() {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(const IdWhereClause.any());
     });
   }
 }
 
-extension ThingQueryWhere on QueryBuilder<Thing, Thing, QWhereClause> {
-  QueryBuilder<Thing, Thing, QAfterWhereClause> idEqualTo(Id id) {
+extension CatalogItemQueryWhere
+    on QueryBuilder<CatalogItem, CatalogItem, QWhereClause> {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterWhereClause> idEqualTo(Id id) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(IdWhereClause.between(
         lower: id,
@@ -206,7 +209,8 @@ extension ThingQueryWhere on QueryBuilder<Thing, Thing, QWhereClause> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterWhereClause> idNotEqualTo(Id id) {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterWhereClause> idNotEqualTo(
+      Id id) {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
         return query
@@ -228,7 +232,7 @@ extension ThingQueryWhere on QueryBuilder<Thing, Thing, QWhereClause> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterWhereClause> idGreaterThan(Id id,
+  QueryBuilder<CatalogItem, CatalogItem, QAfterWhereClause> idGreaterThan(Id id,
       {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
@@ -237,7 +241,7 @@ extension ThingQueryWhere on QueryBuilder<Thing, Thing, QWhereClause> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterWhereClause> idLessThan(Id id,
+  QueryBuilder<CatalogItem, CatalogItem, QAfterWhereClause> idLessThan(Id id,
       {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
@@ -246,7 +250,7 @@ extension ThingQueryWhere on QueryBuilder<Thing, Thing, QWhereClause> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterWhereClause> idBetween(
+  QueryBuilder<CatalogItem, CatalogItem, QAfterWhereClause> idBetween(
     Id lowerId,
     Id upperId, {
     bool includeLower = true,
@@ -263,8 +267,10 @@ extension ThingQueryWhere on QueryBuilder<Thing, Thing, QWhereClause> {
   }
 }
 
-extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> catalogIdIsNull() {
+extension CatalogItemQueryFilter
+    on QueryBuilder<CatalogItem, CatalogItem, QFilterCondition> {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition>
+      catalogIdIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
         property: r'catalogId',
@@ -272,7 +278,8 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> catalogIdIsNotNull() {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition>
+      catalogIdIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
         property: r'catalogId',
@@ -280,8 +287,8 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> catalogIdEqualTo(
-      int? value) {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition>
+      catalogIdEqualTo(int? value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'catalogId',
@@ -290,7 +297,8 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> catalogIdGreaterThan(
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition>
+      catalogIdGreaterThan(
     int? value, {
     bool include = false,
   }) {
@@ -303,7 +311,8 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> catalogIdLessThan(
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition>
+      catalogIdLessThan(
     int? value, {
     bool include = false,
   }) {
@@ -316,7 +325,8 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> catalogIdBetween(
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition>
+      catalogIdBetween(
     int? lower,
     int? upper, {
     bool includeLower = true,
@@ -333,7 +343,8 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> createdAtIsNull() {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition>
+      createdAtIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
         property: r'createdAt',
@@ -341,7 +352,8 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> createdAtIsNotNull() {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition>
+      createdAtIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
         property: r'createdAt',
@@ -349,8 +361,8 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> createdAtEqualTo(
-      int? value) {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition>
+      createdAtEqualTo(int? value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'createdAt',
@@ -359,7 +371,8 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> createdAtGreaterThan(
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition>
+      createdAtGreaterThan(
     int? value, {
     bool include = false,
   }) {
@@ -372,7 +385,8 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> createdAtLessThan(
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition>
+      createdAtLessThan(
     int? value, {
     bool include = false,
   }) {
@@ -385,7 +399,8 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> createdAtBetween(
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition>
+      createdAtBetween(
     int? lower,
     int? upper, {
     bool includeLower = true,
@@ -402,7 +417,8 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> fullTextIsNull() {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition>
+      fullTextIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
         property: r'fullText',
@@ -410,7 +426,8 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> fullTextIsNotNull() {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition>
+      fullTextIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
         property: r'fullText',
@@ -418,7 +435,7 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> fullTextEqualTo(
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition> fullTextEqualTo(
     String? value, {
     bool caseSensitive = true,
   }) {
@@ -431,7 +448,8 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> fullTextGreaterThan(
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition>
+      fullTextGreaterThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -446,7 +464,8 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> fullTextLessThan(
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition>
+      fullTextLessThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -461,7 +480,7 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> fullTextBetween(
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition> fullTextBetween(
     String? lower,
     String? upper, {
     bool includeLower = true,
@@ -480,7 +499,8 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> fullTextStartsWith(
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition>
+      fullTextStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -493,7 +513,8 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> fullTextEndsWith(
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition>
+      fullTextEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -506,9 +527,8 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> fullTextContains(
-      String value,
-      {bool caseSensitive = true}) {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition>
+      fullTextContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
         property: r'fullText',
@@ -518,7 +538,7 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> fullTextMatches(
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition> fullTextMatches(
       String pattern,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -530,7 +550,8 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> fullTextIsEmpty() {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition>
+      fullTextIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'fullText',
@@ -539,7 +560,8 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> fullTextIsNotEmpty() {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition>
+      fullTextIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'fullText',
@@ -548,7 +570,8 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> hashCodeEqualTo(int value) {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition> hashCodeEqualTo(
+      int value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'hashCode',
@@ -557,7 +580,8 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> hashCodeGreaterThan(
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition>
+      hashCodeGreaterThan(
     int value, {
     bool include = false,
   }) {
@@ -570,7 +594,8 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> hashCodeLessThan(
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition>
+      hashCodeLessThan(
     int value, {
     bool include = false,
   }) {
@@ -583,7 +608,7 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> hashCodeBetween(
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition> hashCodeBetween(
     int lower,
     int upper, {
     bool includeLower = true,
@@ -600,7 +625,8 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> idEqualTo(Id value) {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition> idEqualTo(
+      Id value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'id',
@@ -609,7 +635,7 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> idGreaterThan(
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition> idGreaterThan(
     Id value, {
     bool include = false,
   }) {
@@ -622,7 +648,7 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> idLessThan(
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition> idLessThan(
     Id value, {
     bool include = false,
   }) {
@@ -635,7 +661,7 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> idBetween(
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition> idBetween(
     Id lower,
     Id upper, {
     bool includeLower = true,
@@ -652,7 +678,7 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> nameIsNull() {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition> nameIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
         property: r'name',
@@ -660,7 +686,8 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> nameIsNotNull() {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition>
+      nameIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
         property: r'name',
@@ -668,7 +695,7 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> nameEqualTo(
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition> nameEqualTo(
     String? value, {
     bool caseSensitive = true,
   }) {
@@ -681,7 +708,7 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> nameGreaterThan(
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition> nameGreaterThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -696,7 +723,7 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> nameLessThan(
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition> nameLessThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -711,7 +738,7 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> nameBetween(
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition> nameBetween(
     String? lower,
     String? upper, {
     bool includeLower = true,
@@ -730,7 +757,7 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> nameStartsWith(
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition> nameStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -743,7 +770,7 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> nameEndsWith(
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition> nameEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -756,7 +783,8 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> nameContains(String value,
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition> nameContains(
+      String value,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
@@ -767,7 +795,8 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> nameMatches(String pattern,
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition> nameMatches(
+      String pattern,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
@@ -778,7 +807,7 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> nameIsEmpty() {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition> nameIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'name',
@@ -787,7 +816,8 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> nameIsNotEmpty() {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition>
+      nameIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'name',
@@ -796,7 +826,8 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> orderNumIsNull() {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition>
+      orderNumIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
         property: r'orderNum',
@@ -804,7 +835,8 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> orderNumIsNotNull() {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition>
+      orderNumIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
         property: r'orderNum',
@@ -812,7 +844,7 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> orderNumEqualTo(
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition> orderNumEqualTo(
       int? value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -822,7 +854,8 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> orderNumGreaterThan(
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition>
+      orderNumGreaterThan(
     int? value, {
     bool include = false,
   }) {
@@ -835,7 +868,8 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> orderNumLessThan(
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition>
+      orderNumLessThan(
     int? value, {
     bool include = false,
   }) {
@@ -848,7 +882,7 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> orderNumBetween(
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition> orderNumBetween(
     int? lower,
     int? upper, {
     bool includeLower = true,
@@ -865,7 +899,8 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> previewIsNull() {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition>
+      previewIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
         property: r'preview',
@@ -873,7 +908,8 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> previewIsNotNull() {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition>
+      previewIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
         property: r'preview',
@@ -881,7 +917,7 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> previewEqualTo(
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition> previewEqualTo(
     String? value, {
     bool caseSensitive = true,
   }) {
@@ -894,7 +930,8 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> previewGreaterThan(
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition>
+      previewGreaterThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -909,7 +946,7 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> previewLessThan(
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition> previewLessThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -924,7 +961,7 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> previewBetween(
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition> previewBetween(
     String? lower,
     String? upper, {
     bool includeLower = true,
@@ -943,7 +980,8 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> previewStartsWith(
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition>
+      previewStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -956,7 +994,7 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> previewEndsWith(
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition> previewEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -969,7 +1007,7 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> previewContains(
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition> previewContains(
       String value,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -981,7 +1019,7 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> previewMatches(
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition> previewMatches(
       String pattern,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -993,7 +1031,8 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> previewIsEmpty() {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition>
+      previewIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'preview',
@@ -1002,7 +1041,8 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> previewIsNotEmpty() {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition>
+      previewIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'preview',
@@ -1011,7 +1051,7 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> remarkIsNull() {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition> remarkIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
         property: r'remark',
@@ -1019,7 +1059,8 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> remarkIsNotNull() {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition>
+      remarkIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
         property: r'remark',
@@ -1027,7 +1068,7 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> remarkEqualTo(
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition> remarkEqualTo(
     String? value, {
     bool caseSensitive = true,
   }) {
@@ -1040,7 +1081,8 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> remarkGreaterThan(
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition>
+      remarkGreaterThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -1055,7 +1097,7 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> remarkLessThan(
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition> remarkLessThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -1070,7 +1112,7 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> remarkBetween(
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition> remarkBetween(
     String? lower,
     String? upper, {
     bool includeLower = true,
@@ -1089,7 +1131,8 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> remarkStartsWith(
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition>
+      remarkStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -1102,7 +1145,7 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> remarkEndsWith(
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition> remarkEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -1115,7 +1158,8 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> remarkContains(String value,
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition> remarkContains(
+      String value,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
@@ -1126,7 +1170,7 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> remarkMatches(
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition> remarkMatches(
       String pattern,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -1138,7 +1182,8 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> remarkIsEmpty() {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition>
+      remarkIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'remark',
@@ -1147,7 +1192,8 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> remarkIsNotEmpty() {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition>
+      remarkIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'remark',
@@ -1156,7 +1202,7 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> scoreIsNull() {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition> scoreIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
         property: r'score',
@@ -1164,7 +1210,8 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> scoreIsNotNull() {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition>
+      scoreIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
         property: r'score',
@@ -1172,7 +1219,7 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> scoreEqualTo(
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition> scoreEqualTo(
     double? value, {
     double epsilon = Query.epsilon,
   }) {
@@ -1185,7 +1232,8 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> scoreGreaterThan(
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition>
+      scoreGreaterThan(
     double? value, {
     bool include = false,
     double epsilon = Query.epsilon,
@@ -1200,7 +1248,7 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> scoreLessThan(
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition> scoreLessThan(
     double? value, {
     bool include = false,
     double epsilon = Query.epsilon,
@@ -1215,7 +1263,7 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterFilterCondition> scoreBetween(
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition> scoreBetween(
     double? lower,
     double? upper, {
     bool includeLower = true,
@@ -1235,358 +1283,364 @@ extension ThingQueryFilter on QueryBuilder<Thing, Thing, QFilterCondition> {
   }
 }
 
-extension ThingQueryObject on QueryBuilder<Thing, Thing, QFilterCondition> {}
+extension CatalogItemQueryObject
+    on QueryBuilder<CatalogItem, CatalogItem, QFilterCondition> {}
 
-extension ThingQueryLinks on QueryBuilder<Thing, Thing, QFilterCondition> {}
+extension CatalogItemQueryLinks
+    on QueryBuilder<CatalogItem, CatalogItem, QFilterCondition> {}
 
-extension ThingQuerySortBy on QueryBuilder<Thing, Thing, QSortBy> {
-  QueryBuilder<Thing, Thing, QAfterSortBy> sortByCatalogId() {
+extension CatalogItemQuerySortBy
+    on QueryBuilder<CatalogItem, CatalogItem, QSortBy> {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterSortBy> sortByCatalogId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'catalogId', Sort.asc);
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterSortBy> sortByCatalogIdDesc() {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterSortBy> sortByCatalogIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'catalogId', Sort.desc);
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterSortBy> sortByCreatedAt() {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterSortBy> sortByCreatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'createdAt', Sort.asc);
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterSortBy> sortByCreatedAtDesc() {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterSortBy> sortByCreatedAtDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'createdAt', Sort.desc);
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterSortBy> sortByFullText() {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterSortBy> sortByFullText() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'fullText', Sort.asc);
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterSortBy> sortByFullTextDesc() {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterSortBy> sortByFullTextDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'fullText', Sort.desc);
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterSortBy> sortByHashCode() {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterSortBy> sortByHashCode() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'hashCode', Sort.asc);
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterSortBy> sortByHashCodeDesc() {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterSortBy> sortByHashCodeDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'hashCode', Sort.desc);
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterSortBy> sortByName() {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterSortBy> sortByName() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'name', Sort.asc);
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterSortBy> sortByNameDesc() {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterSortBy> sortByNameDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'name', Sort.desc);
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterSortBy> sortByOrderNum() {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterSortBy> sortByOrderNum() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'orderNum', Sort.asc);
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterSortBy> sortByOrderNumDesc() {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterSortBy> sortByOrderNumDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'orderNum', Sort.desc);
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterSortBy> sortByPreview() {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterSortBy> sortByPreview() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'preview', Sort.asc);
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterSortBy> sortByPreviewDesc() {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterSortBy> sortByPreviewDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'preview', Sort.desc);
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterSortBy> sortByRemark() {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterSortBy> sortByRemark() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'remark', Sort.asc);
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterSortBy> sortByRemarkDesc() {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterSortBy> sortByRemarkDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'remark', Sort.desc);
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterSortBy> sortByScore() {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterSortBy> sortByScore() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'score', Sort.asc);
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterSortBy> sortByScoreDesc() {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterSortBy> sortByScoreDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'score', Sort.desc);
     });
   }
 }
 
-extension ThingQuerySortThenBy on QueryBuilder<Thing, Thing, QSortThenBy> {
-  QueryBuilder<Thing, Thing, QAfterSortBy> thenByCatalogId() {
+extension CatalogItemQuerySortThenBy
+    on QueryBuilder<CatalogItem, CatalogItem, QSortThenBy> {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterSortBy> thenByCatalogId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'catalogId', Sort.asc);
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterSortBy> thenByCatalogIdDesc() {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterSortBy> thenByCatalogIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'catalogId', Sort.desc);
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterSortBy> thenByCreatedAt() {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterSortBy> thenByCreatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'createdAt', Sort.asc);
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterSortBy> thenByCreatedAtDesc() {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterSortBy> thenByCreatedAtDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'createdAt', Sort.desc);
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterSortBy> thenByFullText() {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterSortBy> thenByFullText() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'fullText', Sort.asc);
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterSortBy> thenByFullTextDesc() {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterSortBy> thenByFullTextDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'fullText', Sort.desc);
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterSortBy> thenByHashCode() {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterSortBy> thenByHashCode() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'hashCode', Sort.asc);
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterSortBy> thenByHashCodeDesc() {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterSortBy> thenByHashCodeDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'hashCode', Sort.desc);
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterSortBy> thenById() {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterSortBy> thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterSortBy> thenByIdDesc() {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterSortBy> thenByIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.desc);
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterSortBy> thenByName() {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterSortBy> thenByName() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'name', Sort.asc);
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterSortBy> thenByNameDesc() {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterSortBy> thenByNameDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'name', Sort.desc);
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterSortBy> thenByOrderNum() {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterSortBy> thenByOrderNum() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'orderNum', Sort.asc);
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterSortBy> thenByOrderNumDesc() {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterSortBy> thenByOrderNumDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'orderNum', Sort.desc);
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterSortBy> thenByPreview() {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterSortBy> thenByPreview() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'preview', Sort.asc);
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterSortBy> thenByPreviewDesc() {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterSortBy> thenByPreviewDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'preview', Sort.desc);
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterSortBy> thenByRemark() {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterSortBy> thenByRemark() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'remark', Sort.asc);
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterSortBy> thenByRemarkDesc() {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterSortBy> thenByRemarkDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'remark', Sort.desc);
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterSortBy> thenByScore() {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterSortBy> thenByScore() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'score', Sort.asc);
     });
   }
 
-  QueryBuilder<Thing, Thing, QAfterSortBy> thenByScoreDesc() {
+  QueryBuilder<CatalogItem, CatalogItem, QAfterSortBy> thenByScoreDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'score', Sort.desc);
     });
   }
 }
 
-extension ThingQueryWhereDistinct on QueryBuilder<Thing, Thing, QDistinct> {
-  QueryBuilder<Thing, Thing, QDistinct> distinctByCatalogId() {
+extension CatalogItemQueryWhereDistinct
+    on QueryBuilder<CatalogItem, CatalogItem, QDistinct> {
+  QueryBuilder<CatalogItem, CatalogItem, QDistinct> distinctByCatalogId() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'catalogId');
     });
   }
 
-  QueryBuilder<Thing, Thing, QDistinct> distinctByCreatedAt() {
+  QueryBuilder<CatalogItem, CatalogItem, QDistinct> distinctByCreatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'createdAt');
     });
   }
 
-  QueryBuilder<Thing, Thing, QDistinct> distinctByFullText(
+  QueryBuilder<CatalogItem, CatalogItem, QDistinct> distinctByFullText(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'fullText', caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<Thing, Thing, QDistinct> distinctByHashCode() {
+  QueryBuilder<CatalogItem, CatalogItem, QDistinct> distinctByHashCode() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'hashCode');
     });
   }
 
-  QueryBuilder<Thing, Thing, QDistinct> distinctByName(
+  QueryBuilder<CatalogItem, CatalogItem, QDistinct> distinctByName(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'name', caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<Thing, Thing, QDistinct> distinctByOrderNum() {
+  QueryBuilder<CatalogItem, CatalogItem, QDistinct> distinctByOrderNum() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'orderNum');
     });
   }
 
-  QueryBuilder<Thing, Thing, QDistinct> distinctByPreview(
+  QueryBuilder<CatalogItem, CatalogItem, QDistinct> distinctByPreview(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'preview', caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<Thing, Thing, QDistinct> distinctByRemark(
+  QueryBuilder<CatalogItem, CatalogItem, QDistinct> distinctByRemark(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'remark', caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<Thing, Thing, QDistinct> distinctByScore() {
+  QueryBuilder<CatalogItem, CatalogItem, QDistinct> distinctByScore() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'score');
     });
   }
 }
 
-extension ThingQueryProperty on QueryBuilder<Thing, Thing, QQueryProperty> {
-  QueryBuilder<Thing, int, QQueryOperations> idProperty() {
+extension CatalogItemQueryProperty
+    on QueryBuilder<CatalogItem, CatalogItem, QQueryProperty> {
+  QueryBuilder<CatalogItem, int, QQueryOperations> idProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'id');
     });
   }
 
-  QueryBuilder<Thing, int?, QQueryOperations> catalogIdProperty() {
+  QueryBuilder<CatalogItem, int?, QQueryOperations> catalogIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'catalogId');
     });
   }
 
-  QueryBuilder<Thing, int?, QQueryOperations> createdAtProperty() {
+  QueryBuilder<CatalogItem, int?, QQueryOperations> createdAtProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'createdAt');
     });
   }
 
-  QueryBuilder<Thing, String?, QQueryOperations> fullTextProperty() {
+  QueryBuilder<CatalogItem, String?, QQueryOperations> fullTextProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'fullText');
     });
   }
 
-  QueryBuilder<Thing, int, QQueryOperations> hashCodeProperty() {
+  QueryBuilder<CatalogItem, int, QQueryOperations> hashCodeProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'hashCode');
     });
   }
 
-  QueryBuilder<Thing, String?, QQueryOperations> nameProperty() {
+  QueryBuilder<CatalogItem, String?, QQueryOperations> nameProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'name');
     });
   }
 
-  QueryBuilder<Thing, int?, QQueryOperations> orderNumProperty() {
+  QueryBuilder<CatalogItem, int?, QQueryOperations> orderNumProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'orderNum');
     });
   }
 
-  QueryBuilder<Thing, String?, QQueryOperations> previewProperty() {
+  QueryBuilder<CatalogItem, String?, QQueryOperations> previewProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'preview');
     });
   }
 
-  QueryBuilder<Thing, String?, QQueryOperations> remarkProperty() {
+  QueryBuilder<CatalogItem, String?, QQueryOperations> remarkProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'remark');
     });
   }
 
-  QueryBuilder<Thing, double?, QQueryOperations> scoreProperty() {
+  QueryBuilder<CatalogItem, double?, QQueryOperations> scoreProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'score');
     });

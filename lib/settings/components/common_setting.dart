@@ -21,13 +21,12 @@ class CommonSettingWidget extends ConsumerWidget {
                   child: Text(t.settings.showPreview),
                 ),
                 Switch(
-                    value: ref
-                        .watch(settingsNotifier)
-                        .showPreviewWhenHoverOnThings,
+                    value:
+                        ref.watch(settingsNotifier).showPreviewWhenHoverOnItems,
                     onChanged: (v) {
                       ref
                           .read(settingsNotifier.notifier)
-                          .changeShowPreviewWhenHoverOnThings(v);
+                          .changeShowPreviewWhenHoverOnItems(v);
                     }),
               ],
             ),

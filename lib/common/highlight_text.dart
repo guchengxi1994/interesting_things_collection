@@ -11,7 +11,7 @@ class HighlightText {
 
   /// 后续多个关键字高亮，参考 test\split_test.dart
   static InlineSpan formSpan(String src, String pattern) {
-    src = src.replaceAll("\n", "...");
+    src = src.replaceAll("\n", "");
     List<TextSpan> span = [];
     List<String> parts = src.split(pattern);
     if (parts.length > 1) {

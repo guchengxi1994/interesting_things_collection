@@ -27,25 +27,25 @@ class SettingsNotifier extends Notifier<SettingsState> {
 
   @override
   SettingsState build() {
-    final showPreviewWhenHoverOnThings =
-        localStorage.getShowPreviewWhenHoverOnThings();
+    final showPreviewWhenHoverOnItems =
+        localStorage.getShowPreviewWhenHoverOnItems();
     final currentLocale = localStorage.getCurrentLocale();
     final enablePwd = localStorage.getEnablePasscode();
     final password =
         isarDatabase.isar!.passwords.where(sort: Sort.desc).findFirstSync();
 
     return SettingsState(
-        showPreviewWhenHoverOnThings: showPreviewWhenHoverOnThings,
+        showPreviewWhenHoverOnItems: showPreviewWhenHoverOnItems,
         currentLocale: currentLocale,
         enableUnlockPwd: enablePwd,
         password: password == null ? "" : password.password ?? "");
   }
 
-  changeShowPreviewWhenHoverOnThings(bool b) async {
-    if (state.showPreviewWhenHoverOnThings != b) {
-      state = state.copyWith(showPreviewWhenHoverOnThings: b);
+  changeShowPreviewWhenHoverOnItems(bool b) async {
+    if (state.showPreviewWhenHoverOnItems != b) {
+      state = state.copyWith(showPreviewWhenHoverOnItems: b);
 
-      await localStorage.setShowPreviewWhenHoverOnThings(b);
+      await localStorage.setShowPreviewWhenHoverOnItems(b);
     }
   }
 

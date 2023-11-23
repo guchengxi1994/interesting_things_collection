@@ -2,7 +2,7 @@ import 'package:weaving/common/sm_utils.dart';
 import 'package:weaving/isar/catalog.dart';
 import 'package:weaving/isar/fast_note.dart';
 import 'package:weaving/isar/password.dart';
-import 'package:weaving/isar/thing.dart';
+import 'package:weaving/isar/catalog_item.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -24,7 +24,7 @@ class IsarDatabase {
     }
     final dir = await getApplicationDocumentsDirectory();
     isar = await Isar.open(
-      [CatalogSchema, ThingSchema, PasswordSchema, FastNoteSchema],
+      [CatalogSchema, CatalogItemSchema, PasswordSchema, FastNoteSchema],
       name: "weaving_db",
       directory: dir.path,
     );

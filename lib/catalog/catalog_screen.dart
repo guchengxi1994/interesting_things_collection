@@ -8,7 +8,7 @@ import 'package:reorderables/reorderables.dart';
 import 'package:weaving/notifier/fast_search_region_notifier.dart';
 
 import 'components/add_catalog_dialog.dart';
-import 'components/catalog_things.dart';
+import 'components/catalog_items.dart';
 
 class CatalogScreen extends ConsumerStatefulWidget {
   const CatalogScreen({super.key});
@@ -63,7 +63,7 @@ class CatalogScreenState extends ConsumerState<CatalogScreen> {
               color: Colors.white),
           // color: Colors.white,
           width: 0.8 * MediaQuery.of(context).size.width,
-          child: CatalogThingsWidget(
+          child: CatalogItemsWidget(
             catalog: selectedCatalog,
           ),
         ),
