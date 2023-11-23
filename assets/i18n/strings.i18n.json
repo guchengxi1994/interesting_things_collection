@@ -3,6 +3,10 @@
         "showPreview": "Show preview image",
         "colorTheme": "Color Theme",
         "locale": "Language",
+        "enablePassword":"Enable unlock password",
+        "operateCatalog":"Verify when operating catalogs",
+        "operateCatalogItems":"Verify when operating catalog items",
+        "operateFastNote":"Verify when operating fast notes",
         "column": {
             "color": "Color Settings",
             "common": "Common Settings",
@@ -40,5 +44,8 @@
             "emoji": "Add Emoji",
             "maxLength": "Max length $count"
         }
+    },
+    "dialogs":{
+        "loading":"Loading ..."
     }
 }

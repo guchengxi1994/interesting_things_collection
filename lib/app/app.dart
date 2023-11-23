@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_quill/translations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'package:weaving/catalog/components/custom_loading_widget.dart';
 import 'package:weaving/gen/strings.g.dart';
 import 'package:weaving/isar/database.dart';
 import 'package:weaving/layout/desktop_layout.dart';
@@ -44,7 +45,8 @@ class MyAppState extends ConsumerState<MyApp> {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
             navigatorObservers: [FlutterSmartDialog.observer],
-            builder: FlutterSmartDialog.init(),
+            builder: FlutterSmartDialog.init(
+                loadingBuilder: (String msg) => CustomLoadingWidget()),
             title: 'Weaving',
             localizationsDelegates: const [
               GlobalMaterialLocalizations.delegate,

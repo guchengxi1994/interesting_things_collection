@@ -200,7 +200,7 @@ class CatalogDetails extends ConsumerWidget {
                           child: Editor(
                             savedData: "",
                             saveToJson: (p0, p1, p2) async {
-                              SmartDialog.showLoading();
+                              SmartDialog.showLoading(msg: t.dialogs.loading);
                               item.catalogId = catalogId;
                               item.name = p2;
                               item.fullText = p1;
@@ -214,7 +214,7 @@ class CatalogDetails extends ConsumerWidget {
                               SmartDialog.dismiss();
                             },
                             savePreview: (p0) async {
-                              SmartDialog.showLoading();
+                              SmartDialog.showLoading(msg: t.dialogs.loading);
                               item.preview = Base64Utils.uint8List2Base64(p0);
                               await Future.delayed(const Duration(seconds: 1));
                               SmartDialog.dismiss();

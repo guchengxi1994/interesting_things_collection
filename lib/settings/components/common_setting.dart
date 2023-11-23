@@ -1,7 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:weaving/gen/strings.g.dart';
+import 'package:weaving/notifier/color_notifier.dart';
 import 'package:weaving/notifier/settings_notifier.dart';
+import 'package:weaving/style/app_style.dart';
 
 class CommonSettingWidget extends ConsumerWidget {
   const CommonSettingWidget({super.key});
@@ -20,7 +23,9 @@ class CommonSettingWidget extends ConsumerWidget {
                   width: 200,
                   child: Text(t.settings.showPreview),
                 ),
-                Switch(
+                CupertinoSwitch(
+                    activeColor: AppStyle
+                        .catalogCardBorderColors[ref.watch(colorNotifier)],
                     value:
                         ref.watch(settingsNotifier).showPreviewWhenHoverOnItems,
                     onChanged: (v) {
@@ -32,11 +37,13 @@ class CommonSettingWidget extends ConsumerWidget {
             ),
             Row(
               children: [
-                const SizedBox(
+                SizedBox(
                   width: 200,
-                  child: Text("Enable unlock password"),
+                  child: Text(t.settings.enablePassword),
                 ),
-                Switch(
+                CupertinoSwitch(
+                    activeColor: AppStyle
+                        .catalogCardBorderColors[ref.watch(colorNotifier)],
                     value: ref.watch(settingsNotifier).enableUnlockPwd,
                     onChanged: (v) {
                       ref.read(settingsNotifier.notifier).changeEnablePwd(v);
@@ -45,29 +52,41 @@ class CommonSettingWidget extends ConsumerWidget {
             ),
             Row(
               children: [
-                const SizedBox(
+                SizedBox(
                   width: 200,
-                  child: Text("Verify when operating catalogs"),
+                  child: Text(t.settings.operateCatalog),
                 ),
-                Switch(value: false, onChanged: (v) {}),
+                CupertinoSwitch(
+                    activeColor: AppStyle
+                        .catalogCardBorderColors[ref.watch(colorNotifier)],
+                    value: false,
+                    onChanged: (v) {}),
               ],
             ),
             Row(
               children: [
-                const SizedBox(
+                SizedBox(
                   width: 200,
-                  child: Text("Verify when operating catalog items"),
+                  child: Text(t.settings.operateCatalogItems),
                 ),
-                Switch(value: false, onChanged: (v) {}),
+                CupertinoSwitch(
+                    activeColor: AppStyle
+                        .catalogCardBorderColors[ref.watch(colorNotifier)],
+                    value: false,
+                    onChanged: (v) {}),
               ],
             ),
             Row(
               children: [
-                const SizedBox(
+                SizedBox(
                   width: 200,
-                  child: Text("Verify when operating fast notes"),
+                  child: Text(t.settings.operateFastNote),
                 ),
-                Switch(value: false, onChanged: (v) {}),
+                CupertinoSwitch(
+                    activeColor: AppStyle
+                        .catalogCardBorderColors[ref.watch(colorNotifier)],
+                    value: false,
+                    onChanged: (v) {}),
               ],
             ),
           ]),

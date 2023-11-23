@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 2
-/// Strings: 52 (26 per locale)
+/// Strings: 62 (31 per locale)
 ///
-/// Built on 2023-11-20 at 09:41 UTC
+/// Built on 2023-11-23 at 13:53 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -153,6 +153,7 @@ class _StringsEn implements BaseTranslations<AppLocale, _StringsEn> {
 	late final _StringsSettingsEn settings = _StringsSettingsEn._(_root);
 	late final _StringsLayoutEn layout = _StringsLayoutEn._(_root);
 	late final _StringsCatalogsEn catalogs = _StringsCatalogsEn._(_root);
+	late final _StringsDialogsEn dialogs = _StringsDialogsEn._(_root);
 }
 
 // Path: settings
@@ -165,6 +166,10 @@ class _StringsSettingsEn {
 	String get showPreview => 'Show preview image';
 	String get colorTheme => 'Color Theme';
 	String get locale => 'Language';
+	String get enablePassword => 'Enable unlock password';
+	String get operateCatalog => 'Verify when operating catalogs';
+	String get operateCatalogItems => 'Verify when operating catalog items';
+	String get operateFastNote => 'Verify when operating fast notes';
 	late final _StringsSettingsColumnEn column = _StringsSettingsColumnEn._(_root);
 }
 
@@ -192,6 +197,16 @@ class _StringsCatalogsEn {
 	late final _StringsCatalogsDetailsEn details = _StringsCatalogsDetailsEn._(_root);
 	late final _StringsCatalogsEditorEn editor = _StringsCatalogsEditorEn._(_root);
 	late final _StringsCatalogsNewCEn newC = _StringsCatalogsNewCEn._(_root);
+}
+
+// Path: dialogs
+class _StringsDialogsEn {
+	_StringsDialogsEn._(this._root);
+
+	final _StringsEn _root; // ignore: unused_field
+
+	// Translations
+	String get loading => 'Loading ...';
 }
 
 // Path: settings.column
@@ -286,6 +301,7 @@ class _StringsZhCn implements _StringsEn {
 	@override late final _StringsSettingsZhCn settings = _StringsSettingsZhCn._(_root);
 	@override late final _StringsLayoutZhCn layout = _StringsLayoutZhCn._(_root);
 	@override late final _StringsCatalogsZhCn catalogs = _StringsCatalogsZhCn._(_root);
+	@override late final _StringsDialogsZhCn dialogs = _StringsDialogsZhCn._(_root);
 }
 
 // Path: settings
@@ -298,6 +314,10 @@ class _StringsSettingsZhCn implements _StringsSettingsEn {
 	@override String get showPreview => '展示预览图';
 	@override String get colorTheme => '主题色';
 	@override String get locale => '语言';
+	@override String get enablePassword => '开启解锁密码';
+	@override String get operateCatalog => '修改分类需验证';
+	@override String get operateCatalogItems => '修改分类条目需验证';
+	@override String get operateFastNote => '修改笔记需验证';
 	@override late final _StringsSettingsColumnZhCn column = _StringsSettingsColumnZhCn._(_root);
 }
 
@@ -325,6 +345,16 @@ class _StringsCatalogsZhCn implements _StringsCatalogsEn {
 	@override late final _StringsCatalogsDetailsZhCn details = _StringsCatalogsDetailsZhCn._(_root);
 	@override late final _StringsCatalogsEditorZhCn editor = _StringsCatalogsEditorZhCn._(_root);
 	@override late final _StringsCatalogsNewCZhCn newC = _StringsCatalogsNewCZhCn._(_root);
+}
+
+// Path: dialogs
+class _StringsDialogsZhCn implements _StringsDialogsEn {
+	_StringsDialogsZhCn._(this._root);
+
+	@override final _StringsZhCn _root; // ignore: unused_field
+
+	// Translations
+	@override String get loading => '稍等...';
 }
 
 // Path: settings.column
@@ -400,6 +430,10 @@ extension on _StringsEn {
 			case 'settings.showPreview': return 'Show preview image';
 			case 'settings.colorTheme': return 'Color Theme';
 			case 'settings.locale': return 'Language';
+			case 'settings.enablePassword': return 'Enable unlock password';
+			case 'settings.operateCatalog': return 'Verify when operating catalogs';
+			case 'settings.operateCatalogItems': return 'Verify when operating catalog items';
+			case 'settings.operateFastNote': return 'Verify when operating fast notes';
 			case 'settings.column.color': return 'Color Settings';
 			case 'settings.column.common': return 'Common Settings';
 			case 'settings.column.language': return 'Language Settings';
@@ -423,6 +457,7 @@ extension on _StringsEn {
 			case 'catalogs.newC.create': return 'Create';
 			case 'catalogs.newC.emoji': return 'Add Emoji';
 			case 'catalogs.newC.maxLength': return ({required Object count}) => 'Max length ${count}';
+			case 'dialogs.loading': return 'Loading ...';
 			default: return null;
 		}
 	}
@@ -434,6 +469,10 @@ extension on _StringsZhCn {
 			case 'settings.showPreview': return '展示预览图';
 			case 'settings.colorTheme': return '主题色';
 			case 'settings.locale': return '语言';
+			case 'settings.enablePassword': return '开启解锁密码';
+			case 'settings.operateCatalog': return '修改分类需验证';
+			case 'settings.operateCatalogItems': return '修改分类条目需验证';
+			case 'settings.operateFastNote': return '修改笔记需验证';
 			case 'settings.column.color': return '颜色设置';
 			case 'settings.column.common': return '通用设置';
 			case 'settings.column.language': return '语言设置';
@@ -457,6 +496,7 @@ extension on _StringsZhCn {
 			case 'catalogs.newC.create': return '创建';
 			case 'catalogs.newC.emoji': return '添加表情';
 			case 'catalogs.newC.maxLength': return ({required Object count}) => '长度限制${count}';
+			case 'dialogs.loading': return '稍等...';
 			default: return null;
 		}
 	}
