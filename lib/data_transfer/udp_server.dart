@@ -65,7 +65,7 @@ class UdpServer {
             if (model.id == model.count! - 1) {
               List<DataTransferModel> d0 = datas.getByUUID(model.uuid!);
               String? s = d0.restore();
-              // print(s);
+              print(s);
 
               datas.retainWhere((element) => element.uuid != model.uuid);
             }

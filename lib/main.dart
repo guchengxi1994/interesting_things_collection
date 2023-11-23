@@ -19,7 +19,7 @@ void main() async {
 
   final LocalStorage _ = LocalStorage();
   // ignore: non_constant_identifier_names
-  final IsarDatabase ___ = IsarDatabase();
+  final IsarDatabase __ = IsarDatabase();
 
   if (Platform.isAndroid || Platform.isIOS) {
     m.runAPP();

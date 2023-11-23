@@ -4,6 +4,8 @@ class AppStyle {
   static const double appbarHeight = 40;
   static const double sidebarWidth = 150;
 
+  static Color pinCodeColor = const Color.fromARGB(255, 34, 129, 248);
+
   AppStyle._();
 
   static const double catalogCardWidth = 100;

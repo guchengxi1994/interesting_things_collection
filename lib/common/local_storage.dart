@@ -38,4 +38,12 @@ class LocalStorage {
   Future setCurrentLocale(String locale) async {
     await _storage!.setString("currentLocale", locale);
   }
+
+  bool getEnablePasscode() {
+    return _storage!.getBool("enablePasscode") ?? true;
+  }
+
+  Future setEnablePasscode(bool b) async {
+    await _storage!.setBool("enablePasscode", b);
+  }
 }

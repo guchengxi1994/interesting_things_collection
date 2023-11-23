@@ -22,18 +22,13 @@ const FastNoteSchema = CollectionSchema(
       name: r'createAt',
       type: IsarType.long,
     ),
-    r'hiddenValues': PropertySchema(
-      id: 1,
-      name: r'hiddenValues',
-      type: IsarType.bool,
-    ),
     r'key': PropertySchema(
-      id: 2,
+      id: 1,
       name: r'key',
       type: IsarType.string,
     ),
     r'values': PropertySchema(
-      id: 3,
+      id: 2,
       name: r'values',
       type: IsarType.stringList,
     )
@@ -44,14 +39,7 @@ const FastNoteSchema = CollectionSchema(
   deserializeProp: _fastNoteDeserializeProp,
   idName: r'id',
   indexes: {},
-  links: {
-    r'password': LinkSchema(
-      id: 5152227835660186990,
-      name: r'password',
-      target: r'Password',
-      single: true,
-    )
-  },
+  links: {},
   embeddedSchemas: {},
   getId: _fastNoteGetId,
   getLinks: _fastNoteGetLinks,
@@ -88,9 +76,8 @@ void _fastNoteSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeLong(offsets[0], object.createAt);
-  writer.writeBool(offsets[1], object.hiddenValues);
-  writer.writeString(offsets[2], object.key);
-  writer.writeStringList(offsets[3], object.values);
+  writer.writeString(offsets[1], object.key);
+  writer.writeStringList(offsets[2], object.values);
 }
 
 FastNote _fastNoteDeserialize(
@@ -101,10 +88,9 @@ FastNote _fastNoteDeserialize(
 ) {
   final object = FastNote();
   object.createAt = reader.readLong(offsets[0]);
-  object.hiddenValues = reader.readBool(offsets[1]);
   object.id = id;
-  object.key = reader.readStringOrNull(offsets[2]);
-  object.values = reader.readStringList(offsets[3]) ?? [];
+  object.key = reader.readStringOrNull(offsets[1]);
+  object.values = reader.readStringList(offsets[2]) ?? [];
   return object;
 }
 
@@ -118,10 +104,8 @@ P _fastNoteDeserializeProp<P>(
     case 0:
       return (reader.readLong(offset)) as P;
     case 1:
-      return (reader.readBool(offset)) as P;
-    case 2:
       return (reader.readStringOrNull(offset)) as P;
-    case 3:
+    case 2:
       return (reader.readStringList(offset) ?? []) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -133,12 +117,11 @@ Id _fastNoteGetId(FastNote object) {
 }
 
 List<IsarLinkBase<dynamic>> _fastNoteGetLinks(FastNote object) {
-  return [object.password];
+  return [];
 }
 
 void _fastNoteAttach(IsarCollection<dynamic> col, Id id, FastNote object) {
   object.id = id;
-  object.password.attach(col, col.isar.collection<Password>(), r'password', id);
 }
 
 extension FastNoteQueryWhereSort on QueryBuilder<FastNote, FastNote, QWhere> {
@@ -267,16 +250,6 @@ extension FastNoteQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
-      ));
-    });
-  }
-
-  QueryBuilder<FastNote, FastNote, QAfterFilterCondition> hiddenValuesEqualTo(
-      bool value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'hiddenValues',
-        value: value,
       ));
     });
   }
@@ -719,20 +692,7 @@ extension FastNoteQueryObject
     on QueryBuilder<FastNote, FastNote, QFilterCondition> {}
 
 extension FastNoteQueryLinks
-    on QueryBuilder<FastNote, FastNote, QFilterCondition> {
-  QueryBuilder<FastNote, FastNote, QAfterFilterCondition> password(
-      FilterQuery<Password> q) {
-    return QueryBuilder.apply(this, (query) {
-      return query.link(q, r'password');
-    });
-  }
-
-  QueryBuilder<FastNote, FastNote, QAfterFilterCondition> passwordIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.linkLength(r'password', 0, true, 0, true);
-    });
-  }
-}
+    on QueryBuilder<FastNote, FastNote, QFilterCondition> {}
 
 extension FastNoteQuerySortBy on QueryBuilder<FastNote, FastNote, QSortBy> {
   QueryBuilder<FastNote, FastNote, QAfterSortBy> sortByCreateAt() {
@@ -744,18 +704,6 @@ extension FastNoteQuerySortBy on QueryBuilder<FastNote, FastNote, QSortBy> {
   QueryBuilder<FastNote, FastNote, QAfterSortBy> sortByCreateAtDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'createAt', Sort.desc);
-    });
-  }
-
-  QueryBuilder<FastNote, FastNote, QAfterSortBy> sortByHiddenValues() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'hiddenValues', Sort.asc);
-    });
-  }
-
-  QueryBuilder<FastNote, FastNote, QAfterSortBy> sortByHiddenValuesDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'hiddenValues', Sort.desc);
     });
   }
 
@@ -783,18 +731,6 @@ extension FastNoteQuerySortThenBy
   QueryBuilder<FastNote, FastNote, QAfterSortBy> thenByCreateAtDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'createAt', Sort.desc);
-    });
-  }
-
-  QueryBuilder<FastNote, FastNote, QAfterSortBy> thenByHiddenValues() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'hiddenValues', Sort.asc);
-    });
-  }
-
-  QueryBuilder<FastNote, FastNote, QAfterSortBy> thenByHiddenValuesDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'hiddenValues', Sort.desc);
     });
   }
 
@@ -831,12 +767,6 @@ extension FastNoteQueryWhereDistinct
     });
   }
 
-  QueryBuilder<FastNote, FastNote, QDistinct> distinctByHiddenValues() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'hiddenValues');
-    });
-  }
-
   QueryBuilder<FastNote, FastNote, QDistinct> distinctByKey(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -862,12 +792,6 @@ extension FastNoteQueryProperty
   QueryBuilder<FastNote, int, QQueryOperations> createAtProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'createAt');
-    });
-  }
-
-  QueryBuilder<FastNote, bool, QQueryOperations> hiddenValuesProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'hiddenValues');
     });
   }
 

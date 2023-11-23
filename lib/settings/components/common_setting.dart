@@ -40,10 +40,35 @@ class CommonSettingWidget extends ConsumerWidget {
                 Switch(
                     value: ref.watch(settingsNotifier).enableUnlockPwd,
                     onChanged: (v) {
-                      // ref
-                      //     .read(settingsNotifier.notifier)
-                      //     .changeShowPreviewWhenHoverOnThings(v);
+                      ref.read(settingsNotifier.notifier).changeEnablePwd(v);
                     }),
+              ],
+            ),
+            Row(
+              children: [
+                const SizedBox(
+                  width: 200,
+                  child: Text("Verify when operating catalogs"),
+                ),
+                Switch(value: false, onChanged: (v) {}),
+              ],
+            ),
+            Row(
+              children: [
+                const SizedBox(
+                  width: 200,
+                  child: Text("Verify when operating catalog items"),
+                ),
+                Switch(value: false, onChanged: (v) {}),
+              ],
+            ),
+            Row(
+              children: [
+                const SizedBox(
+                  width: 200,
+                  child: Text("Verify when operating fast notes"),
+                ),
+                Switch(value: false, onChanged: (v) {}),
               ],
             ),
           ]),
