@@ -22,13 +22,23 @@ const FastNoteSchema = CollectionSchema(
       name: r'createAt',
       type: IsarType.long,
     ),
-    r'key': PropertySchema(
+    r'group': PropertySchema(
       id: 1,
+      name: r'group',
+      type: IsarType.string,
+    ),
+    r'isFav': PropertySchema(
+      id: 2,
+      name: r'isFav',
+      type: IsarType.bool,
+    ),
+    r'key': PropertySchema(
+      id: 3,
       name: r'key',
       type: IsarType.string,
     ),
     r'values': PropertySchema(
-      id: 2,
+      id: 4,
       name: r'values',
       type: IsarType.stringList,
     )
@@ -53,6 +63,7 @@ int _fastNoteEstimateSize(
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
+  bytesCount += 3 + object.group.length * 3;
   {
     final value = object.key;
     if (value != null) {
@@ -76,8 +87,10 @@ void _fastNoteSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeLong(offsets[0], object.createAt);
-  writer.writeString(offsets[1], object.key);
-  writer.writeStringList(offsets[2], object.values);
+  writer.writeString(offsets[1], object.group);
+  writer.writeBool(offsets[2], object.isFav);
+  writer.writeString(offsets[3], object.key);
+  writer.writeStringList(offsets[4], object.values);
 }
 
 FastNote _fastNoteDeserialize(
@@ -88,9 +101,11 @@ FastNote _fastNoteDeserialize(
 ) {
   final object = FastNote();
   object.createAt = reader.readLong(offsets[0]);
+  object.group = reader.readString(offsets[1]);
   object.id = id;
-  object.key = reader.readStringOrNull(offsets[1]);
-  object.values = reader.readStringList(offsets[2]) ?? [];
+  object.isFav = reader.readBool(offsets[2]);
+  object.key = reader.readStringOrNull(offsets[3]);
+  object.values = reader.readStringList(offsets[4]) ?? [];
   return object;
 }
 
@@ -104,8 +119,12 @@ P _fastNoteDeserializeProp<P>(
     case 0:
       return (reader.readLong(offset)) as P;
     case 1:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readString(offset)) as P;
     case 2:
+      return (reader.readBool(offset)) as P;
+    case 3:
+      return (reader.readStringOrNull(offset)) as P;
+    case 4:
       return (reader.readStringList(offset) ?? []) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -254,6 +273,136 @@ extension FastNoteQueryFilter
     });
   }
 
+  QueryBuilder<FastNote, FastNote, QAfterFilterCondition> groupEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'group',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FastNote, FastNote, QAfterFilterCondition> groupGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'group',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FastNote, FastNote, QAfterFilterCondition> groupLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'group',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FastNote, FastNote, QAfterFilterCondition> groupBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'group',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FastNote, FastNote, QAfterFilterCondition> groupStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'group',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FastNote, FastNote, QAfterFilterCondition> groupEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'group',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FastNote, FastNote, QAfterFilterCondition> groupContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'group',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FastNote, FastNote, QAfterFilterCondition> groupMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'group',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<FastNote, FastNote, QAfterFilterCondition> groupIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'group',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<FastNote, FastNote, QAfterFilterCondition> groupIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'group',
+        value: '',
+      ));
+    });
+  }
+
   QueryBuilder<FastNote, FastNote, QAfterFilterCondition> idIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -318,6 +467,16 @@ extension FastNoteQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<FastNote, FastNote, QAfterFilterCondition> isFavEqualTo(
+      bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'isFav',
+        value: value,
       ));
     });
   }
@@ -707,6 +866,30 @@ extension FastNoteQuerySortBy on QueryBuilder<FastNote, FastNote, QSortBy> {
     });
   }
 
+  QueryBuilder<FastNote, FastNote, QAfterSortBy> sortByGroup() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'group', Sort.asc);
+    });
+  }
+
+  QueryBuilder<FastNote, FastNote, QAfterSortBy> sortByGroupDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'group', Sort.desc);
+    });
+  }
+
+  QueryBuilder<FastNote, FastNote, QAfterSortBy> sortByIsFav() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isFav', Sort.asc);
+    });
+  }
+
+  QueryBuilder<FastNote, FastNote, QAfterSortBy> sortByIsFavDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isFav', Sort.desc);
+    });
+  }
+
   QueryBuilder<FastNote, FastNote, QAfterSortBy> sortByKey() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'key', Sort.asc);
@@ -734,6 +917,18 @@ extension FastNoteQuerySortThenBy
     });
   }
 
+  QueryBuilder<FastNote, FastNote, QAfterSortBy> thenByGroup() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'group', Sort.asc);
+    });
+  }
+
+  QueryBuilder<FastNote, FastNote, QAfterSortBy> thenByGroupDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'group', Sort.desc);
+    });
+  }
+
   QueryBuilder<FastNote, FastNote, QAfterSortBy> thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
@@ -743,6 +938,18 @@ extension FastNoteQuerySortThenBy
   QueryBuilder<FastNote, FastNote, QAfterSortBy> thenByIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.desc);
+    });
+  }
+
+  QueryBuilder<FastNote, FastNote, QAfterSortBy> thenByIsFav() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isFav', Sort.asc);
+    });
+  }
+
+  QueryBuilder<FastNote, FastNote, QAfterSortBy> thenByIsFavDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isFav', Sort.desc);
     });
   }
 
@@ -764,6 +971,19 @@ extension FastNoteQueryWhereDistinct
   QueryBuilder<FastNote, FastNote, QDistinct> distinctByCreateAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'createAt');
+    });
+  }
+
+  QueryBuilder<FastNote, FastNote, QDistinct> distinctByGroup(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'group', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<FastNote, FastNote, QDistinct> distinctByIsFav() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'isFav');
     });
   }
 
@@ -792,6 +1012,18 @@ extension FastNoteQueryProperty
   QueryBuilder<FastNote, int, QQueryOperations> createAtProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'createAt');
+    });
+  }
+
+  QueryBuilder<FastNote, String, QQueryOperations> groupProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'group');
+    });
+  }
+
+  QueryBuilder<FastNote, bool, QQueryOperations> isFavProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'isFav');
     });
   }
 

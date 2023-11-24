@@ -25,6 +25,7 @@ dependencies:
   flutter_riverpod: ^2.4.3
   flutter_smart_dialog: ^4.9.4
   flutter_tags_x: ^1.1.0
+  grouped_list: ^5.1.2
   hotkey_manager: ^0.1.8
   image_cropper: ^5.0.0
   # https://isar.dev/zh/tutorials/quickstart.html

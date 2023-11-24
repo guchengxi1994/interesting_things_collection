@@ -14,11 +14,9 @@ class IsarDatabase {
 
   factory IsarDatabase() => _instance;
 
-  IsarDatabase._init() {
-    _initialDatabase();
-  }
+  IsarDatabase._init();
 
-  _initialDatabase() async {
+  Future initialDatabase() async {
     if (isar != null && isar!.isOpen) {
       return;
     }
