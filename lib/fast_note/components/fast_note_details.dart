@@ -27,23 +27,46 @@ class FastNoteDetailsWidget extends ConsumerWidget {
     }
 
     return Column(
-      children: [_buildTitle(note), _buildValues(note, ref)],
+      children: [_buildTitle(note, ref), _buildValues(note, ref)],
     );
   }
 
-  Widget _buildTitle(FastNote note) {
+  Widget _buildTitle(FastNote note, WidgetRef ref) {
     return Container(
       padding: const EdgeInsets.only(left: 20),
       height: 50,
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: Text(
-          note.key ?? "",
-          style: const TextStyle(
-              fontSize: 25,
-              fontWeight: FontWeight.bold,
-              color: AppStyle.titleTextColor),
-        ),
+      child: Row(
+        children: [
+          Text(
+            "Id: ${note.id}    ",
+            style: const TextStyle(
+                fontSize: 25,
+                fontWeight: FontWeight.bold,
+                color: AppStyle.titleTextColor),
+          ),
+          Text(
+            note.key ?? "",
+            style: const TextStyle(
+                fontSize: 25,
+                fontWeight: FontWeight.bold,
+                color: AppStyle.titleTextColor),
+          ),
+          const Expanded(child: SizedBox()),
+          InkWell(
+            onTap: () {
+              List<String> l = List.from(note.values);
+              l.insert(0, "请输入");
+              note.values = l;
+              ref.read(fastNoteSelectionNotifier.notifier).refreshNode(note);
+            },
+            child: const Icon(
+              Icons.add,
+            ),
+          ),
+          const SizedBox(
+            width: 30,
+          ),
+        ],
       ),
     );
   }
@@ -62,23 +85,24 @@ class FastNoteDetailsWidget extends ConsumerWidget {
                 height: 50,
                 padding: const EdgeInsets.all(5),
                 child: CustomEditableText(
+                  isEditing: i == 0 && note.values[i] == "请输入",
                   value: note.values[i],
                   onDelete: () {
-                    /// FIXME not refresh
                     List<String> l = List.from(note.values);
                     l.removeAt(i);
                     note.values = l;
 
                     ref.read(fastNoteNotifier.notifier).updateNote(note);
-                    // ref
-                    //     .read(fastNoteSelectionNotifier.notifier)
-                    //     .refreshNode(note);
+                    ref
+                        .read(fastNoteSelectionNotifier.notifier)
+                        .refreshNode(note);
                   },
                   onSave: (s) {
                     // dont need to refresh
                     note.values[i] = s;
                     ref.read(fastNoteNotifier.notifier).updateNote(note);
                   },
+                  onAdd: (s) {},
                 ),
               ),
           separatorBuilder: (c, i) => const Divider(

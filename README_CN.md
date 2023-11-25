@@ -12,6 +12,11 @@
 * [flutter_riverpod](https://pub.dev/packages/flutter_riverpod)
 * [flutter_quill](https://pub-web.flutter-io.cn/packages/flutter_quill)
 
+
+### milestones
+
+- [ ] todo list/kanban  and gantt
+
 ### 一些截图
 
 ![1700658475213](./images/1700658475213.png)

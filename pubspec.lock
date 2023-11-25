@@ -741,6 +741,22 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.0.4"
+  irondash_engine_context:
+    dependency: transitive
+    description:
+      name: irondash_engine_context
+      sha256: f66a1af95756d5fece5034d357853d0127e09b9e4ef58be1f022ca47e11c6f7e
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.4.0"
+  irondash_message_channel:
+    dependency: transitive
+    description:
+      name: irondash_message_channel
+      sha256: "500daa1fbe679f7d28a5258df3ff47dab6de352e680dc93c1ca9eae1555d8db5"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.3.1"
   isar:
     dependency: "direct main"
     description:
@@ -957,6 +973,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "8.0.1"
+  pixel_snap:
+    dependency: transitive
+    description:
+      name: pixel_snap
+      sha256: d31591a4f4aa8ed5dc6fc00b8d027338a5614dfbf5ca658b69d1faa7aba80af7
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.1.4"
   platform:
     dependency: transitive
     description:
@@ -1233,6 +1257,22 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.2.0"
+  super_clipboard:
+    dependency: "direct main"
+    description:
+      name: super_clipboard
+      sha256: "1031873af66c796177eff073d1453c9f19a75e6f9b308ca0b950928d0a20aedd"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.7.3"
+  super_native_extensions:
+    dependency: transitive
+    description:
+      name: super_native_extensions
+      sha256: fd658e096e99ed7555c0727a8201dbe3b8afc0059742ac14bdcff115e08f589c
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.7.3"
   synchronized:
     dependency: transitive
     description:
