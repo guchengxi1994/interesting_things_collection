@@ -11,6 +11,33 @@ class FastNote {
   int createAt = DateTime.now().millisecondsSinceEpoch;
   bool isFav = false;
   late String group = formatDate(DateTime.now(), [yyyy, "-", mm, "-", dd]);
+
+  final changeLogs = IsarLinks<FastNoteChangelog>();
+
+  FastNote copyWith(
+      {Id? id,
+      String? key,
+      List<String>? values,
+      int? createAt,
+      bool? isFav,
+      String? group}) {
+    return FastNote()
+      ..id = id ?? this.id
+      ..key = key ?? this.key
+      ..values = values ?? this.values
+      ..createAt = createAt ?? this.createAt
+      ..isFav = isFav ?? this.isFav
+      ..group = group ?? this.group;
+  }
+}
+
+@collection
+class FastNoteChangelog {
+  Id? id;
+
+  String? key;
+  List<String> values = [];
+  int createAt = DateTime.now().millisecondsSinceEpoch;
 }
 
 extension GroupBy on List<FastNote> {

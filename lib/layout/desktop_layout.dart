@@ -158,9 +158,7 @@ class LayoutState extends ConsumerState<Layout> with TickerProviderStateMixin {
               Expanded(
                   child: Container(
                 decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius:
-                        BorderRadius.only(topLeft: Radius.circular(20))),
+                    color: Colors.white, borderRadius: AppStyle.leftTopRadius),
                 child: PageView(
                   physics: const NeverScrollableScrollPhysics(),
                   controller: controller,

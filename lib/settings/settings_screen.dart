@@ -8,6 +8,7 @@ import 'package:weaving/settings/components/colors_setting.dart';
 import 'package:weaving/settings/components/common_setting.dart';
 import 'package:weaving/settings/components/locale_setting.dart';
 import 'package:weaving/settings/settings_page_notifier.dart';
+import 'package:weaving/style/app_style.dart';
 
 import 'components/item.dart';
 
@@ -42,7 +43,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           Container(
             decoration: const BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.only(topLeft: Radius.circular(20)),
+              borderRadius: AppStyle.leftTopRadius,
               boxShadow: [
                 BoxShadow(
                     color: Color.fromARGB(255, 236, 243, 236),
