@@ -6,6 +6,7 @@ import 'package:weaving/isar/fast_note.dart';
 import 'package:weaving/style/app_style.dart';
 
 import 'custom_editable_text.dart';
+import 'custom_editable_title.dart';
 
 class FastNoteDetailsWidget extends ConsumerWidget {
   const FastNoteDetailsWidget({
@@ -27,6 +28,7 @@ class FastNoteDetailsWidget extends ConsumerWidget {
     }
 
     return Column(
+      key: UniqueKey(),
       children: [_buildTitle(note, ref), _buildValues(note, ref)],
     );
   }
@@ -44,12 +46,15 @@ class FastNoteDetailsWidget extends ConsumerWidget {
                 fontWeight: FontWeight.bold,
                 color: AppStyle.titleTextColor),
           ),
-          Text(
-            note.key ?? "",
-            style: const TextStyle(
-                fontSize: 25,
-                fontWeight: FontWeight.bold,
-                color: AppStyle.titleTextColor),
+          CustomEditableTitle(
+            // key: UniqueKey(),
+            title: note.key ?? "",
+            onSave: (String s) {
+              note.key = s;
+
+              ref.read(fastNoteNotifier.notifier).updateNote(note);
+              ref.read(fastNoteSelectionNotifier.notifier).refreshNode(note);
+            },
           ),
           const Expanded(child: SizedBox()),
           InkWell(
@@ -80,7 +85,7 @@ class FastNoteDetailsWidget extends ConsumerWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       child: ListView.separated(
-          key: UniqueKey(),
+          // key: UniqueKey(),
           itemBuilder: (c, i) => Container(
                 height: 50,
                 padding: const EdgeInsets.all(5),

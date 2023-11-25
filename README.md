@@ -24,3 +24,5 @@ A Flutter project with `riverpod` and `isar`, supports desktop and mobiles.
 ![1700658644953](./images/1700658644953.png)
 
 ![1700658676214](./images/1700658676214.png)
+
+![image-20231125230300639](./images/image-20231125230300639.png)
