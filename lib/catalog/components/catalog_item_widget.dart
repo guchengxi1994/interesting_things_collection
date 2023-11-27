@@ -17,13 +17,19 @@ import 'editor.dart';
 
 typedef OnRatingChange = void Function(double);
 typedef OnDeleteClick = void Function(CatalogItem);
+typedef OnLockClick = void Function(CatalogItem, bool);
 
 class CatalogItemWidget extends ConsumerWidget {
   const CatalogItemWidget(
-      {super.key, required this.item, this.onRatingChange, this.onDeleteClick});
+      {super.key,
+      required this.item,
+      this.onRatingChange,
+      this.onDeleteClick,
+      this.onLockClick});
   final CatalogItem item;
   final OnRatingChange? onRatingChange;
   final OnDeleteClick? onDeleteClick;
+  final OnDeleteClick? onLockClick;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -168,6 +174,15 @@ class CatalogItemWidget extends ConsumerWidget {
               )),
               FittedBox(
                 child: InkWell(
+                  onTap: () {},
+                  child: Icon(
+                    item.locked ? Icons.lock_open : Icons.lock,
+                    color: Colors.yellow,
+                  ),
+                ),
+              ),
+              FittedBox(
+                child: InkWell(
                   onTap: () {
                     if (onDeleteClick != null) {
                       onDeleteClick!(item);
@@ -178,7 +193,7 @@ class CatalogItemWidget extends ConsumerWidget {
                     color: Colors.red,
                   ),
                 ),
-              )
+              ),
             ],
           ),
         ),

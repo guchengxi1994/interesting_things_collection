@@ -83,12 +83,6 @@ class _FastNoteScreenState extends ConsumerState<FastNoteScreen> {
             child: const Icon(Icons.exposure_outlined),
             onPressed: () {},
           ),
-          FloatingActionButton.small(
-            tooltip: "快速搜索",
-            heroTag: null,
-            child: const Icon(Icons.search),
-            onPressed: () {},
-          ),
         ],
       ),
     );

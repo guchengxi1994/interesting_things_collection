@@ -16,6 +16,17 @@ class FastNoteNotifier extends AsyncNotifier<FastNoteState> {
         notes: await isarDatabase.isar!.fastNotes.where().findAll());
   }
 
+  filter(String s) async {
+    state = const AsyncLoading();
+    state = await AsyncValue.guard(() async {
+      return FastNoteState(
+          notes: await isarDatabase.isar!.fastNotes
+              .filter()
+              .keyContains(s)
+              .findAll());
+    });
+  }
+
   Future<FastNote> add(FastNote note) async {
     state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
@@ -28,7 +39,7 @@ class FastNoteNotifier extends AsyncNotifier<FastNoteState> {
     return note;
   }
 
-  updateNote(FastNote note) async {
+  Future updateNote(FastNote note) async {
     state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
       await isarDatabase.isar!.writeTxn(() async {

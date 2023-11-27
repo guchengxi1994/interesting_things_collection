@@ -9,6 +9,8 @@ import 'package:weaving/isar/fast_note.dart';
 import 'package:weaving/notifier/color_notifier.dart';
 import 'package:weaving/style/app_style.dart';
 
+import 'search_text_field.dart';
+
 class SideMenu extends ConsumerWidget {
   const SideMenu({Key? key}) : super(key: key);
 
@@ -32,96 +34,110 @@ class SideMenu extends ConsumerWidget {
           ],
         ),
         width: 250,
-        child: Builder(builder: (c) {
-          return switch (notes) {
-            AsyncValue<FastNoteState>(:final value?) =>
-              GroupedListView<FastNote, String>(
-                stickyHeaderBackgroundColor: Colors.transparent,
-                elements: value.notes,
-                groupBy: (element) =>
-                    element.isFav ? "Favorite" : element.group,
-                groupComparator: (value1, value2) => -value2.compareTo(value1),
-                itemComparator: (item1, item2) =>
-                    item1.createAt.compareTo(item2.createAt),
-                order: GroupedListOrder.DESC,
-                useStickyGroupSeparators: false,
-                groupSeparatorBuilder: (String value) => Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    value,
-                    textAlign: TextAlign.left,
-                    style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: AppStyle.titleTextColor),
-                  ),
-                ),
-                itemBuilder: (c, element) {
-                  return InkWell(
-                    mouseCursor: SystemMouseCursors.click,
-                    onTap: () {
-                      ref
-                          .read(fastNoteSelectionNotifier.notifier)
-                          .changeCurrent(element);
-                    },
-                    child: Container(
-                      margin: const EdgeInsets.only(top: 5, bottom: 5),
-                      padding: const EdgeInsets.only(left: 10, right: 10),
-                      height: 40,
-                      decoration: BoxDecoration(
-                        color:
-                            currentNote != null && currentNote.id == element.id
-                                ? AppStyle.catalogCardBorderColors[
-                                        ref.watch(colorNotifier)]
-                                    .withAlpha(120)
-                                : Colors.white,
-                        // borderRadius: AppStyle.leftTopRadius,
+        child: Column(
+          children: [
+            const SearchTextField(),
+            Expanded(
+              child: Builder(builder: (c) {
+                return switch (notes) {
+                  AsyncValue<FastNoteState>(:final value?) =>
+                    GroupedListView<FastNote, String>(
+                      stickyHeaderBackgroundColor: Colors.transparent,
+                      elements: value.notes,
+                      groupBy: (element) =>
+                          element.isFav ? "Favorite" : element.group,
+                      groupComparator: (value1, value2) =>
+                          -value2.compareTo(value1),
+                      itemComparator: (item1, item2) =>
+                          item1.createAt.compareTo(item2.createAt),
+                      order: GroupedListOrder.DESC,
+                      useStickyGroupSeparators: false,
+                      groupSeparatorBuilder: (String value) => Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          value,
+                          textAlign: TextAlign.left,
+                          style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: AppStyle.titleTextColor),
+                        ),
                       ),
-                      child: Row(
-                        children: [
-                          Expanded(child: Text(element.key ?? "")),
-                          LikeButton(
-                            onTap: (b) async {
-                              // return true;
-                              if (element.isFav == true) {
-                                element.isFav = false;
-                              } else {
-                                element.isFav = true;
-                              }
-                              ref
-                                  .read(fastNoteNotifier.notifier)
-                                  .updateNote(element);
-                              return element.isFav;
-                            },
-                            isLiked: element.isFav,
-                            size: 25,
-                            circleColor: const CircleColor(
-                                start: Color(0xff00ddff),
-                                end: Color(0xff0099cc)),
-                            bubblesColor: const BubblesColor(
-                              dotPrimaryColor: Color(0xff33b5e5),
-                              dotSecondaryColor: Color(0xff0099cc),
+                      itemBuilder: (c, element) {
+                        return InkWell(
+                          mouseCursor: SystemMouseCursors.click,
+                          onTap: () {
+                            ref
+                                .read(fastNoteSelectionNotifier.notifier)
+                                .changeCurrent(element);
+                          },
+                          child: Container(
+                            margin: const EdgeInsets.only(top: 5, bottom: 5),
+                            padding: const EdgeInsets.only(left: 10, right: 10),
+                            height: 40,
+                            decoration: BoxDecoration(
+                              color: currentNote != null &&
+                                      currentNote.id == element.id
+                                  ? AppStyle.catalogCardBorderColors[
+                                          ref.watch(colorNotifier)]
+                                      .withAlpha(80)
+                                  : Colors.white,
+                              // borderRadius: AppStyle.leftTopRadius,
                             ),
-                            likeBuilder: (bool isLiked) {
-                              return Icon(
-                                Icons.favorite,
-                                color: isLiked
-                                    ? const Color.fromARGB(255, 240, 101, 147)
-                                    : Colors.grey,
-                                size: 25,
-                              );
-                            },
+                            child: Row(
+                              children: [
+                                Expanded(child: Text(element.key ?? "")),
+                                LikeButton(
+                                  onTap: (b) async {
+                                    // return true;
+                                    if (element.isFav == true) {
+                                      element.isFav = false;
+                                    } else {
+                                      element.isFav = true;
+                                    }
+                                    Future.delayed(element.isFav
+                                            ? const Duration(milliseconds: 1050)
+                                            : const Duration(milliseconds: 50))
+                                        .then((value) async {
+                                      await ref
+                                          .read(fastNoteNotifier.notifier)
+                                          .updateNote(element);
+                                    });
+                                    return element.isFav;
+                                  },
+                                  isLiked: element.isFav,
+                                  size: 25,
+                                  circleColor: const CircleColor(
+                                      start: Color(0xff00ddff),
+                                      end: Color(0xff0099cc)),
+                                  bubblesColor: const BubblesColor(
+                                    dotPrimaryColor: Color(0xff33b5e5),
+                                    dotSecondaryColor: Color(0xff0099cc),
+                                  ),
+                                  likeBuilder: (bool isLiked) {
+                                    return Icon(
+                                      Icons.favorite,
+                                      color: isLiked
+                                          ? const Color.fromARGB(
+                                              255, 240, 101, 147)
+                                          : Colors.grey,
+                                      size: 25,
+                                    );
+                                  },
+                                ),
+                              ],
+                            ),
                           ),
-                        ],
-                      ),
+                        );
+                      },
                     ),
-                  );
-                },
-              ),
-            _ => const Center(
-                child: CircularProgressIndicator(),
-              )
-          };
-        }));
+                  _ => const Center(
+                      child: CircularProgressIndicator(),
+                    )
+                };
+              }),
+            ),
+          ],
+        ));
   }
 }

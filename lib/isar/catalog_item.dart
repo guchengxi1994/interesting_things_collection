@@ -22,6 +22,8 @@ class CatalogItem {
 
   String? fullText;
 
+  bool locked = false;
+
   @override
   bool operator ==(Object other) {
     if (other is! CatalogItem) {

@@ -15,6 +15,7 @@
 
 ### milestones
 
+- [ ] 实现简单的密码控制
 - [ ] todo list/kanban  and gantt
 
 ### 一些截图

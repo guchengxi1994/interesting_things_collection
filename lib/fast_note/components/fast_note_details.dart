@@ -81,7 +81,7 @@ class FastNoteDetailsWidget extends ConsumerWidget {
       height: 300,
       margin: const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
       decoration: BoxDecoration(
-        border: Border.all(color: AppStyle.titleTextColor),
+        border: Border.all(color: AppStyle.titleTextColor.withOpacity(.5)),
         borderRadius: BorderRadius.circular(10),
       ),
       child: ListView.separated(
@@ -110,8 +110,8 @@ class FastNoteDetailsWidget extends ConsumerWidget {
                   onAdd: (s) {},
                 ),
               ),
-          separatorBuilder: (c, i) => const Divider(
-                color: AppStyle.titleTextColor,
+          separatorBuilder: (c, i) => Divider(
+                color: AppStyle.titleTextColor.withOpacity(0.5),
               ),
           itemCount: note.values.length),
     );

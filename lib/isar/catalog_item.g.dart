@@ -37,28 +37,33 @@ const CatalogItemSchema = CollectionSchema(
       name: r'hashCode',
       type: IsarType.long,
     ),
-    r'name': PropertySchema(
+    r'locked': PropertySchema(
       id: 4,
+      name: r'locked',
+      type: IsarType.bool,
+    ),
+    r'name': PropertySchema(
+      id: 5,
       name: r'name',
       type: IsarType.string,
     ),
     r'orderNum': PropertySchema(
-      id: 5,
+      id: 6,
       name: r'orderNum',
       type: IsarType.long,
     ),
     r'preview': PropertySchema(
-      id: 6,
+      id: 7,
       name: r'preview',
       type: IsarType.string,
     ),
     r'remark': PropertySchema(
-      id: 7,
+      id: 8,
       name: r'remark',
       type: IsarType.string,
     ),
     r'score': PropertySchema(
-      id: 8,
+      id: 9,
       name: r'score',
       type: IsarType.double,
     )
@@ -120,11 +125,12 @@ void _catalogItemSerialize(
   writer.writeLong(offsets[1], object.createdAt);
   writer.writeString(offsets[2], object.fullText);
   writer.writeLong(offsets[3], object.hashCode);
-  writer.writeString(offsets[4], object.name);
-  writer.writeLong(offsets[5], object.orderNum);
-  writer.writeString(offsets[6], object.preview);
-  writer.writeString(offsets[7], object.remark);
-  writer.writeDouble(offsets[8], object.score);
+  writer.writeBool(offsets[4], object.locked);
+  writer.writeString(offsets[5], object.name);
+  writer.writeLong(offsets[6], object.orderNum);
+  writer.writeString(offsets[7], object.preview);
+  writer.writeString(offsets[8], object.remark);
+  writer.writeDouble(offsets[9], object.score);
 }
 
 CatalogItem _catalogItemDeserialize(
@@ -138,11 +144,12 @@ CatalogItem _catalogItemDeserialize(
   object.createdAt = reader.readLongOrNull(offsets[1]);
   object.fullText = reader.readStringOrNull(offsets[2]);
   object.id = id;
-  object.name = reader.readStringOrNull(offsets[4]);
-  object.orderNum = reader.readLongOrNull(offsets[5]);
-  object.preview = reader.readStringOrNull(offsets[6]);
-  object.remark = reader.readStringOrNull(offsets[7]);
-  object.score = reader.readDoubleOrNull(offsets[8]);
+  object.locked = reader.readBool(offsets[4]);
+  object.name = reader.readStringOrNull(offsets[5]);
+  object.orderNum = reader.readLongOrNull(offsets[6]);
+  object.preview = reader.readStringOrNull(offsets[7]);
+  object.remark = reader.readStringOrNull(offsets[8]);
+  object.score = reader.readDoubleOrNull(offsets[9]);
   return object;
 }
 
@@ -162,14 +169,16 @@ P _catalogItemDeserializeProp<P>(
     case 3:
       return (reader.readLong(offset)) as P;
     case 4:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readBool(offset)) as P;
     case 5:
-      return (reader.readLongOrNull(offset)) as P;
-    case 6:
       return (reader.readStringOrNull(offset)) as P;
+    case 6:
+      return (reader.readLongOrNull(offset)) as P;
     case 7:
       return (reader.readStringOrNull(offset)) as P;
     case 8:
+      return (reader.readStringOrNull(offset)) as P;
+    case 9:
       return (reader.readDoubleOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -674,6 +683,16 @@ extension CatalogItemQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<CatalogItem, CatalogItem, QAfterFilterCondition> lockedEqualTo(
+      bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'locked',
+        value: value,
       ));
     });
   }
@@ -1339,6 +1358,18 @@ extension CatalogItemQuerySortBy
     });
   }
 
+  QueryBuilder<CatalogItem, CatalogItem, QAfterSortBy> sortByLocked() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'locked', Sort.asc);
+    });
+  }
+
+  QueryBuilder<CatalogItem, CatalogItem, QAfterSortBy> sortByLockedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'locked', Sort.desc);
+    });
+  }
+
   QueryBuilder<CatalogItem, CatalogItem, QAfterSortBy> sortByName() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'name', Sort.asc);
@@ -1462,6 +1493,18 @@ extension CatalogItemQuerySortThenBy
     });
   }
 
+  QueryBuilder<CatalogItem, CatalogItem, QAfterSortBy> thenByLocked() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'locked', Sort.asc);
+    });
+  }
+
+  QueryBuilder<CatalogItem, CatalogItem, QAfterSortBy> thenByLockedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'locked', Sort.desc);
+    });
+  }
+
   QueryBuilder<CatalogItem, CatalogItem, QAfterSortBy> thenByName() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'name', Sort.asc);
@@ -1550,6 +1593,12 @@ extension CatalogItemQueryWhereDistinct
     });
   }
 
+  QueryBuilder<CatalogItem, CatalogItem, QDistinct> distinctByLocked() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'locked');
+    });
+  }
+
   QueryBuilder<CatalogItem, CatalogItem, QDistinct> distinctByName(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -1613,6 +1662,12 @@ extension CatalogItemQueryProperty
   QueryBuilder<CatalogItem, int, QQueryOperations> hashCodeProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'hashCode');
+    });
+  }
+
+  QueryBuilder<CatalogItem, bool, QQueryOperations> lockedProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'locked');
     });
   }
 

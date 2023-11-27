@@ -41,6 +41,9 @@ class _CustomEditableTextState extends ConsumerState<CustomEditableText> {
   Widget build(BuildContext context) {
     return Row(
       children: [
+        const SizedBox(
+          width: 10,
+        ),
         Expanded(
             child: isEditing
                 ? TextField(
@@ -121,6 +124,18 @@ class _CustomEditableTextState extends ConsumerState<CustomEditableText> {
             },
             child: const Icon(
               Icons.delete,
+              color: AppStyle.titleTextColor,
+            ),
+          ),
+        ),
+        Tooltip(
+          message: "加密",
+          child: InkWell(
+            onTap: () {
+              widget.onDelete();
+            },
+            child: const Icon(
+              Icons.lock,
               color: AppStyle.titleTextColor,
             ),
           ),
