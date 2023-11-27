@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:weaving/gen/strings.g.dart';
 import 'package:weaving/notifier/color_notifier.dart';

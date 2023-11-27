@@ -59,12 +59,30 @@ dev_dependencies:
   flutter_lints: ^2.0.0
   isar_generator: ^3.1.0+1
   flutter_rename_app_plus3: ^1.2.4
+  flutter_launcher_icons: ^0.13.1  # flutter pub run flutter_launcher_icons
 
 
 dependency_overrides:  
   uuid: ^4.1.0
   popup_card:
     path: D:/github_repo/popup_card
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "./app_icon_2.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
+  windows:
+    generate: true
+    image_path: "./app_icon_2.png"
+    icon_size: 48 # min:48, max:256, default: 48
+  linux:
+    generate: true
+    image_path: "./app_icon_2.png"
+    icon_size: 48 # min:48, max:256, default: 48
+  macos:
+    generate: true
+    image_path: "./app_icon_2.png"
   
 
 flutter:
