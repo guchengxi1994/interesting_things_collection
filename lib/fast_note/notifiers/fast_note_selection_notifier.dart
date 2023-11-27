@@ -28,6 +28,25 @@ class FastNoteSelectionNotifier extends Notifier<FastNote?> {
   refreshNode(FastNote note) {
     state = state!.copyWith(id: note.id, key: note.key, values: note.values);
   }
+
+  Future<List<FastNote>> getCurrentWeekNotes() async {
+    DateTime now = DateTime.now();
+    DateTime startOfWeek = now.subtract(Duration(days: now.weekday - 1));
+    DateTime endOfWeek =
+        now.add(Duration(days: DateTime.daysPerWeek - now.weekday));
+
+    startOfWeek =
+        DateTime(startOfWeek.year, startOfWeek.month, startOfWeek.day);
+    endOfWeek = DateTime(endOfWeek.year, endOfWeek.month, endOfWeek.day);
+
+    List<FastNote> results = await isarDatabase.isar!.fastNotes
+        .filter()
+        .createAtBetween(startOfWeek.millisecondsSinceEpoch,
+            endOfWeek.millisecondsSinceEpoch)
+        .findAll();
+
+    return results;
+  }
 }
 
 final fastNoteSelectionNotifier =

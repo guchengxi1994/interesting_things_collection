@@ -6,6 +6,7 @@ import 'package:weaving/fast_note/notifiers/fast_note_notifier.dart';
 import 'package:weaving/isar/fast_note.dart';
 import 'package:weaving/style/app_style.dart';
 
+import 'components/export_fastnote_dialog.dart';
 import 'components/fast_note_details.dart';
 import 'notifiers/fast_note_selection_notifier.dart';
 
@@ -59,7 +60,22 @@ class _FastNoteScreenState extends ConsumerState<FastNoteScreen> {
             tooltip: "导出本周笔记",
             heroTag: null,
             child: const Icon(Icons.exposure),
-            onPressed: () {},
+            onPressed: () {
+              ref
+                  .read(fastNoteSelectionNotifier.notifier)
+                  .getCurrentWeekNotes()
+                  .then((value) {
+                showGeneralDialog(
+                    context: context,
+                    pageBuilder: (c, _, __) {
+                      return Center(
+                        child: ExportFastnoteDialog(
+                          notes: value,
+                        ),
+                      );
+                    });
+              });
+            },
           ),
           FloatingActionButton.small(
             tooltip: "导出所有笔记",
