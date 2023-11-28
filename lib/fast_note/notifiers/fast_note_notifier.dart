@@ -54,6 +54,8 @@ class FastNoteNotifier extends AsyncNotifier<FastNoteState> {
       return state.value!.copyWith(state.value!.notes);
     });
   }
+
+  Future onEncode() async {}
 }
 
 final fastNoteNotifier =

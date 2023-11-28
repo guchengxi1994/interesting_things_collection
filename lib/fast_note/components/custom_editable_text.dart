@@ -14,13 +14,15 @@ class CustomEditableText extends ConsumerStatefulWidget {
       required this.onDelete,
       required this.onSave,
       required this.onAdd,
-      this.isEditing = false})
+      this.isEditing = false,
+      required this.onEncode})
       : super(key: key);
   final String value;
   final OnSave onSave;
   final VoidCallback onDelete;
   final OnAdd onAdd;
   final bool isEditing;
+  final VoidCallback onEncode;
 
   @override
   ConsumerState<CustomEditableText> createState() => _CustomEditableTextState();
@@ -132,7 +134,8 @@ class _CustomEditableTextState extends ConsumerState<CustomEditableText> {
           message: "加密",
           child: InkWell(
             onTap: () {
-              widget.onDelete();
+              // widget.onDelete();
+              widget.onEncode();
             },
             child: const Icon(
               Icons.lock,

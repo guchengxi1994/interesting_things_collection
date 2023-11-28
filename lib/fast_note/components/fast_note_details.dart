@@ -108,6 +108,7 @@ class FastNoteDetailsWidget extends ConsumerWidget {
                     ref.read(fastNoteNotifier.notifier).updateNote(note);
                   },
                   onAdd: (s) {},
+                  onEncode: () {},
                 ),
               ),
           separatorBuilder: (c, i) => Divider(
