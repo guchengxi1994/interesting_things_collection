@@ -49,16 +49,16 @@ class FastNoteNotifier extends AsyncNotifier<FastNoteState> {
         } else {
           await isarDatabase.isar!.fastNotes.put(note);
         }
+        await note.values.save();
       });
-      // print(note.values);
+
       final index =
           state.value!.notes.indexWhere((element) => element.id == note.id);
 
       state.value!.notes.removeAt(index);
       state.value!.notes.insert(index, note);
 
-      return state.value!
-          .copyWith(notes: state.value!.notes, current: state.value!.current);
+      return state.value!.copyWith(notes: state.value!.notes, current: note);
     });
   }
 

@@ -56,14 +56,14 @@ class FastNoteDetailsWidget extends ConsumerWidget {
             onSave: (String s) {
               note.key = s;
 
-              ref
-                  .read(fastNoteNotifier.notifier)
-                  .updateNote(note)
-                  .then((value) {
-                ref.read(fastNoteNotifier.notifier).changeCurrent(note);
-              });
+              // ref
+              //     .read(fastNoteNotifier.notifier)
+              //     .updateNote(note)
+              //     .then((value) {
+              //   ref.read(fastNoteNotifier.notifier).changeCurrent(note);
+              // });
 
-              // ref.read(fastNoteNotifier.notifier).updateNote(note);
+              ref.read(fastNoteNotifier.notifier).updateNote(note);
             },
           ),
           const Expanded(child: SizedBox()),
@@ -98,9 +98,6 @@ class FastNoteDetailsWidget extends ConsumerWidget {
       ));
     }
 
-    print("==========================");
-    print(note.key);
-    print(note.values.length);
     final objects = note.values.toList();
     return Container(
       height: 300,
@@ -115,7 +112,7 @@ class FastNoteDetailsWidget extends ConsumerWidget {
                 height: 50,
                 padding: const EdgeInsets.all(5),
                 child: CustomEditableText(
-                  isEditing: i == 0 && objects[i].value == "请输入",
+                  isEditing: objects[i].value == "请输入",
                   value: objects[i],
                   onDelete: (v) {
                     // List<String> l = List.from(note.values);
