@@ -25,9 +25,9 @@ class FastNoteSelectionNotifier extends Notifier<FastNote?> {
     state = nt;
   }
 
-  refreshNode(FastNote note) {
-    state = state!.copyWith(id: note.id, key: note.key, values: note.values);
-  }
+  // refreshNode(FastNote note) {
+  //   state = state!.copyWith(id: note.id, key: note.key);
+  // }
 
   Future<List<FastNote>> getCurrentWeekNotes() async {
     DateTime now = DateTime.now();

@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:super_clipboard/super_clipboard.dart';
+import 'package:weaving/isar/fast_note.dart';
 import 'package:weaving/notifier/color_notifier.dart';
 import 'package:weaving/style/app_style.dart';
 
-typedef OnSave = void Function(String s);
+typedef OnSave = void Function(FastNoteValue s);
 typedef OnAdd = void Function(String s);
+typedef OnDelete = void Function(FastNoteValue value);
+typedef OnChangeLockStatus = void Function(FastNoteValue value);
 
 class CustomEditableText extends ConsumerStatefulWidget {
   const CustomEditableText(
@@ -15,14 +18,14 @@ class CustomEditableText extends ConsumerStatefulWidget {
       required this.onSave,
       required this.onAdd,
       this.isEditing = false,
-      required this.onEncode})
+      required this.onChangeLockStatus})
       : super(key: key);
-  final String value;
+  final FastNoteValue value;
   final OnSave onSave;
-  final VoidCallback onDelete;
+  final OnDelete onDelete;
   final OnAdd onAdd;
   final bool isEditing;
-  final VoidCallback onEncode;
+  final OnChangeLockStatus onChangeLockStatus;
 
   @override
   ConsumerState<CustomEditableText> createState() => _CustomEditableTextState();
@@ -30,7 +33,7 @@ class CustomEditableText extends ConsumerStatefulWidget {
 
 class _CustomEditableTextState extends ConsumerState<CustomEditableText> {
   late final TextEditingController controller = TextEditingController()
-    ..text = widget.value == "请输入" ? "" : widget.value;
+    ..text = widget.value.value == "请输入" ? "" : widget.value.value;
   late bool isEditing = widget.isEditing;
 
   @override
@@ -88,7 +91,8 @@ class _CustomEditableTextState extends ConsumerState<CustomEditableText> {
           child: InkWell(
             onTap: () {
               if (isEditing) {
-                widget.onSave(controller.text);
+                widget.value.value = controller.text;
+                widget.onSave(widget.value);
               }
               setState(() {
                 isEditing = !isEditing;
@@ -122,7 +126,7 @@ class _CustomEditableTextState extends ConsumerState<CustomEditableText> {
           message: "删除",
           child: InkWell(
             onTap: () {
-              widget.onDelete();
+              widget.onDelete(widget.value);
             },
             child: const Icon(
               Icons.delete,
@@ -135,10 +139,11 @@ class _CustomEditableTextState extends ConsumerState<CustomEditableText> {
           child: InkWell(
             onTap: () {
               // widget.onDelete();
-              widget.onEncode();
+              widget.value.locked = !widget.value.locked;
+              widget.onChangeLockStatus(widget.value);
             },
-            child: const Icon(
-              Icons.lock,
+            child: Icon(
+              !widget.value.locked ? Icons.lock : Icons.lock_open,
               color: AppStyle.titleTextColor,
             ),
           ),

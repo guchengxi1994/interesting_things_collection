@@ -7,38 +7,38 @@ part 'fast_note.g.dart';
 class FastNote {
   Id? id;
   String? key;
-  List<String> values = [];
   int createAt = DateTime.now().millisecondsSinceEpoch;
   bool isFav = false;
   late String group = formatDate(DateTime.now(), [yyyy, "-", mm, "-", dd]);
 
-  final changeLogs = IsarLinks<FastNoteChangelog>();
+  final values = IsarLinks<FastNoteValue>();
 
-  FastNote copyWith(
-      {Id? id,
-      String? key,
-      List<String>? values,
-      int? createAt,
-      bool? isFav,
-      String? group}) {
-    return FastNote()
-      ..id = id ?? this.id
-      ..key = key ?? this.key
-      ..values = values ?? this.values
-      ..createAt = createAt ?? this.createAt
-      ..isFav = isFav ?? this.isFav
-      ..group = group ?? this.group;
-  }
+  // FastNote copyWith(
+  //     {Id? id, String? key, int? createAt, bool? isFav, String? group}) {
+  //   return FastNote()
+  //     ..id = id ?? this.id
+  //     ..key = key ?? this.key
+  //     ..createAt = createAt ?? this.createAt
+  //     ..isFav = isFav ?? this.isFav
+  //     ..group = group ?? this.group;
+  // }
 }
 
 @collection
-class FastNoteChangelog {
+class FastNoteValue {
   Id? id;
-
-  String? key;
-  List<String> values = [];
-  int createAt = DateTime.now().millisecondsSinceEpoch;
+  late String value = "";
+  bool locked = false;
 }
+
+// @collection
+// class FastNoteChangelog {
+//   Id? id;
+
+//   String? key;
+//   List<String> values = [];
+//   int createAt = DateTime.now().millisecondsSinceEpoch;
+// }
 
 extension GroupBy on List<FastNote> {
   Map<String, List<FastNote>> groupBy() {

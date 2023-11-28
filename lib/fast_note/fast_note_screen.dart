@@ -45,9 +45,7 @@ class _FastNoteScreenState extends ConsumerState<FastNoteScreen> {
             onPressed: () {
               ref
                   .read(fastNoteNotifier.notifier)
-                  .add(FastNote()
-                    ..key = "新的笔记"
-                    ..values = [])
+                  .add(FastNote()..key = "新的笔记")
                   .then((value) {
                 ref
                     .read(fastNoteSelectionNotifier.notifier)

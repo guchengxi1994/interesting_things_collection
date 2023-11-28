@@ -39,12 +39,18 @@ class FastNoteNotifier extends AsyncNotifier<FastNoteState> {
     return note;
   }
 
-  Future updateNote(FastNote note) async {
+  Future updateNote(FastNote note, {FastNoteValue? value}) async {
     state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
       await isarDatabase.isar!.writeTxn(() async {
-        isarDatabase.isar!.fastNotes.put(note);
+        if (value != null) {
+          await isarDatabase.isar!.fastNoteValues.put(value);
+          note.values.add(value);
+        } else {
+          await isarDatabase.isar!.fastNotes.put(note);
+        }
       });
+      // print(note.values);
       final index =
           state.value!.notes.indexWhere((element) => element.id == note.id);
 
@@ -54,6 +60,8 @@ class FastNoteNotifier extends AsyncNotifier<FastNoteState> {
       return state.value!.copyWith(state.value!.notes);
     });
   }
+
+  // Future saveNoteValue(String value) async {}
 
   Future onEncode() async {}
 }
