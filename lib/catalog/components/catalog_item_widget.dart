@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_stars/flutter_rating_stars.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
-import 'package:weaving/catalog/notifiers/things_hover_notifier.dart';
+import 'package:weaving/catalog/notifiers/items_hover_notifier.dart';
 import 'package:weaving/common/base64_utils.dart';
-import 'package:weaving/isar/thing.dart';
+import 'package:weaving/isar/catalog_item.dart';
 import 'package:weaving/notifier/color_notifier.dart';
 import 'package:weaving/notifier/settings_notifier.dart';
 import 'package:weaving/style/app_style.dart';
@@ -16,36 +16,39 @@ import 'package:popup_card/popup_card.dart';
 import 'editor.dart';
 
 typedef OnRatingChange = void Function(double);
-typedef OnDeleteClick = void Function(Thing);
+typedef OnDeleteClick = void Function(CatalogItem);
+typedef OnLockClick = void Function(CatalogItem, bool);
 
-class ThingWidget extends ConsumerWidget {
-  const ThingWidget(
+class CatalogItemWidget extends ConsumerWidget {
+  const CatalogItemWidget(
       {super.key,
-      required this.thing,
+      required this.item,
       this.onRatingChange,
-      this.onDeleteClick});
-  final Thing thing;
+      this.onDeleteClick,
+      this.onLockClick});
+  final CatalogItem item;
   final OnRatingChange? onRatingChange;
   final OnDeleteClick? onDeleteClick;
+  final OnDeleteClick? onLockClick;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return MouseRegion(
       onEnter: (event) {
-        ref.read(thingsHoverNotifier.notifier).changeIndex(thing.id);
+        ref.read(itemsHoverNotifier.notifier).changeIndex(item.id);
       },
       onExit: (event) {
-        ref.read(thingsHoverNotifier.notifier).changeIndex(0);
+        ref.read(itemsHoverNotifier.notifier).changeIndex(0);
       },
       cursor: SystemMouseCursors.click,
-      child: ref.watch(settingsNotifier).showPreviewWhenHoverOnThings
+      child: ref.watch(settingsNotifier).showPreviewWhenHoverOnItems
           ? JustTheTooltip(
               content: SizedBox(
                 width: 300,
                 height: 300,
-                child: thing.preview == null
+                child: item.preview == null
                     ? Image.asset("assets/empty.png")
-                    : Image.memory(Base64Utils.base64ToBytes(thing.preview!)),
+                    : Image.memory(Base64Utils.base64ToBytes(item.preview!)),
               ),
               child: _buildChild(context, ref))
           : _buildChild(context, ref),
@@ -54,11 +57,11 @@ class ThingWidget extends ConsumerWidget {
 
   Widget _buildChild(BuildContext context, WidgetRef ref) {
     return PopupItemLauncher(
-      tag: 'test-${thing.id}',
+      tag: 'test-${item.id}',
       popUp: PopUpItem(
         reservedAppbarHeight: AppStyle.appbarHeight,
         alignment: Alignment.topRight,
-        tag: 'test-${thing.id}',
+        tag: 'test-${item.id}',
         child: Container(
           color: Colors.white,
           width: MediaQuery.of(context).size.width * .8,
@@ -66,21 +69,21 @@ class ThingWidget extends ConsumerWidget {
               ? MediaQuery.of(context).size.height - AppStyle.appbarHeight
               : MediaQuery.of(context).size.height,
           child: Editor(
-            savedData: thing.remark ?? "",
+            savedData: item.remark ?? "",
             saveToJson: (p0, p1, p2) async {
               SmartDialog.showLoading();
-              thing.remark = p0;
-              thing.name = p2;
-              thing.fullText = p1;
-              ref.read(thingsHoverNotifier.notifier).saveThing(thing);
+              item.remark = p0;
+              item.name = p2;
+              item.fullText = p1;
+              ref.read(itemsHoverNotifier.notifier).saveItem(item);
               await Future.delayed(const Duration(seconds: 1));
               SmartDialog.dismiss();
             },
             savePreview: (p0) async {
               SmartDialog.showLoading();
 
-              thing.preview = Base64Utils.uint8List2Base64(p0);
-              await ref.read(thingsHoverNotifier.notifier).saveThing(thing);
+              item.preview = Base64Utils.uint8List2Base64(p0);
+              await ref.read(itemsHoverNotifier.notifier).saveItem(item);
               await Future.delayed(const Duration(seconds: 1));
               SmartDialog.dismiss();
             },
@@ -92,7 +95,7 @@ class ThingWidget extends ConsumerWidget {
   }
 
   Widget _buildItem(BuildContext context, WidgetRef ref) {
-    int currentIndex = ref.watch(thingsHoverNotifier);
+    int currentIndex = ref.watch(itemsHoverNotifier);
     return Container(
       margin: const EdgeInsets.only(top: 10, bottom: 10),
       width: 0.8 *
@@ -120,24 +123,23 @@ class ThingWidget extends ConsumerWidget {
                   spreadRadius: 2.5,
                 )
               ]),
-          width: currentIndex == thing.id
+          width: currentIndex == item.id
               ? 0.8 *
                   MediaQuery.of(context).size.width *
                   0.8 *
                   AppStyle.catalogOnHoverFactor
               : 0.8 * MediaQuery.of(context).size.width * 0.8,
-          height: currentIndex == thing.id
-              ? 50 * AppStyle.catalogOnHoverFactor
-              : 50,
+          height:
+              currentIndex == item.id ? 50 * AppStyle.catalogOnHoverFactor : 50,
           child: Row(
             children: [
               Expanded(
                   child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(thing.name.toString()),
+                  Text(item.name.toString()),
                   RatingStars(
-                    value: thing.score ?? 0,
+                    value: item.score ?? 0,
                     starBuilder: (index, color) => Icon(
                       Icons.star,
                       color: color,
@@ -172,9 +174,18 @@ class ThingWidget extends ConsumerWidget {
               )),
               FittedBox(
                 child: InkWell(
+                  onTap: () {},
+                  child: Icon(
+                    item.locked ? Icons.lock_open : Icons.lock,
+                    color: Colors.yellow,
+                  ),
+                ),
+              ),
+              FittedBox(
+                child: InkWell(
                   onTap: () {
                     if (onDeleteClick != null) {
-                      onDeleteClick!(thing);
+                      onDeleteClick!(item);
                     }
                   },
                   child: const Icon(
@@ -182,7 +193,7 @@ class ThingWidget extends ConsumerWidget {
                     color: Colors.red,
                   ),
                 ),
-              )
+              ),
             ],
           ),
         ),

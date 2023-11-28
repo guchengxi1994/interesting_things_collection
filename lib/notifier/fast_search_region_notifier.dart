@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:isar/isar.dart';
 import 'package:weaving/isar/database.dart';
-import 'package:weaving/isar/thing.dart';
+import 'package:weaving/isar/catalog_item.dart';
 
 class FastSearchRegionNotifier extends Notifier<bool> {
   @override
@@ -17,19 +17,17 @@ class FastSearchRegionNotifier extends Notifier<bool> {
 
   final IsarDatabase isarDatabase = IsarDatabase();
 
-  queryAll(String text) async {
+  Future<List<CatalogItem>> queryAll(String text) async {
     if (text == "") {
-      return;
+      return [];
     }
 
-    final things = await isarDatabase.isar!.things
+    final items = await isarDatabase.isar!.catalogItems
         .filter()
         .fullTextContains(text)
         .findAll();
 
-    for (final i in things) {
-      print(i.remark);
-    }
+    return items;
   }
 }
 

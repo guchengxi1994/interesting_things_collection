@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:weaving/isar/database.dart';
-import 'package:weaving/isar/thing.dart';
+import 'package:weaving/isar/catalog_item.dart';
 
-class ThingsHoverNotifier extends Notifier<int> {
+class ItemsHoverNotifier extends Notifier<int> {
   final IsarDatabase _database = IsarDatabase();
 
   @override
@@ -19,13 +19,13 @@ class ThingsHoverNotifier extends Notifier<int> {
   /// TODO
   ///
   /// move to other notifier
-  Future saveThing(Thing thing) async {
+  Future saveItem(CatalogItem item) async {
     await _database.isar!.writeTxn(() async {
-      await _database.isar!.things.put(thing);
+      await _database.isar!.catalogItems.put(item);
     });
   }
 }
 
-final thingsHoverNotifier = NotifierProvider<ThingsHoverNotifier, int>(() {
-  return ThingsHoverNotifier();
+final itemsHoverNotifier = NotifierProvider<ItemsHoverNotifier, int>(() {
+  return ItemsHoverNotifier();
 });

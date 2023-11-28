@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hotkey_manager/hotkey_manager.dart';
 import 'package:weaving/catalog/catalog_screen.dart';
+import 'package:weaving/components/pin_code_dialog.dart';
 import 'package:weaving/data_transfer/data_transfer_screen.dart';
 import 'package:weaving/fast_note/fast_note_screen.dart';
 import 'package:weaving/gen/strings.g.dart';
@@ -60,6 +61,21 @@ class LayoutState extends ConsumerState<Layout> with TickerProviderStateMixin {
     );
     _animation =
         _controller.drive(Tween<double>(begin: minWidth, end: maxWidth));
+
+    Future.delayed(const Duration(milliseconds: 500)).then((value) {
+      if (ref.read(settingsNotifier).password == "" &&
+          ref.read(settingsNotifier).enableUnlockPwd) {
+        showGeneralDialog(
+            context: context,
+            pageBuilder: (c, _, __) {
+              return const Center(
+                child: PinCodeDialog(
+                  message: "Input an initial passcode",
+                ),
+              );
+            });
+      }
+    });
   }
 
   @override
@@ -142,9 +158,7 @@ class LayoutState extends ConsumerState<Layout> with TickerProviderStateMixin {
               Expanded(
                   child: Container(
                 decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius:
-                        BorderRadius.only(topLeft: Radius.circular(20))),
+                    color: Colors.white, borderRadius: AppStyle.leftTopRadius),
                 child: PageView(
                   physics: const NeverScrollableScrollPhysics(),
                   controller: controller,

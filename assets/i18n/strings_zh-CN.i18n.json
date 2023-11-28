@@ -3,6 +3,10 @@
         "showPreview": "展示预览图",
         "colorTheme": "主题色",
         "locale": "语言",
+        "enablePassword":"开启解锁密码",
+        "operateCatalog":"修改分类需验证",
+        "operateCatalogItems":"修改分类条目需验证",
+        "operateFastNote":"修改笔记需验证",
         "column": {
             "color": "颜色设置",
             "common": "通用设置",
@@ -40,5 +44,8 @@
             "emoji": "添加表情",
             "maxLength": "长度限制$count"
         }
+    },
+    "dialogs":{
+        "loading":"稍等..."
     }
 }

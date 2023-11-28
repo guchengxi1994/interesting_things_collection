@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:weaving/catalog/notifiers/catalog_notifier.dart';
+import 'package:weaving/common/highlight_text.dart';
 import 'package:weaving/gen/strings.g.dart';
 import 'package:weaving/isar/catalog.dart';
 import 'package:weaving/notifier/color_notifier.dart';
@@ -341,8 +342,8 @@ class AddCatalogDialogState extends ConsumerState<AddCatalogDialog> {
                   child: Container(
                     padding: const EdgeInsets.symmetric(
                         vertical: 6.0, horizontal: 10),
-                    child: Text.rich(
-                        _formSpan(option.name!, _textEditingController.text)),
+                    child: Text.rich(HighlightText.formSpan(
+                        option.name!, _textEditingController.text)),
                   ),
                 );
               },
@@ -352,26 +353,5 @@ class AddCatalogDialogState extends ConsumerState<AddCatalogDialog> {
         ),
       ),
     );
-  }
-
-  ///高亮某些文字
-  final TextStyle lightTextStyle = const TextStyle(
-    color: Colors.blue,
-    fontWeight: FontWeight.bold,
-  );
-  InlineSpan _formSpan(String src, String pattern) {
-    List<TextSpan> span = [];
-    List<String> parts = src.split(pattern);
-    if (parts.length > 1) {
-      for (int i = 0; i < parts.length; i++) {
-        span.add(TextSpan(text: parts[i]));
-        if (i != parts.length - 1) {
-          span.add(TextSpan(text: pattern, style: lightTextStyle));
-        }
-      }
-    } else {
-      span.add(TextSpan(text: src));
-    }
-    return TextSpan(children: span);
   }
 }

@@ -11,3 +11,25 @@
 * [isar](https://pub.dev/packages/isar)
 * [flutter_riverpod](https://pub.dev/packages/flutter_riverpod)
 * [flutter_quill](https://pub-web.flutter-io.cn/packages/flutter_quill)
+
+
+### milestones
+
+- [ ] 实现简单的密码控制
+- [ ] todo list/kanban  and gantt
+
+### 一些截图
+
+![1700658475213](./images/1700658475213.png)
+
+![1700658498075](./images/1700658498075.png)
+
+![1700658521120](./images/1700658521120.png)
+
+![1700658529820](./images/1700658529820.png)
+
+![1700658644953](./images/1700658644953.png)
+
+![1700658676214](./images/1700658676214.png)
+
+![image-20231125230300639](./images/image-20231125230300639.png)

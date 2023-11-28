@@ -8,16 +8,32 @@ import 'package:weaving/settings/components/colors_setting.dart';
 import 'package:weaving/settings/components/common_setting.dart';
 import 'package:weaving/settings/components/locale_setting.dart';
 import 'package:weaving/settings/settings_page_notifier.dart';
+import 'package:weaving/style/app_style.dart';
 
 import 'components/item.dart';
 
 const double textWidth = 200;
 
-class SettingsScreen extends ConsumerWidget {
+class SettingsScreen extends ConsumerStatefulWidget {
   const SettingsScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<SettingsScreen> createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends ConsumerState<SettingsScreen> {
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() {
+      ref
+          .read(settingsPageController.notifier)
+          .changePageIndex(ref.read(settingsPageController).$1);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final _ = ref.watch(settingsNotifier);
 
     return Container(
@@ -27,7 +43,7 @@ class SettingsScreen extends ConsumerWidget {
           Container(
             decoration: const BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.only(topLeft: Radius.circular(20)),
+              borderRadius: AppStyle.leftTopRadius,
               boxShadow: [
                 BoxShadow(
                     color: Color.fromARGB(255, 236, 243, 236),

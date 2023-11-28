@@ -11,6 +11,10 @@ class SettingsPageNotifier extends Notifier<(int, int)> {
     return (0, -1);
   }
 
+  init() {
+    state = (0, -1);
+  }
+
   changePageIndex(int i) {
     state = (i, state.$2);
     _pageController.jumpToPage(i);

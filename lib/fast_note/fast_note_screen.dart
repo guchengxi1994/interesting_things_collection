@@ -1,62 +1,89 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:weaving/common/sm_utils.dart';
+import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:weaving/fast_note/components/side_menu.dart';
+import 'package:weaving/fast_note/notifiers/fast_note_notifier.dart';
+import 'package:weaving/isar/fast_note.dart';
+import 'package:weaving/style/app_style.dart';
 
-import 'components/pin_box.dart';
+import 'components/export_fastnote_dialog.dart';
+import 'components/fast_note_details.dart';
+import 'notifiers/fast_note_selection_notifier.dart';
 
-class FastNoteScreen extends StatefulWidget {
+class FastNoteScreen extends ConsumerStatefulWidget {
   const FastNoteScreen({Key? key}) : super(key: key);
 
   @override
-  State<FastNoteScreen> createState() => _FastNoteScreenState();
+  ConsumerState<FastNoteScreen> createState() => _FastNoteScreenState();
 }
 
-class _FastNoteScreenState extends State<FastNoteScreen> {
+class _FastNoteScreenState extends ConsumerState<FastNoteScreen> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() {
-      if (SMUtils().internalPassword == "") {
-        showCupertinoDialog(
-            context: context,
-            builder: (c) {
-              return CupertinoAlertDialog(
-                title: const Text("New here?"),
-                actions: [
-                  CupertinoDialogAction(
-                    onPressed: () {
-                      Navigator.of(c).pop();
-                    },
-                    child: const Text("Cancel"),
-                  ),
-                  CupertinoDialogAction(
-                    onPressed: () {
-                      Navigator.of(c).pop();
-                    },
-                    child: const Text("Ok"),
-                  ),
-                ],
-              );
-            });
-      }
-    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-          borderRadius: BorderRadius.only(topLeft: Radius.circular(20))),
-      child: Center(
-        child: Material(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10),
-          elevation: 4,
-          child: const Padding(
-            padding: EdgeInsets.only(top: 50, bottom: 50, left: 30, right: 30),
-            child: PinputWidget(),
-          ),
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: Container(
+        decoration: const BoxDecoration(
+            color: Colors.white, borderRadius: AppStyle.leftTopRadius),
+        child: const Row(
+          children: [SideMenu(), Expanded(child: FastNoteDetailsWidget())],
         ),
+      ),
+      floatingActionButtonLocation: ExpandableFab.location,
+      floatingActionButton: ExpandableFab(
+        distance: 50,
+        type: ExpandableFabType.side,
+        children: [
+          FloatingActionButton.small(
+            tooltip: "创建新的笔记",
+            heroTag: "new-fast-note",
+            onPressed: () {
+              ref
+                  .read(fastNoteNotifier.notifier)
+                  .add(FastNote()
+                    ..key = "新的笔记"
+                    ..values = [])
+                  .then((value) {
+                ref
+                    .read(fastNoteSelectionNotifier.notifier)
+                    .changeCurrent(value);
+              });
+            },
+            child: const Icon(Icons.add),
+          ),
+          FloatingActionButton.small(
+            tooltip: "导出本周笔记",
+            heroTag: null,
+            child: const Icon(Icons.exposure),
+            onPressed: () {
+              ref
+                  .read(fastNoteSelectionNotifier.notifier)
+                  .getCurrentWeekNotes()
+                  .then((value) {
+                showGeneralDialog(
+                    context: context,
+                    pageBuilder: (c, _, __) {
+                      return Center(
+                        child: ExportFastnoteDialog(
+                          notes: value,
+                        ),
+                      );
+                    });
+              });
+            },
+          ),
+          FloatingActionButton.small(
+            tooltip: "导出所有笔记",
+            heroTag: null,
+            child: const Icon(Icons.exposure_outlined),
+            onPressed: () {},
+          ),
+        ],
       ),
     );
   }

@@ -23,12 +23,12 @@ class LocalStorage {
     await _storage!.setInt("themeColor", c);
   }
 
-  bool getShowPreviewWhenHoverOnThings() {
-    return _storage!.getBool("showPreviewWhenHoverOnThings") ?? true;
+  bool getShowPreviewWhenHoverOnItems() {
+    return _storage!.getBool("showPreviewWhenHoverOnItems") ?? true;
   }
 
-  Future setShowPreviewWhenHoverOnThings(bool b) async {
-    await _storage!.setBool("showPreviewWhenHoverOnThings", b);
+  Future setShowPreviewWhenHoverOnItems(bool b) async {
+    await _storage!.setBool("showPreviewWhenHoverOnItems", b);
   }
 
   String getCurrentLocale() {
@@ -37,5 +37,13 @@ class LocalStorage {
 
   Future setCurrentLocale(String locale) async {
     await _storage!.setString("currentLocale", locale);
+  }
+
+  bool getEnablePasscode() {
+    return _storage!.getBool("enablePasscode") ?? true;
+  }
+
+  Future setEnablePasscode(bool b) async {
+    await _storage!.setBool("enablePasscode", b);
   }
 }

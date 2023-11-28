@@ -1,99 +1,98 @@
 import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:weaving/catalog/models/things_state.dart';
+import 'package:weaving/catalog/models/catalog_items_state.dart';
 import 'package:weaving/isar/catalog.dart';
 import 'package:weaving/isar/database.dart';
-import 'package:weaving/isar/thing.dart';
+import 'package:weaving/isar/catalog_item.dart';
 import 'package:isar/isar.dart';
 
-class ThingsNotifier extends AsyncNotifier<ThingsState> {
+class ItemsNotifier extends AsyncNotifier<CatalogItemsState> {
   final IsarDatabase _database = IsarDatabase();
   final CatalogCopy catalog;
-  ThingsNotifier({required this.catalog});
+  ItemsNotifier({required this.catalog});
 
   @override
-  FutureOr<ThingsState> build() async {
-    List<Thing> thingsList = await _database.isar!.things
+  FutureOr<CatalogItemsState> build() async {
+    List<CatalogItem> list = await _database.isar!.catalogItems
         .filter()
         .catalogIdEqualTo(catalog.id)
         .limit(10)
         .findAll();
 
-    return ThingsState(
-        catalogId: catalog.id, thingsList: thingsList, pageId: 1);
+    return CatalogItemsState(catalogId: catalog.id, list: list, pageId: 1);
   }
 
   queryMore() async {
-    int count = await _database.isar!.things
+    int count = await _database.isar!.catalogItems
         .filter()
         .catalogIdEqualTo(catalog.id)
         .count();
 
-    if (count <= state.value!.thingsList.length) {
+    if (count <= state.value!.list.length) {
       return;
     }
 
     final pageId = state.value!.pageId;
-    final items = state.value!.thingsList;
+    final items = state.value!.list;
     state = const AsyncValue.loading();
 
     state = await AsyncValue.guard(() async {
-      List<Thing> thingsList = await _database.isar!.things
+      List<CatalogItem> thingsList = await _database.isar!.catalogItems
           .filter()
           .catalogIdEqualTo(catalog.id)
           .offset(pageId * 10)
           .limit(10)
           .findAll();
 
-      return ThingsState(
+      return CatalogItemsState(
           catalogId: catalog.id,
           pageId: pageId + 1,
-          thingsList: items..addAll(thingsList));
+          list: items..addAll(thingsList));
     });
   }
 
-  Future updateThing(Thing thing) async {
+  Future updateItem(CatalogItem item) async {
     await _database.isar!.writeTxn(() async {
-      await _database.isar!.things.put(thing);
+      await _database.isar!.catalogItems.put(item);
     });
 
-    final index = state.value!.thingsList.indexOf(thing);
-    state.value!.thingsList.removeAt(index);
-    state.value!.thingsList.insert(index, thing);
+    final index = state.value!.list.indexOf(item);
+    state.value!.list.removeAt(index);
+    state.value!.list.insert(index, item);
 
     state = await AsyncValue.guard(() async {
       return state.value!;
     });
   }
 
-  Future newThing(Thing thing) async {
+  Future newItem(CatalogItem item) async {
     state = const AsyncValue.loading();
     await _database.isar!.writeTxn(() async {
-      await _database.isar!.things.put(thing);
+      await _database.isar!.catalogItems.put(item);
     });
 
     state = await AsyncValue.guard(() async {
-      return ThingsState(
+      return CatalogItemsState(
           catalogId: state.value!.catalogId,
           pageId: state.value!.pageId,
-          thingsList: state.value!.thingsList..add(thing));
+          list: state.value!.list..add(item));
     });
   }
 
-  Future deleteThing(Thing thing) async {
+  Future deleteItem(CatalogItem item) async {
     state = const AsyncValue.loading();
-    final index = state.value!.thingsList.indexOf(thing);
+    final index = state.value!.list.indexOf(item);
 
     await _database.isar!.writeTxn(() async {
-      await _database.isar!.things.delete(thing.id);
+      await _database.isar!.catalogItems.delete(item.id);
     });
 
     state = await AsyncValue.guard(() async {
-      return ThingsState(
+      return CatalogItemsState(
           catalogId: state.value!.catalogId,
           pageId: state.value!.pageId,
-          thingsList: state.value!.thingsList..removeAt(index));
+          list: state.value!.list..removeAt(index));
     });
   }
 }

@@ -12,7 +12,7 @@ void runAPP() async {
   windowManager.waitUntilReadyToShow(null, () async {
     await windowManager.show();
     await windowManager.focus();
-    await windowManager.setMinimumSize(const Size(600, 600));
+    await windowManager.setMinimumSize(const Size(1280, 720));
     await windowManager.setHasShadow(true);
   });
   windowManager.setBackgroundColor(Colors.transparent);

@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:weaving/common/highlight_text.dart';
+import 'package:weaving/isar/catalog_item.dart';
 import 'package:weaving/notifier/fast_search_region_notifier.dart';
 
 class FastSearchRegion extends ConsumerStatefulWidget {
@@ -34,6 +36,7 @@ class _FastSearchRegionState extends ConsumerState<FastSearchRegion> {
   final TextEditingController textEditingController = TextEditingController();
 
   bool clearButtonVisible = false;
+  List<CatalogItem> searched = [];
 
   @override
   Widget build(BuildContext context) {
@@ -90,14 +93,19 @@ class _FastSearchRegionState extends ConsumerState<FastSearchRegion> {
                                 }
 
                                 if (_timer?.isActive ?? false) _timer!.cancel();
-                                _timer = Timer(
-                                    const Duration(milliseconds: 1000), () {
-                                  debugPrint(textEditingController.text);
+                                _timer =
+                                    Timer(const Duration(milliseconds: 1000),
+                                        () async {
+                                  // debugPrint(textEditingController.text);
                                   // add your Code here to get the data after every given Duration
 
-                                  ref
+                                  searched = await ref
                                       .read(fastSearchNotifier.notifier)
                                       .queryAll(textEditingController.text);
+
+                                  if (searched.isNotEmpty) {
+                                    setState(() {});
+                                  }
                                 });
                               },
                               decoration: InputDecoration(
@@ -115,6 +123,7 @@ class _FastSearchRegionState extends ConsumerState<FastSearchRegion> {
                                             onPressed: () {
                                               textEditingController.text = "";
                                               setState(() {
+                                                searched.clear();
                                                 clearButtonVisible = false;
                                               });
                                             },
@@ -157,7 +166,38 @@ class _FastSearchRegionState extends ConsumerState<FastSearchRegion> {
                                 ),
                               ),
                             ))),
-                    const Expanded(child: SizedBox())
+                    Expanded(
+                        child: ListView.builder(
+                            padding: const EdgeInsets.only(left: 15, right: 15),
+                            itemCount: searched.length,
+                            itemBuilder: (c, i) {
+                              return ExpansionTile(
+                                shape: RoundedRectangleBorder(
+                                    side: const BorderSide(color: Colors.blue),
+                                    borderRadius: BorderRadius.circular(15)),
+                                collapsedShape: RoundedRectangleBorder(
+                                    side: const BorderSide(color: Colors.blue),
+                                    borderRadius: BorderRadius.circular(15)),
+                                title: Text(
+                                  searched[i].name ?? "",
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                children: [
+                                  Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 15, right: 15, bottom: 15),
+                                        child: Text.rich(
+                                          HighlightText.formSpan(
+                                              searched[i].fullText!,
+                                              textEditingController.text),
+                                        ),
+                                      ))
+                                ],
+                              );
+                            }))
                   ],
                 ),
               ),
