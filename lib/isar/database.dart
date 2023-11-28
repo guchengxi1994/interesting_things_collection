@@ -26,7 +26,7 @@ class IsarDatabase {
         CatalogItemSchema,
         PasswordSchema,
         FastNoteSchema,
-        FastNoteChangelogSchema
+        FastNoteValueSchema
       ],
       name: "weaving_db",
       directory: dir.path,
