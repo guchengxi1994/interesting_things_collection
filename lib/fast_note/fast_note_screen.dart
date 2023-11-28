@@ -8,7 +8,6 @@ import 'package:weaving/style/app_style.dart';
 
 import 'components/export_fastnote_dialog.dart';
 import 'components/fast_note_details.dart';
-import 'notifiers/fast_note_selection_notifier.dart';
 
 class FastNoteScreen extends ConsumerStatefulWidget {
   const FastNoteScreen({Key? key}) : super(key: key);
@@ -47,9 +46,7 @@ class _FastNoteScreenState extends ConsumerState<FastNoteScreen> {
                   .read(fastNoteNotifier.notifier)
                   .add(FastNote()..key = "新的笔记")
                   .then((value) {
-                ref
-                    .read(fastNoteSelectionNotifier.notifier)
-                    .changeCurrent(value);
+                ref.read(fastNoteNotifier.notifier).changeCurrent(value);
               });
             },
             child: const Icon(Icons.add),
@@ -60,7 +57,7 @@ class _FastNoteScreenState extends ConsumerState<FastNoteScreen> {
             child: const Icon(Icons.exposure),
             onPressed: () {
               ref
-                  .read(fastNoteSelectionNotifier.notifier)
+                  .read(fastNoteNotifier.notifier)
                   .getCurrentWeekNotes()
                   .then((value) {
                 showGeneralDialog(

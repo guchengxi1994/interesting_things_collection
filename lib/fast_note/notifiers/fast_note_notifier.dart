@@ -57,13 +57,46 @@ class FastNoteNotifier extends AsyncNotifier<FastNoteState> {
       state.value!.notes.removeAt(index);
       state.value!.notes.insert(index, note);
 
-      return state.value!.copyWith(state.value!.notes);
+      return state.value!
+          .copyWith(notes: state.value!.notes, current: state.value!.current);
     });
   }
 
-  // Future saveNoteValue(String value) async {}
+  Future<List<FastNote>> getCurrentWeekNotes() async {
+    DateTime now = DateTime.now();
+    DateTime startOfWeek = now.subtract(Duration(days: now.weekday - 1));
+    DateTime endOfWeek =
+        now.add(Duration(days: DateTime.daysPerWeek - now.weekday));
 
-  Future onEncode() async {}
+    startOfWeek =
+        DateTime(startOfWeek.year, startOfWeek.month, startOfWeek.day);
+    endOfWeek = DateTime(endOfWeek.year, endOfWeek.month, endOfWeek.day);
+
+    List<FastNote> results = await isarDatabase.isar!.fastNotes
+        .filter()
+        .createAtBetween(startOfWeek.millisecondsSinceEpoch,
+            endOfWeek.millisecondsSinceEpoch)
+        .findAll();
+
+    return results;
+  }
+
+  changeCurrent(FastNote? note) {
+    if (note == null) {
+      state = AsyncData(
+          state.value!.copyWith(notes: state.value!.notes, current: null));
+
+      return;
+    }
+
+    final nt = isarDatabase.isar!.fastNotes
+        .where()
+        .idEqualTo(note.id!)
+        .findFirstSync();
+
+    state = AsyncData(
+        state.value!.copyWith(notes: state.value!.notes, current: nt));
+  }
 }
 
 final fastNoteNotifier =

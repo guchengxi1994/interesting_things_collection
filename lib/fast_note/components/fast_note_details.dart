@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:weaving/fast_note/notifiers/fast_note_notifier.dart';
-import 'package:weaving/fast_note/notifiers/fast_note_selection_notifier.dart';
 import 'package:weaving/isar/fast_note.dart';
 import 'package:weaving/style/app_style.dart';
 
+import '../notifiers/fast_note_state.dart';
 import 'custom_editable_text.dart';
 import 'custom_editable_title.dart';
 
@@ -15,29 +15,29 @@ class FastNoteDetailsWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final note = ref.watch(fastNoteSelectionNotifier);
-    final _ = ref.watch(fastNoteNotifier);
+    final note = ref.watch(fastNoteNotifier);
 
-    if (note == null) {
-      return Center(
-        child: SizedBox(
-          width: 250,
-          height: 250,
-          child: Image.asset("assets/empty.png"),
-        ),
-      );
-    }
-
-    print("note : ${note.key}");
-
-    return Column(
-      key: UniqueKey(),
-      children: [_buildTitle(note, ref), _buildValues(note, ref)],
-    );
+    return Builder(builder: (c) {
+      return switch (note) {
+        AsyncValue<FastNoteState>(:final value?) => Column(
+            key: UniqueKey(),
+            children: [
+              _buildTitle(value.current, ref),
+              _buildValues(value.current, ref)
+            ],
+          ),
+        _ => const Center(
+            child: CircularProgressIndicator(),
+          )
+      };
+    });
   }
 
-  Widget _buildTitle(FastNote note, WidgetRef ref) {
-    print(note.key);
+  Widget _buildTitle(FastNote? note, WidgetRef ref) {
+    if (note == null) {
+      return const SizedBox();
+    }
+
     return Container(
       padding: const EdgeInsets.only(left: 20),
       height: 50,
@@ -60,10 +60,10 @@ class FastNoteDetailsWidget extends ConsumerWidget {
                   .read(fastNoteNotifier.notifier)
                   .updateNote(note)
                   .then((value) {
-                ref
-                    .read(fastNoteSelectionNotifier.notifier)
-                    .changeCurrent(note);
+                ref.read(fastNoteNotifier.notifier).changeCurrent(note);
               });
+
+              // ref.read(fastNoteNotifier.notifier).updateNote(note);
             },
           ),
           const Expanded(child: SizedBox()),
@@ -86,7 +86,18 @@ class FastNoteDetailsWidget extends ConsumerWidget {
     );
   }
 
-  Widget _buildValues(FastNote note, WidgetRef ref) {
+  Widget _buildValues(FastNote? note, WidgetRef ref) {
+    if (note == null) {
+      return Expanded(
+          child: Center(
+        child: SizedBox(
+          width: 250,
+          height: 250,
+          child: Image.asset("assets/empty.png"),
+        ),
+      ));
+    }
+
     print("==========================");
     print(note.key);
     print(note.values.length);

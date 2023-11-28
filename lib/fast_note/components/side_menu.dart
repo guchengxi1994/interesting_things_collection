@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:like_button/like_button.dart';
 import 'package:weaving/fast_note/notifiers/fast_note_notifier.dart';
-import 'package:weaving/fast_note/notifiers/fast_note_selection_notifier.dart';
 import 'package:weaving/fast_note/notifiers/fast_note_state.dart';
 import 'package:weaving/isar/fast_note.dart';
 import 'package:weaving/notifier/color_notifier.dart';
@@ -17,7 +16,6 @@ class SideMenu extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final notes = ref.watch(fastNoteNotifier);
-    final currentNote = ref.watch(fastNoteSelectionNotifier);
 
     return Container(
         padding: const EdgeInsets.only(top: 10, bottom: 10),
@@ -68,7 +66,7 @@ class SideMenu extends ConsumerWidget {
                           mouseCursor: SystemMouseCursors.click,
                           onTap: () {
                             ref
-                                .read(fastNoteSelectionNotifier.notifier)
+                                .read(fastNoteNotifier.notifier)
                                 .changeCurrent(element);
                           },
                           child: Container(
@@ -76,8 +74,8 @@ class SideMenu extends ConsumerWidget {
                             padding: const EdgeInsets.only(left: 10, right: 10),
                             height: 40,
                             decoration: BoxDecoration(
-                              color: currentNote != null &&
-                                      currentNote.id == element.id
+                              color: value.current != null &&
+                                      value.current!.id == element.id
                                   ? AppStyle.catalogCardBorderColors[
                                           ref.watch(colorNotifier)]
                                       .withAlpha(80)
