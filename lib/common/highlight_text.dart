@@ -96,7 +96,10 @@ class HighlightText {
       if (list[i].$2 <= list[i + 1].$1) {
         results.add(list[i]);
       } else {
-        list[i] = (list[i].$1, list[i + 1].$2);
+        list[i] = (
+          list[i].$1,
+          list[i].$2 > list[i + 1].$2 ? list[i].$2 : list[i + 1].$2
+        );
         list[i + 1] = list[i];
         results.add(list[i]);
       }
