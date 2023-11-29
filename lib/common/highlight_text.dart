@@ -46,11 +46,15 @@ class HighlightText {
       if (i == "") {
         continue;
       }
-      RegExp reg = RegExp(i);
-      Iterable<RegExpMatch> matches = reg.allMatches(src);
+      try {
+        RegExp reg = RegExp(i);
+        Iterable<RegExpMatch> matches = reg.allMatches(src);
 
-      for (var element in matches) {
-        positions.add((element.start, element.end));
+        for (var element in matches) {
+          positions.add((element.start, element.end));
+        }
+      } catch (_) {
+        continue;
       }
 
       // final l = src.indexOf(i);
@@ -93,6 +97,10 @@ class HighlightText {
   static Set<(int, int)> _mergeList(List<(int, int)> list) {
     Set<(int, int)> results = {};
     for (int i = 0; i < list.length - 1; i++) {
+      if (list[i].$1 == list[i + 1].$1) {
+        continue;
+      }
+
       if (list[i].$2 <= list[i + 1].$1) {
         results.add(list[i]);
       } else {
