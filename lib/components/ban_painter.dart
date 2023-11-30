@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:weaving/style/app_style.dart';
 
 class BanSignPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = Colors.red
+      ..color = AppStyle.titleTextColor
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 10;
+      ..strokeWidth = 2;
 
     // Draw the circle
     canvas.drawCircle(
         Offset(size.width / 2, size.height / 2), size.width / 2, paint);
 
     // Draw the line
-    canvas.drawLine(const Offset(0, 0), Offset(size.width, size.height), paint);
+    canvas.drawLine(Offset(.15 * size.width, .15 * size.height),
+        Offset(.85 * size.width, .85 * size.height), paint);
   }
 
   @override

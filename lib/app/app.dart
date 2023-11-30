@@ -46,7 +46,7 @@ class MyAppState extends ConsumerState<MyApp> {
             debugShowCheckedModeBanner: false,
             navigatorObservers: [FlutterSmartDialog.observer],
             builder: FlutterSmartDialog.init(
-                loadingBuilder: (String msg) => CustomLoadingWidget()),
+                loadingBuilder: (String msg) => const CustomLoadingWidget()),
             title: 'Weaving',
             localizationsDelegates: const [
               GlobalMaterialLocalizations.delegate,

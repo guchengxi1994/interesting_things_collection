@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:super_clipboard/super_clipboard.dart';
 import 'package:weaving/common/sm_utils.dart';
+import 'package:weaving/components/ban_painter.dart';
 import 'package:weaving/components/pin_code_dialog.dart';
 import 'package:weaving/isar/fast_note.dart';
 import 'package:weaving/notifier/color_notifier.dart';
@@ -110,13 +111,25 @@ class _CustomEditableTextState extends ConsumerState<CustomEditableText> {
                       isEditing = !isEditing;
                     });
                   },
-            child: isEditing
-                ? const Icon(Icons.check, color: Colors.green)
-                : const Icon(
-                    Icons.edit_note,
-                    color: AppStyle.titleTextColor,
-                  ),
+            // child:  isEditing
+            //     ? const Icon(Icons.check, color: Colors.green)
+            //     : const Icon(
+            //         Icons.edit_note,
+            //         color: AppStyle.titleTextColor,
+            //       ),
+            child: CustomPaint(
+              foregroundPainter: widget.value.locked ? BanSignPainter() : null,
+              child: isEditing
+                  ? const Icon(Icons.check, color: Colors.green)
+                  : const Icon(
+                      Icons.edit_note,
+                      color: AppStyle.titleTextColor,
+                    ),
+            ),
           ),
+        ),
+        const SizedBox(
+          width: 10,
         ),
         Tooltip(
           message: "复制值",
@@ -128,25 +141,60 @@ class _CustomEditableTextState extends ConsumerState<CustomEditableText> {
                     item.add(Formats.plainText(controller.text));
                     await ClipboardWriter.instance.write([item]);
                   },
-            child: const Icon(
-              Icons.copy,
-              color: AppStyle.titleTextColor,
+            // child: const Icon(
+            //   Icons.copy,
+            //   color: AppStyle.titleTextColor,
+            // ),
+            child: CustomPaint(
+              foregroundPainter: isEditing ? BanSignPainter() : null,
+              child: const Icon(
+                Icons.copy,
+                color: AppStyle.titleTextColor,
+              ),
             ),
           ),
+        ),
+        const SizedBox(
+          width: 10,
         ),
         Tooltip(
           message: "删除",
           child: InkWell(
             onTap: isEditing
                 ? null
-                : () {
-                    widget.onDelete(widget.value);
+                : () async {
+                    // widget.onDelete(widget.value);
+                    if (widget.value.locked) {
+                      final r = await showGeneralDialog(
+                          context: context,
+                          pageBuilder: (c, _, __) {
+                            return const Center(
+                              child: PinCodeDialog(
+                                message: "请输入密钥",
+                                type: PinCodeDialogType.confirm,
+                              ),
+                            );
+                          });
+                      if (r == true) {
+                        widget.onDelete(widget.value);
+                      } else {
+                        SmartDialog.showToast("error passcode");
+                      }
+                    } else {
+                      widget.onDelete(widget.value);
+                    }
                   },
-            child: const Icon(
-              Icons.delete,
-              color: AppStyle.titleTextColor,
+            child: CustomPaint(
+              foregroundPainter: isEditing ? BanSignPainter() : null,
+              child: const Icon(
+                Icons.delete,
+                color: AppStyle.titleTextColor,
+              ),
             ),
           ),
+        ),
+        const SizedBox(
+          width: 10,
         ),
         Tooltip(
           message: widget.value.locked ? "解密" : "加密",
@@ -184,11 +232,21 @@ class _CustomEditableTextState extends ConsumerState<CustomEditableText> {
                       } else {
                         SmartDialog.showToast("error passcode");
                       }
+                    } else {
+                      widget.value.locked = !widget.value.locked;
+                      widget.onChangeLockStatus(widget.value);
                     }
                   },
-            child: Icon(
-              !widget.value.locked ? Icons.lock_open : Icons.lock,
-              color: AppStyle.titleTextColor,
+            // child: Icon(
+            //   !widget.value.locked ? Icons.lock_open : Icons.lock,
+            //   color: AppStyle.titleTextColor,
+            // ),
+            child: CustomPaint(
+              foregroundPainter: isEditing ? BanSignPainter() : null,
+              child: Icon(
+                !widget.value.locked ? Icons.lock_open : Icons.lock,
+                color: AppStyle.titleTextColor,
+              ),
             ),
           ),
         ),
