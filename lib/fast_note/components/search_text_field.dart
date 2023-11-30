@@ -121,28 +121,33 @@ class _SearchTextFieldState extends ConsumerState<SearchTextField> {
                     ..close();
                 },
                 isModal: true,
-
-                /// FIXME 不刷新列表
                 content: SizedBox(
                   width: 300,
                   height: 300,
-                  child: ListView.builder(
-                    key: UniqueKey(),
-                    itemBuilder: (c, i) {
-                      return InkWell(
-                        onTap: () {
-                          textEditingController.text = clipboardValues[i];
-                          ref
-                              .read(fastNoteNotifier.notifier)
-                              .filter(textEditingController.text);
-                        },
-                        child: SizedBox(
-                          height: 30,
-                          child: Text(clipboardValues[i]),
-                        ),
-                      );
-                    },
-                    itemCount: clipboardValues.length,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      key: UniqueKey(),
+                      children: clipboardValues.map((e) {
+                        print(e);
+                        return InkWell(
+                          onTap: () {
+                            textEditingController.text = e;
+                            ref
+                                .read(fastNoteNotifier.notifier)
+                                .filter(textEditingController.text);
+                          },
+                          child: SizedBox(
+                            height: 30,
+                            child: Text(
+                              e,
+                              maxLines: 1,
+                              softWrap: true,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    ),
                   ),
                 ),
                 child: const Padding(
