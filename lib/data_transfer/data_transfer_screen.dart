@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:weaving/data_transfer/udp_server.dart';
 import 'package:weaving/style/app_style.dart';
 
 class DataTransferScreen extends ConsumerStatefulWidget {
@@ -16,11 +15,12 @@ class _DataTransferScreenState extends ConsumerState<DataTransferScreen> {
     return Container(
       decoration: const BoxDecoration(borderRadius: AppStyle.leftTopRadius),
       child: Center(
-        child: ElevatedButton(
-            onPressed: () {
-              UdpServer.instance.startUdpServer();
-            },
-            child: const Text("server")),
+        // child: ElevatedButton(
+        //     onPressed: () {
+        //       UdpServer.instance.startUdpServer();
+        //     },
+        //     child: const Text("server")),
+        child: Image.asset("assets/under_dev.png"),
       ),
     );
   }

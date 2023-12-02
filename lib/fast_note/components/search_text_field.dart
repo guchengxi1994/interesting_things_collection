@@ -1,10 +1,14 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_the_tooltip/just_the_tooltip.dart';
 import 'package:super_clipboard/super_clipboard.dart';
+import 'package:weaving/fast_note/notifiers/clipboard_item_notifier.dart';
 import 'package:weaving/fast_note/notifiers/fast_note_notifier.dart';
+
+import 'clipboard_item_list.dart';
 
 class SearchTextField extends ConsumerStatefulWidget {
   const SearchTextField({Key? key}) : super(key: key);
@@ -21,8 +25,6 @@ class _SearchTextFieldState extends ConsumerState<SearchTextField> {
 
   bool clearButtonVisible = false;
 
-  List<String> clipboardValues = [];
-
   @override
   void dispose() {
     if (_timer != null) {
@@ -36,24 +38,19 @@ class _SearchTextFieldState extends ConsumerState<SearchTextField> {
   void initState() {
     super.initState();
     focusNode.addListener(() async {
-      // print(focusNode.hasFocus);
       if (focusNode.hasFocus) {
-        // clipboardValues.clear();
         List<String> list = [];
         final reader = await ClipboardReader.readClipboard();
         for (final i in reader.items) {
           if (i.canProvide(Formats.plainText)) {
             final text = await i.readValue(Formats.plainText);
-            // print(text);
-            if (text != null) {
+            if (text != null && text != "") {
               list.add(text);
             }
           }
         }
         if (list.isNotEmpty) {
-          setState(() {
-            clipboardValues = List.from(list);
-          });
+          await ref.read(clipboardNotifier.notifier).refresh(list);
           justTheController.showTooltip();
         }
       }
@@ -102,12 +99,13 @@ class _SearchTextFieldState extends ConsumerState<SearchTextField> {
             // Add a clear button to the search bar
             suffixIcon: clearButtonVisible
                 ? TextButton(
-                    onPressed: () {
+                    onPressed: () async {
                       textEditingController.text = "";
                       setState(() {
                         clearButtonVisible = false;
                       });
                       ref.read(fastNoteNotifier.notifier).filter("");
+                      await Clipboard.setData(const ClipboardData(text: ""));
                     },
                     child: const Text("清除"))
                 : const SizedBox(),
@@ -121,34 +119,16 @@ class _SearchTextFieldState extends ConsumerState<SearchTextField> {
                     ..close();
                 },
                 isModal: true,
-                content: SizedBox(
-                  width: 300,
-                  height: 300,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      key: UniqueKey(),
-                      children: clipboardValues.map((e) {
-                        print(e);
-                        return InkWell(
-                          onTap: () {
-                            textEditingController.text = e;
-                            ref
-                                .read(fastNoteNotifier.notifier)
-                                .filter(textEditingController.text);
-                          },
-                          child: SizedBox(
-                            height: 30,
-                            child: Text(
-                              e,
-                              maxLines: 1,
-                              softWrap: true,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        );
-                      }).toList(),
-                    ),
-                  ),
+                content: ClipboardItemList(
+                  onItemClicked: (v) {
+                    textEditingController.text = v;
+                    setState(() {
+                      clearButtonVisible = true;
+                    });
+                    ref
+                        .read(fastNoteNotifier.notifier)
+                        .filter(textEditingController.text);
+                  },
                 ),
                 child: const Padding(
                   padding: EdgeInsets.only(left: 10),

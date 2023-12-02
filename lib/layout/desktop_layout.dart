@@ -9,6 +9,7 @@ import 'package:weaving/gen/strings.g.dart';
 import 'package:weaving/layout/expand_collapse_notifier.dart';
 import 'package:weaving/notifier/color_notifier.dart';
 import 'package:weaving/notifier/settings_notifier.dart';
+import 'package:weaving/schedule/schedule_screen.dart';
 import 'package:weaving/settings/settings_screen.dart';
 import 'package:weaving/style/app_style.dart';
 import 'package:window_manager/window_manager.dart';
@@ -130,6 +131,16 @@ class LayoutState extends ConsumerState<Layout> with TickerProviderStateMixin {
                         )),
                     NavigationRailDestination(
                         icon: const Icon(
+                          Icons.schedule,
+                        ),
+                        label: Text(t.layout.schedule),
+                        selectedIcon: Icon(
+                          Icons.schedule,
+                          color: AppStyle.catalogCardBorderColors[
+                              ref.watch(colorNotifier)],
+                        )),
+                    NavigationRailDestination(
+                        icon: const Icon(
                           Icons.transform,
                         ),
                         label: Text(t.layout.dataTransfer),
@@ -165,6 +176,7 @@ class LayoutState extends ConsumerState<Layout> with TickerProviderStateMixin {
                   children: const [
                     CatalogScreen(),
                     FastNoteScreen(),
+                    ScheduleScreen(),
                     DataTransferScreen(),
                     SettingsScreen(),
                   ],

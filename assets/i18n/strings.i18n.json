@@ -17,7 +17,8 @@
         "catalog": "Catalogs",
         "fastNote": "Fast Note",
         "dataTransfer": "Data Transfer",
-        "setting": "Settings"
+        "setting": "Settings",
+        "schedule": "Schedule"
     },
     "catalogs": {
         "card": {
