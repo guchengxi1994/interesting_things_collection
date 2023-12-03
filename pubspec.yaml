@@ -36,9 +36,6 @@ dependencies:
   isar: ^3.1.0+1  # run `flutter pub run build_runner build` to generate codes
   isar_flutter_libs: ^3.1.0+1
   just_the_tooltip: ^0.0.12
-  kanban_board: 
-    git:
-      url: https://github.com/guchengxi1994/FlutterKanbanBoard
   like_button: ^2.0.5
   logging: ^1.2.0
   path_provider: ^2.1.1
@@ -73,8 +70,6 @@ dependency_overrides:
   uuid: ^4.1.0
   popup_card:
     path: D:/github_repo/popup_card
-  kanban_board:
-    path: D:/github_repo/FlutterKanbanBoard
 
 flutter_launcher_icons:
   android: "launcher_icon"

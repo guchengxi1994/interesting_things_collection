@@ -877,13 +877,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.0.12"
-  kanban_board:
-    dependency: "direct main"
-    description:
-      path: "D:/github_repo/FlutterKanbanBoard"
-      relative: false
-    source: path
-    version: "0.1.0"
   like_button:
     dependency: "direct main"
     description:

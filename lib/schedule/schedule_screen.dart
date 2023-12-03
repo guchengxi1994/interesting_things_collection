@@ -10,6 +10,7 @@ class ScheduleScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Container(
+      padding: const EdgeInsets.only(top: 10),
       decoration: const BoxDecoration(
           color: Colors.white, borderRadius: AppStyle.leftTopRadius),
       child: const CustomBoard(),

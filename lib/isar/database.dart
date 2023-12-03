@@ -49,15 +49,15 @@ class IsarDatabase {
       ..orderNum = 1
       ..name = "Blocked";
     KanbanData pending = KanbanData()
-      ..color = ColorUtil.toHex(const Color.fromRGBO(239, 147, 148, 1))
+      ..color = ColorUtil.toHex(const Color.fromRGBO(255, 230, 168, 1))
       ..orderNum = 2
       ..name = "Pending";
     KanbanData inProgress = KanbanData()
-      ..color = ColorUtil.toHex(const Color.fromRGBO(255, 230, 168, 1))
+      ..color = ColorUtil.toHex(Colors.blueAccent)
       ..orderNum = 3
       ..name = "In progress";
     KanbanData done = KanbanData()
-      ..color = ColorUtil.toHex(const Color.fromRGBO(255, 230, 168, 1))
+      ..color = ColorUtil.toHex(Colors.greenAccent)
       ..orderNum = 4
       ..name = "Done";
 
