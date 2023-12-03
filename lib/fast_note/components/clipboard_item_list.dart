@@ -5,8 +5,7 @@ import 'package:weaving/fast_note/notifiers/clipboard_item_notifier.dart';
 typedef OnItemClicked = void Function(String);
 
 class ClipboardItemList extends ConsumerWidget {
-  const ClipboardItemList({Key? key, required this.onItemClicked})
-      : super(key: key);
+  const ClipboardItemList({super.key, required this.onItemClicked});
   final OnItemClicked onItemClicked;
 
   @override

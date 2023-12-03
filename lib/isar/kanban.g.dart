@@ -43,7 +43,7 @@ const KanbanDataSchema = CollectionSchema(
     r'items': LinkSchema(
       id: -2500676512984668383,
       name: r'items',
-      target: r'KanbanItam',
+      target: r'KanbanItem',
       single: false,
     )
   },
@@ -123,7 +123,7 @@ List<IsarLinkBase<dynamic>> _kanbanDataGetLinks(KanbanData object) {
 
 void _kanbanDataAttach(IsarCollection<dynamic> col, Id id, KanbanData object) {
   object.id = id;
-  object.items.attach(col, col.isar.collection<KanbanItam>(), r'items', id);
+  object.items.attach(col, col.isar.collection<KanbanItem>(), r'items', id);
 }
 
 extension KanbanDataQueryWhereSort
@@ -612,7 +612,7 @@ extension KanbanDataQueryObject
 extension KanbanDataQueryLinks
     on QueryBuilder<KanbanData, KanbanData, QFilterCondition> {
   QueryBuilder<KanbanData, KanbanData, QAfterFilterCondition> items(
-      FilterQuery<KanbanItam> q) {
+      FilterQuery<KanbanItem> q) {
     return QueryBuilder.apply(this, (query) {
       return query.link(q, r'items');
     });
@@ -815,13 +815,13 @@ extension KanbanDataQueryProperty
 // coverage:ignore-file
 // ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types
 
-extension GetKanbanItamCollection on Isar {
-  IsarCollection<KanbanItam> get kanbanItams => this.collection();
+extension GetKanbanItemCollection on Isar {
+  IsarCollection<KanbanItem> get kanbanItems => this.collection();
 }
 
-const KanbanItamSchema = CollectionSchema(
-  name: r'KanbanItam',
-  id: -8739859134412842042,
+const KanbanItemSchema = CollectionSchema(
+  name: r'KanbanItem',
+  id: 8805926044308318724,
   properties: {
     r'createAt': PropertySchema(
       id: 0,
@@ -833,38 +833,43 @@ const KanbanItamSchema = CollectionSchema(
       name: r'deadline',
       type: IsarType.long,
     ),
-    r'priority': PropertySchema(
+    r'orderNum': PropertySchema(
       id: 2,
+      name: r'orderNum',
+      type: IsarType.long,
+    ),
+    r'priority': PropertySchema(
+      id: 3,
       name: r'priority',
       type: IsarType.long,
     ),
     r'tagIds': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'tagIds',
       type: IsarType.longList,
     ),
     r'title': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'title',
       type: IsarType.string,
     )
   },
-  estimateSize: _kanbanItamEstimateSize,
-  serialize: _kanbanItamSerialize,
-  deserialize: _kanbanItamDeserialize,
-  deserializeProp: _kanbanItamDeserializeProp,
+  estimateSize: _kanbanItemEstimateSize,
+  serialize: _kanbanItemSerialize,
+  deserialize: _kanbanItemDeserialize,
+  deserializeProp: _kanbanItemDeserializeProp,
   idName: r'id',
   indexes: {},
   links: {},
   embeddedSchemas: {},
-  getId: _kanbanItamGetId,
-  getLinks: _kanbanItamGetLinks,
-  attach: _kanbanItamAttach,
+  getId: _kanbanItemGetId,
+  getLinks: _kanbanItemGetLinks,
+  attach: _kanbanItemAttach,
   version: '3.1.0+1',
 );
 
-int _kanbanItamEstimateSize(
-  KanbanItam object,
+int _kanbanItemEstimateSize(
+  KanbanItem object,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
@@ -879,36 +884,38 @@ int _kanbanItamEstimateSize(
   return bytesCount;
 }
 
-void _kanbanItamSerialize(
-  KanbanItam object,
+void _kanbanItemSerialize(
+  KanbanItem object,
   IsarWriter writer,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeLong(offsets[0], object.createAt);
   writer.writeLong(offsets[1], object.deadline);
-  writer.writeLong(offsets[2], object.priority);
-  writer.writeLongList(offsets[3], object.tagIds);
-  writer.writeString(offsets[4], object.title);
+  writer.writeLong(offsets[2], object.orderNum);
+  writer.writeLong(offsets[3], object.priority);
+  writer.writeLongList(offsets[4], object.tagIds);
+  writer.writeString(offsets[5], object.title);
 }
 
-KanbanItam _kanbanItamDeserialize(
+KanbanItem _kanbanItemDeserialize(
   Id id,
   IsarReader reader,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  final object = KanbanItam();
+  final object = KanbanItem();
   object.createAt = reader.readLong(offsets[0]);
-  object.deadline = reader.readLongOrNull(offsets[1]);
+  object.deadline = reader.readLong(offsets[1]);
   object.id = id;
-  object.priority = reader.readLong(offsets[2]);
-  object.tagIds = reader.readLongList(offsets[3]) ?? [];
-  object.title = reader.readStringOrNull(offsets[4]);
+  object.orderNum = reader.readLong(offsets[2]);
+  object.priority = reader.readLong(offsets[3]);
+  object.tagIds = reader.readLongList(offsets[4]) ?? [];
+  object.title = reader.readStringOrNull(offsets[5]);
   return object;
 }
 
-P _kanbanItamDeserializeProp<P>(
+P _kanbanItemDeserializeProp<P>(
   IsarReader reader,
   int propertyId,
   int offset,
@@ -918,42 +925,44 @@ P _kanbanItamDeserializeProp<P>(
     case 0:
       return (reader.readLong(offset)) as P;
     case 1:
-      return (reader.readLongOrNull(offset)) as P;
+      return (reader.readLong(offset)) as P;
     case 2:
       return (reader.readLong(offset)) as P;
     case 3:
-      return (reader.readLongList(offset) ?? []) as P;
+      return (reader.readLong(offset)) as P;
     case 4:
+      return (reader.readLongList(offset) ?? []) as P;
+    case 5:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
 }
 
-Id _kanbanItamGetId(KanbanItam object) {
+Id _kanbanItemGetId(KanbanItem object) {
   return object.id ?? Isar.autoIncrement;
 }
 
-List<IsarLinkBase<dynamic>> _kanbanItamGetLinks(KanbanItam object) {
+List<IsarLinkBase<dynamic>> _kanbanItemGetLinks(KanbanItem object) {
   return [];
 }
 
-void _kanbanItamAttach(IsarCollection<dynamic> col, Id id, KanbanItam object) {
+void _kanbanItemAttach(IsarCollection<dynamic> col, Id id, KanbanItem object) {
   object.id = id;
 }
 
-extension KanbanItamQueryWhereSort
-    on QueryBuilder<KanbanItam, KanbanItam, QWhere> {
-  QueryBuilder<KanbanItam, KanbanItam, QAfterWhere> anyId() {
+extension KanbanItemQueryWhereSort
+    on QueryBuilder<KanbanItem, KanbanItem, QWhere> {
+  QueryBuilder<KanbanItem, KanbanItem, QAfterWhere> anyId() {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(const IdWhereClause.any());
     });
   }
 }
 
-extension KanbanItamQueryWhere
-    on QueryBuilder<KanbanItam, KanbanItam, QWhereClause> {
-  QueryBuilder<KanbanItam, KanbanItam, QAfterWhereClause> idEqualTo(Id id) {
+extension KanbanItemQueryWhere
+    on QueryBuilder<KanbanItem, KanbanItem, QWhereClause> {
+  QueryBuilder<KanbanItem, KanbanItem, QAfterWhereClause> idEqualTo(Id id) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(IdWhereClause.between(
         lower: id,
@@ -962,7 +971,7 @@ extension KanbanItamQueryWhere
     });
   }
 
-  QueryBuilder<KanbanItam, KanbanItam, QAfterWhereClause> idNotEqualTo(Id id) {
+  QueryBuilder<KanbanItem, KanbanItem, QAfterWhereClause> idNotEqualTo(Id id) {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
         return query
@@ -984,7 +993,7 @@ extension KanbanItamQueryWhere
     });
   }
 
-  QueryBuilder<KanbanItam, KanbanItam, QAfterWhereClause> idGreaterThan(Id id,
+  QueryBuilder<KanbanItem, KanbanItem, QAfterWhereClause> idGreaterThan(Id id,
       {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
@@ -993,7 +1002,7 @@ extension KanbanItamQueryWhere
     });
   }
 
-  QueryBuilder<KanbanItam, KanbanItam, QAfterWhereClause> idLessThan(Id id,
+  QueryBuilder<KanbanItem, KanbanItem, QAfterWhereClause> idLessThan(Id id,
       {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
@@ -1002,7 +1011,7 @@ extension KanbanItamQueryWhere
     });
   }
 
-  QueryBuilder<KanbanItam, KanbanItam, QAfterWhereClause> idBetween(
+  QueryBuilder<KanbanItem, KanbanItem, QAfterWhereClause> idBetween(
     Id lowerId,
     Id upperId, {
     bool includeLower = true,
@@ -1019,9 +1028,9 @@ extension KanbanItamQueryWhere
   }
 }
 
-extension KanbanItamQueryFilter
-    on QueryBuilder<KanbanItam, KanbanItam, QFilterCondition> {
-  QueryBuilder<KanbanItam, KanbanItam, QAfterFilterCondition> createAtEqualTo(
+extension KanbanItemQueryFilter
+    on QueryBuilder<KanbanItem, KanbanItem, QFilterCondition> {
+  QueryBuilder<KanbanItem, KanbanItem, QAfterFilterCondition> createAtEqualTo(
       int value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -1031,7 +1040,7 @@ extension KanbanItamQueryFilter
     });
   }
 
-  QueryBuilder<KanbanItam, KanbanItam, QAfterFilterCondition>
+  QueryBuilder<KanbanItem, KanbanItem, QAfterFilterCondition>
       createAtGreaterThan(
     int value, {
     bool include = false,
@@ -1045,7 +1054,7 @@ extension KanbanItamQueryFilter
     });
   }
 
-  QueryBuilder<KanbanItam, KanbanItam, QAfterFilterCondition> createAtLessThan(
+  QueryBuilder<KanbanItem, KanbanItem, QAfterFilterCondition> createAtLessThan(
     int value, {
     bool include = false,
   }) {
@@ -1058,7 +1067,7 @@ extension KanbanItamQueryFilter
     });
   }
 
-  QueryBuilder<KanbanItam, KanbanItam, QAfterFilterCondition> createAtBetween(
+  QueryBuilder<KanbanItem, KanbanItem, QAfterFilterCondition> createAtBetween(
     int lower,
     int upper, {
     bool includeLower = true,
@@ -1075,25 +1084,8 @@ extension KanbanItamQueryFilter
     });
   }
 
-  QueryBuilder<KanbanItam, KanbanItam, QAfterFilterCondition> deadlineIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'deadline',
-      ));
-    });
-  }
-
-  QueryBuilder<KanbanItam, KanbanItam, QAfterFilterCondition>
-      deadlineIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'deadline',
-      ));
-    });
-  }
-
-  QueryBuilder<KanbanItam, KanbanItam, QAfterFilterCondition> deadlineEqualTo(
-      int? value) {
+  QueryBuilder<KanbanItem, KanbanItem, QAfterFilterCondition> deadlineEqualTo(
+      int value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'deadline',
@@ -1102,9 +1094,9 @@ extension KanbanItamQueryFilter
     });
   }
 
-  QueryBuilder<KanbanItam, KanbanItam, QAfterFilterCondition>
+  QueryBuilder<KanbanItem, KanbanItem, QAfterFilterCondition>
       deadlineGreaterThan(
-    int? value, {
+    int value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -1116,8 +1108,8 @@ extension KanbanItamQueryFilter
     });
   }
 
-  QueryBuilder<KanbanItam, KanbanItam, QAfterFilterCondition> deadlineLessThan(
-    int? value, {
+  QueryBuilder<KanbanItem, KanbanItem, QAfterFilterCondition> deadlineLessThan(
+    int value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -1129,9 +1121,9 @@ extension KanbanItamQueryFilter
     });
   }
 
-  QueryBuilder<KanbanItam, KanbanItam, QAfterFilterCondition> deadlineBetween(
-    int? lower,
-    int? upper, {
+  QueryBuilder<KanbanItem, KanbanItem, QAfterFilterCondition> deadlineBetween(
+    int lower,
+    int upper, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
@@ -1146,7 +1138,7 @@ extension KanbanItamQueryFilter
     });
   }
 
-  QueryBuilder<KanbanItam, KanbanItam, QAfterFilterCondition> idIsNull() {
+  QueryBuilder<KanbanItem, KanbanItem, QAfterFilterCondition> idIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
         property: r'id',
@@ -1154,7 +1146,7 @@ extension KanbanItamQueryFilter
     });
   }
 
-  QueryBuilder<KanbanItam, KanbanItam, QAfterFilterCondition> idIsNotNull() {
+  QueryBuilder<KanbanItem, KanbanItem, QAfterFilterCondition> idIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
         property: r'id',
@@ -1162,7 +1154,7 @@ extension KanbanItamQueryFilter
     });
   }
 
-  QueryBuilder<KanbanItam, KanbanItam, QAfterFilterCondition> idEqualTo(
+  QueryBuilder<KanbanItem, KanbanItem, QAfterFilterCondition> idEqualTo(
       Id? value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -1172,7 +1164,7 @@ extension KanbanItamQueryFilter
     });
   }
 
-  QueryBuilder<KanbanItam, KanbanItam, QAfterFilterCondition> idGreaterThan(
+  QueryBuilder<KanbanItem, KanbanItem, QAfterFilterCondition> idGreaterThan(
     Id? value, {
     bool include = false,
   }) {
@@ -1185,7 +1177,7 @@ extension KanbanItamQueryFilter
     });
   }
 
-  QueryBuilder<KanbanItam, KanbanItam, QAfterFilterCondition> idLessThan(
+  QueryBuilder<KanbanItem, KanbanItem, QAfterFilterCondition> idLessThan(
     Id? value, {
     bool include = false,
   }) {
@@ -1198,7 +1190,7 @@ extension KanbanItamQueryFilter
     });
   }
 
-  QueryBuilder<KanbanItam, KanbanItam, QAfterFilterCondition> idBetween(
+  QueryBuilder<KanbanItem, KanbanItem, QAfterFilterCondition> idBetween(
     Id? lower,
     Id? upper, {
     bool includeLower = true,
@@ -1215,7 +1207,61 @@ extension KanbanItamQueryFilter
     });
   }
 
-  QueryBuilder<KanbanItam, KanbanItam, QAfterFilterCondition> priorityEqualTo(
+  QueryBuilder<KanbanItem, KanbanItem, QAfterFilterCondition> orderNumEqualTo(
+      int value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'orderNum',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<KanbanItem, KanbanItem, QAfterFilterCondition>
+      orderNumGreaterThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'orderNum',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<KanbanItem, KanbanItem, QAfterFilterCondition> orderNumLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'orderNum',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<KanbanItem, KanbanItem, QAfterFilterCondition> orderNumBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'orderNum',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<KanbanItem, KanbanItem, QAfterFilterCondition> priorityEqualTo(
       int value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -1225,7 +1271,7 @@ extension KanbanItamQueryFilter
     });
   }
 
-  QueryBuilder<KanbanItam, KanbanItam, QAfterFilterCondition>
+  QueryBuilder<KanbanItem, KanbanItem, QAfterFilterCondition>
       priorityGreaterThan(
     int value, {
     bool include = false,
@@ -1239,7 +1285,7 @@ extension KanbanItamQueryFilter
     });
   }
 
-  QueryBuilder<KanbanItam, KanbanItam, QAfterFilterCondition> priorityLessThan(
+  QueryBuilder<KanbanItem, KanbanItem, QAfterFilterCondition> priorityLessThan(
     int value, {
     bool include = false,
   }) {
@@ -1252,7 +1298,7 @@ extension KanbanItamQueryFilter
     });
   }
 
-  QueryBuilder<KanbanItam, KanbanItam, QAfterFilterCondition> priorityBetween(
+  QueryBuilder<KanbanItem, KanbanItem, QAfterFilterCondition> priorityBetween(
     int lower,
     int upper, {
     bool includeLower = true,
@@ -1269,7 +1315,7 @@ extension KanbanItamQueryFilter
     });
   }
 
-  QueryBuilder<KanbanItam, KanbanItam, QAfterFilterCondition>
+  QueryBuilder<KanbanItem, KanbanItem, QAfterFilterCondition>
       tagIdsElementEqualTo(int value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -1279,7 +1325,7 @@ extension KanbanItamQueryFilter
     });
   }
 
-  QueryBuilder<KanbanItam, KanbanItam, QAfterFilterCondition>
+  QueryBuilder<KanbanItem, KanbanItem, QAfterFilterCondition>
       tagIdsElementGreaterThan(
     int value, {
     bool include = false,
@@ -1293,7 +1339,7 @@ extension KanbanItamQueryFilter
     });
   }
 
-  QueryBuilder<KanbanItam, KanbanItam, QAfterFilterCondition>
+  QueryBuilder<KanbanItem, KanbanItem, QAfterFilterCondition>
       tagIdsElementLessThan(
     int value, {
     bool include = false,
@@ -1307,7 +1353,7 @@ extension KanbanItamQueryFilter
     });
   }
 
-  QueryBuilder<KanbanItam, KanbanItam, QAfterFilterCondition>
+  QueryBuilder<KanbanItem, KanbanItem, QAfterFilterCondition>
       tagIdsElementBetween(
     int lower,
     int upper, {
@@ -1325,7 +1371,7 @@ extension KanbanItamQueryFilter
     });
   }
 
-  QueryBuilder<KanbanItam, KanbanItam, QAfterFilterCondition>
+  QueryBuilder<KanbanItem, KanbanItem, QAfterFilterCondition>
       tagIdsLengthEqualTo(int length) {
     return QueryBuilder.apply(this, (query) {
       return query.listLength(
@@ -1338,7 +1384,7 @@ extension KanbanItamQueryFilter
     });
   }
 
-  QueryBuilder<KanbanItam, KanbanItam, QAfterFilterCondition> tagIdsIsEmpty() {
+  QueryBuilder<KanbanItem, KanbanItem, QAfterFilterCondition> tagIdsIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.listLength(
         r'tagIds',
@@ -1350,7 +1396,7 @@ extension KanbanItamQueryFilter
     });
   }
 
-  QueryBuilder<KanbanItam, KanbanItam, QAfterFilterCondition>
+  QueryBuilder<KanbanItem, KanbanItem, QAfterFilterCondition>
       tagIdsIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.listLength(
@@ -1363,7 +1409,7 @@ extension KanbanItamQueryFilter
     });
   }
 
-  QueryBuilder<KanbanItam, KanbanItam, QAfterFilterCondition>
+  QueryBuilder<KanbanItem, KanbanItem, QAfterFilterCondition>
       tagIdsLengthLessThan(
     int length, {
     bool include = false,
@@ -1379,7 +1425,7 @@ extension KanbanItamQueryFilter
     });
   }
 
-  QueryBuilder<KanbanItam, KanbanItam, QAfterFilterCondition>
+  QueryBuilder<KanbanItem, KanbanItem, QAfterFilterCondition>
       tagIdsLengthGreaterThan(
     int length, {
     bool include = false,
@@ -1395,7 +1441,7 @@ extension KanbanItamQueryFilter
     });
   }
 
-  QueryBuilder<KanbanItam, KanbanItam, QAfterFilterCondition>
+  QueryBuilder<KanbanItem, KanbanItem, QAfterFilterCondition>
       tagIdsLengthBetween(
     int lower,
     int upper, {
@@ -1413,7 +1459,7 @@ extension KanbanItamQueryFilter
     });
   }
 
-  QueryBuilder<KanbanItam, KanbanItam, QAfterFilterCondition> titleIsNull() {
+  QueryBuilder<KanbanItem, KanbanItem, QAfterFilterCondition> titleIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
         property: r'title',
@@ -1421,7 +1467,7 @@ extension KanbanItamQueryFilter
     });
   }
 
-  QueryBuilder<KanbanItam, KanbanItam, QAfterFilterCondition> titleIsNotNull() {
+  QueryBuilder<KanbanItem, KanbanItem, QAfterFilterCondition> titleIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
         property: r'title',
@@ -1429,7 +1475,7 @@ extension KanbanItamQueryFilter
     });
   }
 
-  QueryBuilder<KanbanItam, KanbanItam, QAfterFilterCondition> titleEqualTo(
+  QueryBuilder<KanbanItem, KanbanItem, QAfterFilterCondition> titleEqualTo(
     String? value, {
     bool caseSensitive = true,
   }) {
@@ -1442,7 +1488,7 @@ extension KanbanItamQueryFilter
     });
   }
 
-  QueryBuilder<KanbanItam, KanbanItam, QAfterFilterCondition> titleGreaterThan(
+  QueryBuilder<KanbanItem, KanbanItem, QAfterFilterCondition> titleGreaterThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -1457,7 +1503,7 @@ extension KanbanItamQueryFilter
     });
   }
 
-  QueryBuilder<KanbanItam, KanbanItam, QAfterFilterCondition> titleLessThan(
+  QueryBuilder<KanbanItem, KanbanItem, QAfterFilterCondition> titleLessThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -1472,7 +1518,7 @@ extension KanbanItamQueryFilter
     });
   }
 
-  QueryBuilder<KanbanItam, KanbanItam, QAfterFilterCondition> titleBetween(
+  QueryBuilder<KanbanItem, KanbanItem, QAfterFilterCondition> titleBetween(
     String? lower,
     String? upper, {
     bool includeLower = true,
@@ -1491,7 +1537,7 @@ extension KanbanItamQueryFilter
     });
   }
 
-  QueryBuilder<KanbanItam, KanbanItam, QAfterFilterCondition> titleStartsWith(
+  QueryBuilder<KanbanItem, KanbanItem, QAfterFilterCondition> titleStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -1504,7 +1550,7 @@ extension KanbanItamQueryFilter
     });
   }
 
-  QueryBuilder<KanbanItam, KanbanItam, QAfterFilterCondition> titleEndsWith(
+  QueryBuilder<KanbanItem, KanbanItem, QAfterFilterCondition> titleEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -1517,7 +1563,7 @@ extension KanbanItamQueryFilter
     });
   }
 
-  QueryBuilder<KanbanItam, KanbanItam, QAfterFilterCondition> titleContains(
+  QueryBuilder<KanbanItem, KanbanItem, QAfterFilterCondition> titleContains(
       String value,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -1529,7 +1575,7 @@ extension KanbanItamQueryFilter
     });
   }
 
-  QueryBuilder<KanbanItam, KanbanItam, QAfterFilterCondition> titleMatches(
+  QueryBuilder<KanbanItem, KanbanItem, QAfterFilterCondition> titleMatches(
       String pattern,
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -1541,7 +1587,7 @@ extension KanbanItamQueryFilter
     });
   }
 
-  QueryBuilder<KanbanItam, KanbanItam, QAfterFilterCondition> titleIsEmpty() {
+  QueryBuilder<KanbanItem, KanbanItem, QAfterFilterCondition> titleIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'title',
@@ -1550,7 +1596,7 @@ extension KanbanItamQueryFilter
     });
   }
 
-  QueryBuilder<KanbanItam, KanbanItam, QAfterFilterCondition>
+  QueryBuilder<KanbanItem, KanbanItem, QAfterFilterCondition>
       titleIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
@@ -1561,153 +1607,183 @@ extension KanbanItamQueryFilter
   }
 }
 
-extension KanbanItamQueryObject
-    on QueryBuilder<KanbanItam, KanbanItam, QFilterCondition> {}
+extension KanbanItemQueryObject
+    on QueryBuilder<KanbanItem, KanbanItem, QFilterCondition> {}
 
-extension KanbanItamQueryLinks
-    on QueryBuilder<KanbanItam, KanbanItam, QFilterCondition> {}
+extension KanbanItemQueryLinks
+    on QueryBuilder<KanbanItem, KanbanItem, QFilterCondition> {}
 
-extension KanbanItamQuerySortBy
-    on QueryBuilder<KanbanItam, KanbanItam, QSortBy> {
-  QueryBuilder<KanbanItam, KanbanItam, QAfterSortBy> sortByCreateAt() {
+extension KanbanItemQuerySortBy
+    on QueryBuilder<KanbanItem, KanbanItem, QSortBy> {
+  QueryBuilder<KanbanItem, KanbanItem, QAfterSortBy> sortByCreateAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'createAt', Sort.asc);
     });
   }
 
-  QueryBuilder<KanbanItam, KanbanItam, QAfterSortBy> sortByCreateAtDesc() {
+  QueryBuilder<KanbanItem, KanbanItem, QAfterSortBy> sortByCreateAtDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'createAt', Sort.desc);
     });
   }
 
-  QueryBuilder<KanbanItam, KanbanItam, QAfterSortBy> sortByDeadline() {
+  QueryBuilder<KanbanItem, KanbanItem, QAfterSortBy> sortByDeadline() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'deadline', Sort.asc);
     });
   }
 
-  QueryBuilder<KanbanItam, KanbanItam, QAfterSortBy> sortByDeadlineDesc() {
+  QueryBuilder<KanbanItem, KanbanItem, QAfterSortBy> sortByDeadlineDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'deadline', Sort.desc);
     });
   }
 
-  QueryBuilder<KanbanItam, KanbanItam, QAfterSortBy> sortByPriority() {
+  QueryBuilder<KanbanItem, KanbanItem, QAfterSortBy> sortByOrderNum() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'orderNum', Sort.asc);
+    });
+  }
+
+  QueryBuilder<KanbanItem, KanbanItem, QAfterSortBy> sortByOrderNumDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'orderNum', Sort.desc);
+    });
+  }
+
+  QueryBuilder<KanbanItem, KanbanItem, QAfterSortBy> sortByPriority() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'priority', Sort.asc);
     });
   }
 
-  QueryBuilder<KanbanItam, KanbanItam, QAfterSortBy> sortByPriorityDesc() {
+  QueryBuilder<KanbanItem, KanbanItem, QAfterSortBy> sortByPriorityDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'priority', Sort.desc);
     });
   }
 
-  QueryBuilder<KanbanItam, KanbanItam, QAfterSortBy> sortByTitle() {
+  QueryBuilder<KanbanItem, KanbanItem, QAfterSortBy> sortByTitle() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'title', Sort.asc);
     });
   }
 
-  QueryBuilder<KanbanItam, KanbanItam, QAfterSortBy> sortByTitleDesc() {
+  QueryBuilder<KanbanItem, KanbanItem, QAfterSortBy> sortByTitleDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'title', Sort.desc);
     });
   }
 }
 
-extension KanbanItamQuerySortThenBy
-    on QueryBuilder<KanbanItam, KanbanItam, QSortThenBy> {
-  QueryBuilder<KanbanItam, KanbanItam, QAfterSortBy> thenByCreateAt() {
+extension KanbanItemQuerySortThenBy
+    on QueryBuilder<KanbanItem, KanbanItem, QSortThenBy> {
+  QueryBuilder<KanbanItem, KanbanItem, QAfterSortBy> thenByCreateAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'createAt', Sort.asc);
     });
   }
 
-  QueryBuilder<KanbanItam, KanbanItam, QAfterSortBy> thenByCreateAtDesc() {
+  QueryBuilder<KanbanItem, KanbanItem, QAfterSortBy> thenByCreateAtDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'createAt', Sort.desc);
     });
   }
 
-  QueryBuilder<KanbanItam, KanbanItam, QAfterSortBy> thenByDeadline() {
+  QueryBuilder<KanbanItem, KanbanItem, QAfterSortBy> thenByDeadline() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'deadline', Sort.asc);
     });
   }
 
-  QueryBuilder<KanbanItam, KanbanItam, QAfterSortBy> thenByDeadlineDesc() {
+  QueryBuilder<KanbanItem, KanbanItem, QAfterSortBy> thenByDeadlineDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'deadline', Sort.desc);
     });
   }
 
-  QueryBuilder<KanbanItam, KanbanItam, QAfterSortBy> thenById() {
+  QueryBuilder<KanbanItem, KanbanItem, QAfterSortBy> thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
     });
   }
 
-  QueryBuilder<KanbanItam, KanbanItam, QAfterSortBy> thenByIdDesc() {
+  QueryBuilder<KanbanItem, KanbanItem, QAfterSortBy> thenByIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.desc);
     });
   }
 
-  QueryBuilder<KanbanItam, KanbanItam, QAfterSortBy> thenByPriority() {
+  QueryBuilder<KanbanItem, KanbanItem, QAfterSortBy> thenByOrderNum() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'orderNum', Sort.asc);
+    });
+  }
+
+  QueryBuilder<KanbanItem, KanbanItem, QAfterSortBy> thenByOrderNumDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'orderNum', Sort.desc);
+    });
+  }
+
+  QueryBuilder<KanbanItem, KanbanItem, QAfterSortBy> thenByPriority() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'priority', Sort.asc);
     });
   }
 
-  QueryBuilder<KanbanItam, KanbanItam, QAfterSortBy> thenByPriorityDesc() {
+  QueryBuilder<KanbanItem, KanbanItem, QAfterSortBy> thenByPriorityDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'priority', Sort.desc);
     });
   }
 
-  QueryBuilder<KanbanItam, KanbanItam, QAfterSortBy> thenByTitle() {
+  QueryBuilder<KanbanItem, KanbanItem, QAfterSortBy> thenByTitle() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'title', Sort.asc);
     });
   }
 
-  QueryBuilder<KanbanItam, KanbanItam, QAfterSortBy> thenByTitleDesc() {
+  QueryBuilder<KanbanItem, KanbanItem, QAfterSortBy> thenByTitleDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'title', Sort.desc);
     });
   }
 }
 
-extension KanbanItamQueryWhereDistinct
-    on QueryBuilder<KanbanItam, KanbanItam, QDistinct> {
-  QueryBuilder<KanbanItam, KanbanItam, QDistinct> distinctByCreateAt() {
+extension KanbanItemQueryWhereDistinct
+    on QueryBuilder<KanbanItem, KanbanItem, QDistinct> {
+  QueryBuilder<KanbanItem, KanbanItem, QDistinct> distinctByCreateAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'createAt');
     });
   }
 
-  QueryBuilder<KanbanItam, KanbanItam, QDistinct> distinctByDeadline() {
+  QueryBuilder<KanbanItem, KanbanItem, QDistinct> distinctByDeadline() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'deadline');
     });
   }
 
-  QueryBuilder<KanbanItam, KanbanItam, QDistinct> distinctByPriority() {
+  QueryBuilder<KanbanItem, KanbanItem, QDistinct> distinctByOrderNum() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'orderNum');
+    });
+  }
+
+  QueryBuilder<KanbanItem, KanbanItem, QDistinct> distinctByPriority() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'priority');
     });
   }
 
-  QueryBuilder<KanbanItam, KanbanItam, QDistinct> distinctByTagIds() {
+  QueryBuilder<KanbanItem, KanbanItem, QDistinct> distinctByTagIds() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'tagIds');
     });
   }
 
-  QueryBuilder<KanbanItam, KanbanItam, QDistinct> distinctByTitle(
+  QueryBuilder<KanbanItem, KanbanItem, QDistinct> distinctByTitle(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'title', caseSensitive: caseSensitive);
@@ -1715,39 +1791,45 @@ extension KanbanItamQueryWhereDistinct
   }
 }
 
-extension KanbanItamQueryProperty
-    on QueryBuilder<KanbanItam, KanbanItam, QQueryProperty> {
-  QueryBuilder<KanbanItam, int, QQueryOperations> idProperty() {
+extension KanbanItemQueryProperty
+    on QueryBuilder<KanbanItem, KanbanItem, QQueryProperty> {
+  QueryBuilder<KanbanItem, int, QQueryOperations> idProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'id');
     });
   }
 
-  QueryBuilder<KanbanItam, int, QQueryOperations> createAtProperty() {
+  QueryBuilder<KanbanItem, int, QQueryOperations> createAtProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'createAt');
     });
   }
 
-  QueryBuilder<KanbanItam, int?, QQueryOperations> deadlineProperty() {
+  QueryBuilder<KanbanItem, int, QQueryOperations> deadlineProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'deadline');
     });
   }
 
-  QueryBuilder<KanbanItam, int, QQueryOperations> priorityProperty() {
+  QueryBuilder<KanbanItem, int, QQueryOperations> orderNumProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'orderNum');
+    });
+  }
+
+  QueryBuilder<KanbanItem, int, QQueryOperations> priorityProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'priority');
     });
   }
 
-  QueryBuilder<KanbanItam, List<int>, QQueryOperations> tagIdsProperty() {
+  QueryBuilder<KanbanItem, List<int>, QQueryOperations> tagIdsProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'tagIds');
     });
   }
 
-  QueryBuilder<KanbanItam, String?, QQueryOperations> titleProperty() {
+  QueryBuilder<KanbanItem, String?, QQueryOperations> titleProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'title');
     });

@@ -11,7 +11,7 @@ import 'package:weaving/style/app_style.dart';
 import 'search_text_field.dart';
 
 class SideMenu extends ConsumerWidget {
-  const SideMenu({Key? key}) : super(key: key);
+  const SideMenu({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

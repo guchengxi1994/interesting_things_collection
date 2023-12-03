@@ -1,6 +1,7 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 
+@Deprecated("unused")
 class ListFooter extends StatelessWidget {
   const ListFooter({super.key});
 

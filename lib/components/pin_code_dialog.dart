@@ -8,8 +8,7 @@ enum PinCodeDialogType { confirm, initial }
 
 class PinCodeDialog extends ConsumerStatefulWidget {
   const PinCodeDialog(
-      {Key? key, required this.message, this.type = PinCodeDialogType.initial})
-      : super(key: key);
+      {super.key, required this.message, this.type = PinCodeDialogType.initial});
   final String message;
   final PinCodeDialogType type;
 

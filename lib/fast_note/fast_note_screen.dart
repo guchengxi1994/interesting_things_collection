@@ -10,7 +10,7 @@ import 'components/export_fastnote_dialog.dart';
 import 'components/fast_note_details.dart';
 
 class FastNoteScreen extends ConsumerStatefulWidget {
-  const FastNoteScreen({Key? key}) : super(key: key);
+  const FastNoteScreen({super.key});
 
   @override
   ConsumerState<FastNoteScreen> createState() => _FastNoteScreenState();

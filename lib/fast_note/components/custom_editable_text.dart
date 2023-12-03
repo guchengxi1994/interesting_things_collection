@@ -19,14 +19,13 @@ typedef OnChangeLockStatus = void Function(FastNoteValue value);
 
 class CustomEditableText extends ConsumerStatefulWidget {
   const CustomEditableText(
-      {Key? key,
+      {super.key,
       required this.value,
       required this.onDelete,
       required this.onSave,
       required this.onAdd,
       this.isEditing = false,
-      required this.onChangeLockStatus})
-      : super(key: key);
+      required this.onChangeLockStatus});
   final FastNoteValue value;
   final OnSave onSave;
   final OnDelete onDelete;

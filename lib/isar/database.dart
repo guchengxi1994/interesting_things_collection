@@ -31,7 +31,7 @@ class IsarDatabase {
         FastNoteSchema,
         FastNoteValueSchema,
         KanbanDataSchema,
-        KanbanItamSchema,
+        KanbanItemSchema,
         KanbanItamTagSchema
       ],
       name: "weaving_db",

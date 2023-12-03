@@ -7,18 +7,22 @@ class KanbanData {
   Id? id;
   String? name;
   String color = "FFFFFF";
-  final items = IsarLinks<KanbanItam>();
+  final items = IsarLinks<KanbanItem>();
   int orderNum = 1;
 }
 
 @collection
-class KanbanItam {
+class KanbanItem {
   Id? id;
   String? title;
-  int? deadline;
+  int deadline =
+      DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)
+          .add(const Duration(days: 1))
+          .millisecondsSinceEpoch;
   int createAt = DateTime.now().millisecondsSinceEpoch;
   List<int> tagIds = [];
   int priority = 1;
+  int orderNum = 1;
 }
 
 @collection

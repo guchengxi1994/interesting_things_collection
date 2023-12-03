@@ -8,7 +8,7 @@ import '../notifiers/board_notifier_state.dart';
 import 'board_list.dart';
 
 class CustomBoard extends ConsumerStatefulWidget {
-  const CustomBoard({Key? key}) : super(key: key);
+  const CustomBoard({super.key});
 
   @override
   ConsumerState<CustomBoard> createState() => _BoardState();

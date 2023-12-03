@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 
 class ListHeader extends StatelessWidget {
-  const ListHeader({super.key, required this.title, required this.stateColor});
+  const ListHeader(
+      {super.key,
+      required this.title,
+      required this.stateColor,
+      required this.onItemAdd});
   final String title;
   final Color stateColor;
+  final VoidCallback onItemAdd;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -23,18 +28,23 @@ class ListHeader extends StatelessWidget {
                   color: Colors.black,
                   fontWeight: FontWeight.bold)),
           const Spacer(),
-          Container(
-            height: 25,
-            width: 25,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(2),
-                border: Border.all(
-                  color: Colors.black,
-                )),
-            child: const Icon(
-              Icons.more_horiz,
-              size: 16,
-              color: Colors.black,
+          InkWell(
+            onTap: () {
+              onItemAdd();
+            },
+            child: Container(
+              height: 25,
+              width: 25,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(2),
+                  border: Border.all(
+                    color: Colors.black,
+                  )),
+              child: const Icon(
+                Icons.add,
+                size: 16,
+                color: Colors.black,
+              ),
             ),
           )
         ],

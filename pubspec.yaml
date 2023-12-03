@@ -60,13 +60,15 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_lints: ^2.0.0
+  flutter_lints: ^3.0.1
   isar_generator: ^3.1.0+1
   flutter_rename_app_plus3: ^1.2.4
   flutter_launcher_icons: ^0.13.1  # flutter pub run flutter_launcher_icons
 
 
 dependency_overrides:  
+  analyzer: ^6.3.0
+  meta: ^1.11.0
   uuid: ^4.1.0
   popup_card:
     path: D:/github_repo/popup_card

@@ -11,7 +11,7 @@ import 'package:weaving/fast_note/notifiers/fast_note_notifier.dart';
 import 'clipboard_item_list.dart';
 
 class SearchTextField extends ConsumerStatefulWidget {
-  const SearchTextField({Key? key}) : super(key: key);
+  const SearchTextField({super.key});
 
   @override
   ConsumerState<SearchTextField> createState() => _SearchTextFieldState();
