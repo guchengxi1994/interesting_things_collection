@@ -32,6 +32,16 @@ fn wire_say_hello_impl(port_: MessagePort) {
         move || move |task_callback| Result::<_, ()>::Ok(say_hello()),
     )
 }
+fn wire_show_auto_close_dialog_impl(port_: MessagePort) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, (), _>(
+        WrapInfo {
+            debug_name: "show_auto_close_dialog",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || move |task_callback| Result::<_, ()>::Ok(show_auto_close_dialog()),
+    )
+}
 // Section: wrapper structs
 
 // Section: static checks

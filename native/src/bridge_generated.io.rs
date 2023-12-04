@@ -6,6 +6,11 @@ pub extern "C" fn wire_say_hello(port_: i64) {
     wire_say_hello_impl(port_)
 }
 
+#[no_mangle]
+pub extern "C" fn wire_show_auto_close_dialog(port_: i64) {
+    wire_show_auto_close_dialog_impl(port_)
+}
+
 // Section: allocate functions
 
 // Section: related functions

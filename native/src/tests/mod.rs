@@ -1,32 +1,3 @@
-// slint::slint!{
-//     import { Button , HorizontalBox, VerticalBox} from "std-widgets.slint";
-//     export component App inherits Window {
-//         title: "主窗口";
-//         width: 320px;
-//         height: 240px;
-//         icon: @image-url("icon.png");
-
-//         callback open-dialog();
-//         in-out property <string> label-text: "hello world!";
-//         in-out property <string> ipc-server-name: "";
-
-//         VerticalBox {
-//             Button {
-//                 text: "打开对话框";
-//                 width: 100px;
-//                 height: 40px;
-//                 clicked => {
-//                     open-dialog()
-//                 }
-//             }
-//             Text {
-//                 text: label-text;
-//                 color: green;
-//             }
-//         }
-//     }
-// }
-
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -40,11 +11,15 @@ slint::slint! {
         title: "对话框";
         width: 300px;
         height: 200px;
-
+        no-frame: true;
         icon: @image-url("icon.png");
 
+        Rectangle {
+            background: @linear-gradient (90deg, #cde4ee 0%, #ebf8e1 100%);
+        }
+
         callback close-dialog();
-        
+
         VerticalBox {
             Text {
                 text: "对话框";
@@ -115,6 +90,51 @@ mod tests {
             Ok(_) => println!("New thread finished."),
             Err(_) => println!("New thread panicked."),
         }
+
+        anyhow::Ok(())
+    }
+
+    #[test]
+    fn test2() -> anyhow::Result<()> {
+        slint::slint! {
+            export component Example inherits Window {
+                preferred-width: 100px;
+                preferred-height: 100px;
+                Rectangle {
+                    background: @linear-gradient (90deg, #3f87a6 0%, #ebf8e1 50%, #f69d3c 100%);
+                }
+            }
+        }
+
+        let window = Example::new()?;
+        window.show()?;
+        std::thread::sleep(std::time::Duration::from_secs(2));
+        // Do some work...
+        window.hide()?; // The window will be auto disposed if no other references.
+        anyhow::Ok(())
+    }
+
+    #[test]
+    fn auto_hide_window() -> anyhow::Result<()> {
+        let dialog = Dialog::new()?;
+        dialog
+            .window()
+            .set_position(slint::PhysicalPosition::new(0, 0));
+        let _dialog_handle = dialog.as_weak();
+        dialog.on_close_dialog(move || {
+            println!("close");
+        });
+
+        dialog.show()?;
+        std::thread::spawn(move || {
+            std::thread::sleep(std::time::Duration::from_secs(2));
+            slint::invoke_from_event_loop(move || {
+                let _ = _dialog_handle.unwrap().hide();
+            })
+            .unwrap();
+        });
+
+        slint::run_event_loop()?;
 
         anyhow::Ok(())
     }
