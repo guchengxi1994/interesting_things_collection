@@ -73,6 +73,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.4.1"
+  build_cli_annotations:
+    dependency: transitive
+    description:
+      name: build_cli_annotations
+      sha256: b59d2769769efd6c9ff6d4c4cede0be115a566afc591705c2040b707534b1172
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.1.0"
   build_config:
     dependency: transitive
     description:
@@ -106,7 +114,7 @@ packages:
     source: hosted
     version: "2.4.7"
   build_runner_core:
-    dependency: transitive
+    dependency: "direct dev"
     description:
       name: build_runner_core
       sha256: c9e32d21dd6626b5c163d48b037ce906bbe428bc23ab77bcd77bb21e593b6185
@@ -354,13 +362,21 @@ packages:
     source: hosted
     version: "1.3.1"
   ffi:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: ffi
       sha256: "7bf0adc28a23d395f19f3f1eb21dd7cfd1dd9f8e1c50051c069122e6853bc878"
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.1.0"
+  ffigen:
+    dependency: "direct dev"
+    description:
+      name: ffigen
+      sha256: "3a80687577e7e51ba915114742f389a128e8aa241c52ce69a0f70aecb8e14365"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "9.0.1"
   file:
     dependency: transitive
     description:
@@ -563,6 +579,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.4.9"
+  flutter_rust_bridge:
+    dependency: "direct main"
+    description:
+      name: flutter_rust_bridge
+      sha256: "2d31289a022f8b0a97e952d553686c50dff2ed5b58ac03628a13bc8cdf5f8ece"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.82.3"
   flutter_smart_dialog:
     dependency: "direct main"
     description:
@@ -589,6 +613,22 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  freezed:
+    dependency: "direct dev"
+    description:
+      name: freezed
+      sha256: "21bf2825311de65501d22e563e3d7605dff57fb5e6da982db785ae5372ff018a"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.4.5"
+  freezed_annotation:
+    dependency: "direct dev"
+    description:
+      name: freezed_annotation
+      sha256: c3fd9336eb55a38cc1bbd79ab17573113a8deccd0ecbbf926cca3c62803b5c2d
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.4.1"
   frontend_server_client:
     dependency: transitive
     description:
@@ -1124,6 +1164,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.2.3"
+  puppeteer:
+    dependency: transitive
+    description:
+      name: puppeteer
+      sha256: eedeaae6ec5d2e54f9ae22ab4d6b3dda2e8791c356cc783046d06c287ffe11d8
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "3.6.0"
   qr:
     dependency: transitive
     description:
@@ -1244,6 +1292,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.4.1"
+  shelf_static:
+    dependency: transitive
+    description:
+      name: shelf_static
+      sha256: a41d3f53c4adf0f57480578c1d61d90342cd617de7fc8077b1304643c2d85c1e
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.1.2"
   shelf_web_socket:
     dependency: transitive
     description:
@@ -1393,6 +1449,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.0.1"
+  tuple:
+    dependency: transitive
+    description:
+      name: tuple
+      sha256: a97ce2013f240b2f3807bcbaf218765b6f301c3eff91092bcfa23a039e7dd151
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.0.2"
   typed_data:
     dependency: transitive
     description:
@@ -1633,6 +1697,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "3.1.2"
+  yaml_edit:
+    dependency: transitive
+    description:
+      name: yaml_edit
+      sha256: "1579d4a0340a83cf9e4d580ea51a16329c916973bffd5bd4b45e911b25d46bfd"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.1.1"
   youtube_player_flutter:
     dependency: transitive
     description:
