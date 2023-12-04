@@ -21,8 +21,13 @@ class BoardList extends ConsumerStatefulWidget {
 }
 
 class _BoardListState extends ConsumerState<BoardList> {
-  late final List<Widget> _rows = widget.kanbanData.items
-      .sorted((a, b) => a.orderNum.compareTo(b.orderNum))
+  late final KanbanData? _kanbanData = ref
+      .read(kanbanBoardNotifier.notifier)
+      .getDataByIndex(widget.kanbanData.id!);
+  late final List<KanbanItem> _items = _kanbanData == null
+      ? []
+      : _kanbanData!.items.sorted((a, b) => a.orderNum.compareTo(b.orderNum));
+  late final List<Widget> _rows = _items
       .mapIndexed((i, e) => ListItem(
             key: ValueKey(widget.kanbanData.name.toString() + e.id.toString()),
             kanbanItem: e,
@@ -66,9 +71,24 @@ class _BoardListState extends ConsumerState<BoardList> {
         ),
         children: _rows,
         onReorder: (int oldIndex, int newIndex) {
+          setState(() {
+            if (oldIndex < newIndex) {
+              newIndex -= 1;
+            }
+
+            final item = _items.removeAt(oldIndex);
+            _items.insert(newIndex, item);
+
+            int index = 0;
+            for (final i in _items) {
+              i.orderNum = index;
+              index += 1;
+            }
+          });
+
           ref
               .read(kanbanBoardNotifier.notifier)
-              .kanbanListReorder(widget.kanbanData, oldIndex, newIndex);
+              .kanbanListReorder(_kanbanData!, _items);
         },
       ),
     );

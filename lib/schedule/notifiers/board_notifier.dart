@@ -33,28 +33,38 @@ class BoardNotifier extends AsyncNotifier<BoardNotifierState> {
     });
   }
 
-  kanbanListReorder(KanbanData kanbanData, int oldIndex, int newIndex) async {
+  KanbanData? getDataByIndex(int index) {
+    if (state.value == null) {
+      return null;
+    }
+    return state.value!.kanbanData
+        .where((element) => element.id == index)
+        .first;
+  }
+
+  kanbanListReorder(KanbanData kanbanData, List<KanbanItem> items) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       await database.isar!.writeTxn(() async {
-        if (oldIndex < newIndex) {
-          newIndex -= 1;
-        }
+        // if (oldIndex < newIndex) {
+        //   newIndex -= 1;
+        // }
 
-        final list = kanbanData.items.toList();
-        final item = list.removeAt(oldIndex);
-        list.insert(newIndex, item);
-        int index = 0;
-        for (final i in list) {
-          i.orderNum = index;
-          index += 1;
-        }
-        await database.isar!.kanbanItems.putAll(list);
+        // final list = kanbanData.items.toList();
+        // final item = list.removeAt(oldIndex);
+        // list.insert(newIndex, item);
+        // int index = 0;
+        // for (final i in list) {
+        //   i.orderNum = index;
+        //   index += 1;
+        // }
+        await database.isar!.kanbanItems.putAll(items);
 
         await kanbanData.items.save();
       });
 
       final list = await database.isar!.kanbanDatas.where().findAll();
+
       return BoardNotifierState(kanbanData: list);
     });
   }
