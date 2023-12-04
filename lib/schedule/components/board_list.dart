@@ -40,56 +40,61 @@ class _BoardListState extends ConsumerState<BoardList> {
     return Container(
       margin: const EdgeInsets.only(left: 20, right: 20),
       width: 300,
-      child: ReorderableListView(
-        buildDefaultDragHandles: false,
-        header: ListHeader(
-          title: widget.kanbanData.name ?? "",
-          stateColor: ColorUtil.getColorFromHex(widget.kanbanData.color),
-          onItemAdd: () {
-            if (_rows.isNotEmpty && _rows.first.runtimeType == NewListItem) {
-              return;
-            }
+      child: Column(
+        children: [
+          ListHeader(
+            title: widget.kanbanData.name ?? "",
+            stateColor: ColorUtil.getColorFromHex(widget.kanbanData.color),
+            onItemAdd: () {
+              if (_rows.isNotEmpty && _rows.first.runtimeType == NewListItem) {
+                return;
+              }
 
-            setState(() {
-              _rows.insert(
-                  0,
-                  NewListItem(
-                    key: UniqueKey(),
-                    onCreate: (String s) {
-                      ref
-                          .read(kanbanBoardNotifier.notifier)
-                          .newItem(widget.kanbanData, s);
-                    },
-                    onRemove: () {
-                      setState(() {
-                        _rows.removeAt(0);
-                      });
-                    },
-                  ));
-            });
-          },
-        ),
-        children: _rows,
-        onReorder: (int oldIndex, int newIndex) {
-          setState(() {
-            if (oldIndex < newIndex) {
-              newIndex -= 1;
-            }
+              setState(() {
+                _rows.insert(
+                    0,
+                    NewListItem(
+                      key: UniqueKey(),
+                      onCreate: (String s) {
+                        ref
+                            .read(kanbanBoardNotifier.notifier)
+                            .newItem(widget.kanbanData, s);
+                      },
+                      onRemove: () {
+                        setState(() {
+                          _rows.removeAt(0);
+                        });
+                      },
+                    ));
+              });
+            },
+          ),
+          Expanded(
+              child: ReorderableListView(
+            buildDefaultDragHandles: false,
+            children: _rows,
+            onReorder: (int oldIndex, int newIndex) {
+              setState(() {
+                if (oldIndex < newIndex) {
+                  newIndex -= 1;
+                }
 
-            final item = _items.removeAt(oldIndex);
-            _items.insert(newIndex, item);
+                final item = _items.removeAt(oldIndex);
+                _items.insert(newIndex, item);
 
-            int index = 0;
-            for (final i in _items) {
-              i.orderNum = index;
-              index += 1;
-            }
-          });
+                int index = 0;
+                for (final i in _items) {
+                  i.orderNum = index;
+                  index += 1;
+                }
+              });
 
-          ref
-              .read(kanbanBoardNotifier.notifier)
-              .kanbanListReorder(_kanbanData!, _items);
-        },
+              ref
+                  .read(kanbanBoardNotifier.notifier)
+                  .kanbanListReorder(_kanbanData!, _items);
+            },
+          ))
+        ],
       ),
     );
   }
