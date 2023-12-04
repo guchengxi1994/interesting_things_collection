@@ -10,8 +10,8 @@ import 'custom_editable_title.dart';
 
 class FastNoteDetailsWidget extends ConsumerWidget {
   const FastNoteDetailsWidget({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

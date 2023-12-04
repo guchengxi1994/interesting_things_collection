@@ -14,15 +14,20 @@ class SettingsNotifier extends Notifier<SettingsState> {
   late IsarDatabase isarDatabase = IsarDatabase();
 
   setPassword(String s) async {
+    final encodedPassword = SM4.encrypt(s, key: SMUtils.internalKey);
     await isarDatabase.isar!.writeTxn(() async {
       Password password = Password();
-      password.password = SM4.encrypt(s, key: SMUtils.internalKey);
+      password.password = encodedPassword;
       await isarDatabase.isar!.passwords.put(password);
     });
 
     await localStorage.setEnablePasscode(true);
 
-    state = state.copyWith(enableUnlockPwd: true, password: s);
+    state = state.copyWith(enableUnlockPwd: true, password: encodedPassword);
+  }
+
+  matchPasscode(String s) {
+    return SM4.encrypt(s, key: SMUtils.internalKey) == state.password;
   }
 
   @override

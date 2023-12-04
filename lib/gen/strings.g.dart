@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 2
-/// Strings: 62 (31 per locale)
+/// Strings: 64 (32 per locale)
 ///
-/// Built on 2023-11-23 at 13:53 UTC
+/// Built on 2023-12-02 at 12:32 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -184,6 +184,7 @@ class _StringsLayoutEn {
 	String get fastNote => 'Fast Note';
 	String get dataTransfer => 'Data Transfer';
 	String get setting => 'Settings';
+	String get schedule => 'Schedule';
 }
 
 // Path: catalogs
@@ -332,6 +333,7 @@ class _StringsLayoutZhCn implements _StringsLayoutEn {
 	@override String get fastNote => '快速笔记';
 	@override String get dataTransfer => '数据迁移';
 	@override String get setting => '设置';
+	@override String get schedule => '日程';
 }
 
 // Path: catalogs
@@ -441,6 +443,7 @@ extension on _StringsEn {
 			case 'layout.fastNote': return 'Fast Note';
 			case 'layout.dataTransfer': return 'Data Transfer';
 			case 'layout.setting': return 'Settings';
+			case 'layout.schedule': return 'Schedule';
 			case 'catalogs.card.tag': return ({required Object count}) => '${count} tags';
 			case 'catalogs.details.name': return 'Name';
 			case 'catalogs.details.tags': return 'Tags';
@@ -480,6 +483,7 @@ extension on _StringsZhCn {
 			case 'layout.fastNote': return '快速笔记';
 			case 'layout.dataTransfer': return '数据迁移';
 			case 'layout.setting': return '设置';
+			case 'layout.schedule': return '日程';
 			case 'catalogs.card.tag': return ({required Object count}) => '${count}个标签';
 			case 'catalogs.details.name': return '名称';
 			case 'catalogs.details.tags': return '标签';

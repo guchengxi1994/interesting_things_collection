@@ -7,10 +7,10 @@ typedef OnSave = void Function(String s);
 
 class CustomEditableTitle extends ConsumerStatefulWidget {
   const CustomEditableTitle({
-    Key? key,
+    super.key,
     required this.title,
     required this.onSave,
-  }) : super(key: key);
+  });
   final String title;
   final OnSave onSave;
 

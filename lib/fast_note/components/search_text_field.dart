@@ -1,11 +1,17 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:just_the_tooltip/just_the_tooltip.dart';
+import 'package:super_clipboard/super_clipboard.dart';
+import 'package:weaving/fast_note/notifiers/clipboard_item_notifier.dart';
 import 'package:weaving/fast_note/notifiers/fast_note_notifier.dart';
 
+import 'clipboard_item_list.dart';
+
 class SearchTextField extends ConsumerStatefulWidget {
-  const SearchTextField({Key? key}) : super(key: key);
+  const SearchTextField({super.key});
 
   @override
   ConsumerState<SearchTextField> createState() => _SearchTextFieldState();
@@ -28,7 +34,32 @@ class _SearchTextFieldState extends ConsumerState<SearchTextField> {
     super.dispose();
   }
 
+  @override
+  void initState() {
+    super.initState();
+    focusNode.addListener(() async {
+      if (focusNode.hasFocus) {
+        List<String> list = [];
+        final reader = await ClipboardReader.readClipboard();
+        for (final i in reader.items) {
+          if (i.canProvide(Formats.plainText)) {
+            final text = await i.readValue(Formats.plainText);
+            if (text != null && text != "") {
+              list.add(text);
+            }
+          }
+        }
+        if (list.isNotEmpty) {
+          await ref.read(clipboardNotifier.notifier).refresh(list);
+          justTheController.showTooltip();
+        }
+      }
+    });
+  }
+
   final TextEditingController textEditingController = TextEditingController();
+  final FocusNode focusNode = FocusNode();
+  final JustTheController justTheController = JustTheController();
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +69,7 @@ class _SearchTextFieldState extends ConsumerState<SearchTextField> {
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
         // Use a Material design search bar
         child: TextField(
+          focusNode: focusNode,
           controller: textEditingController,
           onChanged: (value) {
             if (value == "") {
@@ -67,20 +99,41 @@ class _SearchTextFieldState extends ConsumerState<SearchTextField> {
             // Add a clear button to the search bar
             suffixIcon: clearButtonVisible
                 ? TextButton(
-                    onPressed: () {
+                    onPressed: () async {
                       textEditingController.text = "";
                       setState(() {
                         clearButtonVisible = false;
                       });
                       ref.read(fastNoteNotifier.notifier).filter("");
+                      await Clipboard.setData(const ClipboardData(text: ""));
                     },
                     child: const Text("清除"))
                 : const SizedBox(),
             // Add a search icon or button to the search bar
-            prefixIcon: const Padding(
-              padding: EdgeInsets.only(left: 10),
-              child: Icon(Icons.search),
-            ),
+            prefixIcon: JustTheTooltip(
+                controller: justTheController,
+                tailBuilder: (point1, point2, point3) {
+                  return Path()
+                    ..moveTo(point1.dx, point1.dy)
+                    ..lineTo(point3.dx, point3.dy)
+                    ..close();
+                },
+                isModal: true,
+                content: ClipboardItemList(
+                  onItemClicked: (v) {
+                    textEditingController.text = v;
+                    setState(() {
+                      clearButtonVisible = true;
+                    });
+                    ref
+                        .read(fastNoteNotifier.notifier)
+                        .filter(textEditingController.text);
+                  },
+                ),
+                child: const Padding(
+                  padding: EdgeInsets.only(left: 10),
+                  child: Icon(Icons.search),
+                )),
             border: OutlineInputBorder(
               borderSide: BorderSide(color: borderColor),
               borderRadius: BorderRadius.circular(10.0),

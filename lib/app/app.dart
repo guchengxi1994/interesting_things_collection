@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/translations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,6 +14,14 @@ import 'package:weaving/style/app_style.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import '../components/fast_search_region.dart';
+
+class AppScrollBehavior extends MaterialScrollBehavior {
+  @override
+  Set<PointerDeviceKind> get dragDevices => {
+        PointerDeviceKind.touch,
+        PointerDeviceKind.mouse,
+      };
+}
 
 class MyApp extends ConsumerStatefulWidget {
   const MyApp({super.key});
@@ -43,10 +52,11 @@ class MyAppState extends ConsumerState<MyApp> {
         future: future,
         builder: (c, s) {
           return MaterialApp(
+            scrollBehavior: AppScrollBehavior(),
             debugShowCheckedModeBanner: false,
             navigatorObservers: [FlutterSmartDialog.observer],
             builder: FlutterSmartDialog.init(
-                loadingBuilder: (String msg) => CustomLoadingWidget()),
+                loadingBuilder: (String msg) => const CustomLoadingWidget()),
             title: 'Weaving',
             localizationsDelegates: const [
               GlobalMaterialLocalizations.delegate,

@@ -4,9 +4,13 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:weaving/notifier/settings_notifier.dart';
 import 'package:weaving/style/app_style.dart';
 
+enum PinCodeDialogType { confirm, initial }
+
 class PinCodeDialog extends ConsumerStatefulWidget {
-  const PinCodeDialog({Key? key, required this.message}) : super(key: key);
+  const PinCodeDialog(
+      {super.key, required this.message, this.type = PinCodeDialogType.initial});
   final String message;
+  final PinCodeDialogType type;
 
   @override
   ConsumerState<PinCodeDialog> createState() => _PinCodeDialogState();
@@ -143,14 +147,18 @@ class _PinCodeDialogState extends ConsumerState<PinCodeDialog> {
         children: [
           InkWell(
               onTap: () {
-                setState(() {
-                  contentMessage = "You can enable this in the Settings page";
-                });
-                ref.read(settingsNotifier.notifier).changeEnablePwd(false);
+                if (widget.type == PinCodeDialogType.initial) {
+                  setState(() {
+                    contentMessage = "You can enable this in the Settings page";
+                  });
+                  ref.read(settingsNotifier.notifier).changeEnablePwd(false);
 
-                Future.delayed(const Duration(seconds: 2)).then((value) {
-                  Navigator.of(context).pop("");
-                });
+                  Future.delayed(const Duration(seconds: 2)).then((value) {
+                    Navigator.of(context).pop();
+                  });
+                } else {
+                  Navigator.of(context).pop();
+                }
               },
               child: Container(
                 width: 73,
@@ -173,13 +181,32 @@ class _PinCodeDialogState extends ConsumerState<PinCodeDialog> {
           ),
           InkWell(
               onTap: () {
-                setState(() {
-                  contentMessage = "OK";
-                });
+                if (pincodeController.text.length != 6) {
+                  return;
+                }
 
-                Future.delayed(const Duration(seconds: 2)).then((value) {
-                  Navigator.of(context).pop("");
-                });
+                if (widget.type == PinCodeDialogType.initial) {
+                  setState(() {
+                    contentMessage = "OK";
+                  });
+
+                  ref
+                      .read(settingsNotifier.notifier)
+                      .setPassword(pincodeController.text);
+
+                  Future.delayed(const Duration(seconds: 2)).then((value) {
+                    Navigator.of(context).pop(true);
+                  });
+                } else {
+                  // Navigator.of(context).pop(pincodeController.text);
+                  if (ref
+                      .read(settingsNotifier.notifier)
+                      .matchPasscode(pincodeController.text)) {
+                    Navigator.of(context).pop(true);
+                  } else {
+                    Navigator.of(context).pop(false);
+                  }
+                }
               },
               child: Container(
                 padding: const EdgeInsets.only(bottom: 1),

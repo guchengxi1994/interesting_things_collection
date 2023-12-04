@@ -23,8 +23,7 @@ typedef OnQuillPreviewImageSave = void Function(Uint8List);
 
 class Editor extends StatefulWidget {
   const Editor(
-      {Key? key, this.saveToJson, this.savedData = "", this.savePreview})
-      : super(key: key);
+      {super.key, this.saveToJson, this.savedData = "", this.savePreview});
   final OnQuillSave? saveToJson;
   final String savedData;
   final OnQuillPreviewImageSave? savePreview;

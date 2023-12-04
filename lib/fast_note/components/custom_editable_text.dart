@@ -1,8 +1,15 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:super_clipboard/super_clipboard.dart';
+import 'package:weaving/common/sm_utils.dart';
+import 'package:weaving/components/ban_painter.dart';
+import 'package:weaving/components/pin_code_dialog.dart';
 import 'package:weaving/isar/fast_note.dart';
 import 'package:weaving/notifier/color_notifier.dart';
+import 'package:weaving/notifier/settings_notifier.dart';
 import 'package:weaving/style/app_style.dart';
 
 typedef OnSave = void Function(FastNoteValue s);
@@ -12,14 +19,13 @@ typedef OnChangeLockStatus = void Function(FastNoteValue value);
 
 class CustomEditableText extends ConsumerStatefulWidget {
   const CustomEditableText(
-      {Key? key,
+      {super.key,
       required this.value,
       required this.onDelete,
       required this.onSave,
       required this.onAdd,
       this.isEditing = false,
-      required this.onChangeLockStatus})
-      : super(key: key);
+      required this.onChangeLockStatus});
   final FastNoteValue value;
   final OnSave onSave;
   final OnDelete onDelete;
@@ -44,6 +50,10 @@ class _CustomEditableTextState extends ConsumerState<CustomEditableText> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.value.locked) {
+      controller.text = SMUtils.encode(controller.text);
+    }
+
     return Row(
       children: [
         const SizedBox(
@@ -89,22 +99,36 @@ class _CustomEditableTextState extends ConsumerState<CustomEditableText> {
         Tooltip(
           message: "修改",
           child: InkWell(
-            onTap: () {
-              if (isEditing) {
-                widget.value.value = controller.text;
-                widget.onSave(widget.value);
-              }
-              setState(() {
-                isEditing = !isEditing;
-              });
-            },
-            child: isEditing
-                ? const Icon(Icons.check, color: Colors.green)
-                : const Icon(
-                    Icons.change_circle,
-                    color: AppStyle.titleTextColor,
-                  ),
+            onTap: widget.value.locked
+                ? null
+                : () {
+                    if (isEditing) {
+                      widget.value.value = controller.text;
+                      widget.onSave(widget.value);
+                    }
+                    setState(() {
+                      isEditing = !isEditing;
+                    });
+                  },
+            // child:  isEditing
+            //     ? const Icon(Icons.check, color: Colors.green)
+            //     : const Icon(
+            //         Icons.edit_note,
+            //         color: AppStyle.titleTextColor,
+            //       ),
+            child: CustomPaint(
+              foregroundPainter: widget.value.locked ? BanSignPainter() : null,
+              child: isEditing
+                  ? const Icon(Icons.check, color: Colors.green)
+                  : const Icon(
+                      Icons.edit_note,
+                      color: AppStyle.titleTextColor,
+                    ),
+            ),
           ),
+        ),
+        const SizedBox(
+          width: 10,
         ),
         Tooltip(
           message: "复制值",
@@ -116,35 +140,112 @@ class _CustomEditableTextState extends ConsumerState<CustomEditableText> {
                     item.add(Formats.plainText(controller.text));
                     await ClipboardWriter.instance.write([item]);
                   },
-            child: const Icon(
-              Icons.copy,
-              color: AppStyle.titleTextColor,
+            // child: const Icon(
+            //   Icons.copy,
+            //   color: AppStyle.titleTextColor,
+            // ),
+            child: CustomPaint(
+              foregroundPainter: isEditing ? BanSignPainter() : null,
+              child: const Icon(
+                Icons.copy,
+                color: AppStyle.titleTextColor,
+              ),
             ),
           ),
+        ),
+        const SizedBox(
+          width: 10,
         ),
         Tooltip(
           message: "删除",
           child: InkWell(
-            onTap: () {
-              widget.onDelete(widget.value);
-            },
-            child: const Icon(
-              Icons.delete,
-              color: AppStyle.titleTextColor,
+            onTap: isEditing
+                ? null
+                : () async {
+                    // widget.onDelete(widget.value);
+                    if (widget.value.locked) {
+                      final r = await showGeneralDialog(
+                          context: context,
+                          pageBuilder: (c, _, __) {
+                            return const Center(
+                              child: PinCodeDialog(
+                                message: "请输入密钥",
+                                type: PinCodeDialogType.confirm,
+                              ),
+                            );
+                          });
+                      if (r == true) {
+                        widget.onDelete(widget.value);
+                      } else {
+                        SmartDialog.showToast("error passcode");
+                      }
+                    } else {
+                      widget.onDelete(widget.value);
+                    }
+                  },
+            child: CustomPaint(
+              foregroundPainter: isEditing ? BanSignPainter() : null,
+              child: const Icon(
+                Icons.delete,
+                color: AppStyle.titleTextColor,
+              ),
             ),
           ),
         ),
+        const SizedBox(
+          width: 10,
+        ),
         Tooltip(
-          message: "加密",
+          message: widget.value.locked ? "解密" : "加密",
           child: InkWell(
-            onTap: () {
-              // widget.onDelete();
-              widget.value.locked = !widget.value.locked;
-              widget.onChangeLockStatus(widget.value);
-            },
-            child: Icon(
-              !widget.value.locked ? Icons.lock : Icons.lock_open,
-              color: AppStyle.titleTextColor,
+            onTap: isEditing
+                ? null
+                : () async {
+                    if (ref.read(settingsNotifier).password == "") {
+                      final r = await showGeneralDialog(
+                          context: context,
+                          pageBuilder: (c, _, __) {
+                            return const Center(
+                              child: PinCodeDialog(message: "请先设置密钥"),
+                            );
+                          });
+                      if (r == "") {
+                        return;
+                      }
+                    }
+
+                    if (widget.value.locked) {
+                      final r = await showGeneralDialog(
+                          context: context,
+                          pageBuilder: (c, _, __) {
+                            return const Center(
+                              child: PinCodeDialog(
+                                message: "请输入密钥",
+                                type: PinCodeDialogType.confirm,
+                              ),
+                            );
+                          });
+                      if (r == true) {
+                        widget.value.locked = !widget.value.locked;
+                        widget.onChangeLockStatus(widget.value);
+                      } else {
+                        SmartDialog.showToast("error passcode");
+                      }
+                    } else {
+                      widget.value.locked = !widget.value.locked;
+                      widget.onChangeLockStatus(widget.value);
+                    }
+                  },
+            // child: Icon(
+            //   !widget.value.locked ? Icons.lock_open : Icons.lock,
+            //   color: AppStyle.titleTextColor,
+            // ),
+            child: CustomPaint(
+              foregroundPainter: isEditing ? BanSignPainter() : null,
+              child: Icon(
+                !widget.value.locked ? Icons.lock_open : Icons.lock,
+                color: AppStyle.titleTextColor,
+              ),
             ),
           ),
         ),

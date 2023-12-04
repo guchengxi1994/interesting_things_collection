@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import 'package:dart_sm/dart_sm.dart';
+
 class SMUtils {
   static const String internalKey = '0123456789abcdeffedcba9876543210';
   // ignore: avoid_init_to_null
@@ -28,5 +30,9 @@ class SMUtils {
 
     return String.fromCharCodes(Iterable.generate(length,
         (_) => _randomChars.codeUnitAt(_rnd.nextInt(_randomChars.length))));
+  }
+
+  static String encode(String s) {
+    return SM4.encrypt(s, key: internalKey);
   }
 }
