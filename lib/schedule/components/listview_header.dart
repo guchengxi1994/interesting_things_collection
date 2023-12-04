@@ -37,9 +37,7 @@ class ListHeader extends StatelessWidget {
               width: 25,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(2),
-                  border: Border.all(
-                    color: Colors.black,
-                  )),
+                  border: Border.all(color: Colors.black, width: 1.5)),
               child: const Icon(
                 Icons.add,
                 size: 16,

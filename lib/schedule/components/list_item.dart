@@ -15,7 +15,9 @@ class ListItem extends StatelessWidget {
         [yyyy, "-", mm, "-", dd]);
     return Container(
       margin: const EdgeInsets.only(top: 10, bottom: 10),
-      decoration: BoxDecoration(border: Border.all()),
+      decoration: BoxDecoration(
+          border: Border.all(width: 1.5),
+          borderRadius: BorderRadius.circular(4)),
       padding: const EdgeInsets.all(15),
       height: AppStyle.kanbanItemHeight,
       child: Column(
@@ -31,12 +33,22 @@ class ListItem extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(5),
                 decoration: BoxDecoration(
-                    border: Border.all(),
-                    color: kanbanItem.deadline <
-                            DateTime.now().millisecondsSinceEpoch
-                        ? Colors.redAccent
-                        : Colors.transparent),
-                child: Text(date),
+                  borderRadius: BorderRadius.circular(4),
+                  border: Border.all(
+                      width: 1.5,
+                      color: kanbanItem.deadline <
+                              DateTime.now().millisecondsSinceEpoch
+                          ? Colors.redAccent
+                          : Colors.black),
+                ),
+                child: Text(
+                  date,
+                  style: TextStyle(
+                      color: kanbanItem.deadline <
+                              DateTime.now().millisecondsSinceEpoch
+                          ? Colors.redAccent
+                          : Colors.black),
+                ),
               ),
               const Spacer(),
               ReorderableDragStartListener(
