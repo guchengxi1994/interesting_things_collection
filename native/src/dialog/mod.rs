@@ -31,6 +31,11 @@ pub fn create_event_loop() {
         *r = Some(proxy);
     }
 
+    let dialog = crate::dialog::auto_close_dialog::AutoCloseDialog::new().unwrap();
+    dialog
+        .window()
+        .set_position(slint::PhysicalPosition::new(0, 0));
+
     event_loop.run(move |_event, _, _control_flow| {
         match _event {
             tao::event::Event::UserEvent(my_event) => match my_event {
@@ -38,11 +43,8 @@ pub fn create_event_loop() {
                     println!("Received custom event: {:?}", message);
                     // *control_flow = ControlFlow::Exit;
 
-                    let dialog = crate::dialog::auto_close_dialog::AutoCloseDialog::new().unwrap();
-                    dialog
-                        .window()
-                        .set_position(slint::PhysicalPosition::new(0, 0));
-                    let _dialog_handle = dialog.as_weak();
+                    let _dialog_handle: slint::Weak<auto_close_dialog::AutoCloseDialog> =
+                        dialog.as_weak();
                     slint::Timer::single_shot(std::time::Duration::from_secs(3), move || {
                         let _ = _dialog_handle.upgrade().unwrap().hide();
                     });

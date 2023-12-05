@@ -34,7 +34,7 @@ slint::slint! {
 
 pub fn show_auto_close_dialog() {
     let r = PROXY.read().unwrap();
-    r.clone().unwrap().send_event(super::MyEvent::CustomEvent(
+    let _ = r.clone().unwrap().send_event(super::MyEvent::CustomEvent(
         "Hello from another thread".into(),
     ));
 }
