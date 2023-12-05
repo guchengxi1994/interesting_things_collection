@@ -32,6 +32,16 @@ fn wire_say_hello_impl(port_: MessagePort) {
         move || move |task_callback| Result::<_, ()>::Ok(say_hello()),
     )
 }
+fn wire_create_event_loop_impl(port_: MessagePort) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, (), _>(
+        WrapInfo {
+            debug_name: "create_event_loop",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || move |task_callback| Result::<_, ()>::Ok(create_event_loop()),
+    )
+}
 fn wire_show_auto_close_dialog_impl(port_: MessagePort) {
     FLUTTER_RUST_BRIDGE_HANDLER.wrap::<_, _, _, (), _>(
         WrapInfo {

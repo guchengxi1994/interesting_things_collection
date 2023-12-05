@@ -1,3 +1,5 @@
+use super::PROXY;
+
 slint::slint! {
     import { Button , HorizontalBox, VerticalBox} from "std-widgets.slint";
     export component AutoCloseDialog inherits Window {
@@ -30,26 +32,9 @@ slint::slint! {
     }
 }
 
-pub fn show_auto_close_dialog() -> anyhow::Result<()> {
-    let dialog = AutoCloseDialog::new()?;
-    dialog
-        .window()
-        .set_position(slint::PhysicalPosition::new(0, 0));
-    let _dialog_handle = dialog.as_weak();
-    dialog.on_close_dialog(move || {
-        println!("close");
-    });
-
-    dialog.show()?;
-    std::thread::spawn(move || {
-        std::thread::sleep(std::time::Duration::from_secs(2));
-        slint::invoke_from_event_loop(move || {
-            let _ = _dialog_handle.unwrap().hide();
-        })
-        .unwrap();
-    });
-
-    slint::run_event_loop()?;
-
-    anyhow::Ok(())
+pub fn show_auto_close_dialog() {
+    let r = PROXY.read().unwrap();
+    r.clone().unwrap().send_event(super::MyEvent::CustomEvent(
+        "Hello from another thread".into(),
+    ));
 }

@@ -62,6 +62,7 @@ fn show_dialog_x(ipc_server_name: String) -> anyhow::Result<()> {
 mod tests {
     use crate::tests::Dialog;
     use slint::{ComponentHandle, PhysicalPosition};
+    use tao::event_loop::ControlFlow;
     #[test]
     fn show_dialog() -> anyhow::Result<()> {
         let (server, name): (
@@ -125,17 +126,62 @@ mod tests {
             println!("close");
         });
 
-        dialog.show()?;
-        std::thread::spawn(move || {
-            std::thread::sleep(std::time::Duration::from_secs(2));
-            slint::invoke_from_event_loop(move || {
-                let _ = _dialog_handle.unwrap().hide();
-            })
-            .unwrap();
+        slint::Timer::single_shot(std::time::Duration::from_secs(2), move || {
+            let _ = _dialog_handle.upgrade().unwrap().hide();
         });
 
-        slint::run_event_loop()?;
+        dialog.run()?;
+        // dialog.show()?;
+        // std::thread::spawn(move || {
+        //     std::thread::sleep(std::time::Duration::from_secs(2));
+        //     slint::invoke_from_event_loop(move || {
+        //         let _ = _dialog_handle.unwrap().hide();
+        //     })
+        //     .unwrap();
+        // });
+
+        // slint::run_event_loop()?;
 
         anyhow::Ok(())
+    }
+
+    #[derive(Debug)]
+    enum MyEvent2 {
+        CustomEvent(String),
+    }
+
+    #[test]
+    fn event_test() {
+        let mut builder: tao::event_loop::EventLoopBuilder<MyEvent2> =
+            tao::event_loop::EventLoopBuilder::<MyEvent2>::with_user_event();
+        tao::platform::windows::EventLoopBuilderExtWindows::with_any_thread(&mut builder, true);
+
+        let event_loop: tao::event_loop::EventLoop<MyEvent2> = builder.build();
+
+        let proxy = event_loop.create_proxy();
+
+        // 在另一个线程中发送一个自定义事件
+        std::thread::spawn(move || {
+            proxy
+                .send_event(MyEvent2::CustomEvent("Hello from another thread".into()))
+                .unwrap();
+        });
+
+        event_loop.run(move |event, _, _control_flow| match event {
+            tao::event::Event::UserEvent(my_event) => match my_event {
+                MyEvent2::CustomEvent(message) => {
+                    println!("Received custom event: {:?}", message);
+                    *_control_flow = ControlFlow::Exit;
+                }
+            },
+            e => {
+                println!("Unsupport event: {:?}", e);
+            }
+        });
+    }
+
+    #[test]
+    fn auto_close_dialog_test() {
+        crate::dialog::auto_close_dialog::show_auto_close_dialog();
     }
 }

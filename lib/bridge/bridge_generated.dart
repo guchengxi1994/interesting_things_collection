@@ -15,6 +15,10 @@ abstract class Native {
 
   FlutterRustBridgeTaskConstMeta get kSayHelloConstMeta;
 
+  Future<void> createEventLoop({dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kCreateEventLoopConstMeta;
+
   Future<void> showAutoCloseDialog({dynamic hint});
 
   FlutterRustBridgeTaskConstMeta get kShowAutoCloseDialogConstMeta;
@@ -43,6 +47,23 @@ class NativeImpl implements Native {
   FlutterRustBridgeTaskConstMeta get kSayHelloConstMeta =>
       const FlutterRustBridgeTaskConstMeta(
         debugName: "say_hello",
+        argNames: [],
+      );
+
+  Future<void> createEventLoop({dynamic hint}) {
+    return _platform.executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) => _platform.inner.wire_create_event_loop(port_),
+      parseSuccessData: _wire2api_unit,
+      parseErrorData: null,
+      constMeta: kCreateEventLoopConstMeta,
+      argValues: [],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kCreateEventLoopConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
+        debugName: "create_event_loop",
         argNames: [],
       );
 
@@ -196,6 +217,20 @@ class NativeWire implements FlutterRustBridgeWireBase {
           'wire_say_hello');
   late final _wire_say_hello =
       _wire_say_helloPtr.asFunction<void Function(int)>();
+
+  void wire_create_event_loop(
+    int port_,
+  ) {
+    return _wire_create_event_loop(
+      port_,
+    );
+  }
+
+  late final _wire_create_event_loopPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64)>>(
+          'wire_create_event_loop');
+  late final _wire_create_event_loop =
+      _wire_create_event_loopPtr.asFunction<void Function(int)>();
 
   void wire_show_auto_close_dialog(
     int port_,
