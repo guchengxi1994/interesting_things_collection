@@ -92,7 +92,12 @@ class CommonSettingWidget extends ConsumerWidget {
             ),
             ElevatedButton(
                 onPressed: () {
-                  api.showAutoCloseDialog();
+                  api.showAutoCloseDialog(
+                      message: const EventMessage(
+                          title: "a ba a ba",
+                          content: "a ba a ba",
+                          alignment: (0, 0),
+                          dialogType: DialogType.Notification));
                 },
                 child: Text("test"))
           ]),

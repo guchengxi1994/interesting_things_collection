@@ -2,7 +2,7 @@ import 'dart:ffi';
 
 import 'package:fsb_dart/bridge_generated.dart';
 export 'package:fsb_dart/bridge_generated.dart';
-export 'package:fsb_dart/bridge_definitions.dart';
+// export 'package:fsb_dart/bridge_definitions.dart';
 
 import 'dart:io' as io;
 
