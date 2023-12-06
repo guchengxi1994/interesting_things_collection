@@ -38,3 +38,25 @@ target_include_directories(${BINARY_NAME} PRIVATE "${CMAKE_SOURCE_DIR}")
 
 # Run the Flutter tool portions of the build. This must not be removed.
 add_dependencies(${BINARY_NAME} flutter_assemble)
+
+
+get_filename_component(P1 ${CMAKE_CURRENT_BINARY_DIR} DIRECTORY)
+message(STATUS "P1 ==> " ${P1})
+
+#  not good at CMakeLists
+get_filename_component(_parent ${P1} DIRECTORY)
+get_filename_component(_grandparent ${_parent} DIRECTORY)
+get_filename_component(_grandgrandparent ${_grandparent} DIRECTORY)
+
+message(STATUS "_grandgrandparent ==> " ${_grandgrandparent})
+
+
+
+add_custom_target(copy-runtime-files ALL
+  COMMAND ${CMAKE_COMMAND} -E copy ${_grandgrandparent}/fsb.dll ${P1}/runner/Debug/fsb.dll
+  COMMAND ${CMAKE_COMMAND} -E copy ${_grandgrandparent}/fsb.dll ${P1}/runner/Release/fsb.dll
+
+
+  COMMAND ${CMAKE_COMMAND} -E copy ${_grandgrandparent}/icon.png ${P1}/runner/Debug/icon.png
+  COMMAND ${CMAKE_COMMAND} -E copy ${_grandgrandparent}/icon.png ${P1}/runner/Release/icon.png
+)
