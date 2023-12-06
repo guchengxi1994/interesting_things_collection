@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 import 'package:weaving/app/run_mobile_app.dart' as m;
 import 'package:weaving/app/run_desktop_app.dart' as d;
+import 'package:weaving/bridge/native.dart';
 import 'package:weaving/common/local_storage.dart';
 import 'package:weaving/isar/database.dart';
 
@@ -21,6 +22,7 @@ void main() async {
   // ignore: non_constant_identifier_names
   final IsarDatabase database = IsarDatabase();
   await database.initialDatabase();
+  api.createEventLoop();
 
   if (Platform.isAndroid || Platform.isIOS) {
     m.runAPP();
