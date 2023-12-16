@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fsb_dart/bridge_definitions.dart';
 import 'package:hotkey_manager/hotkey_manager.dart';
+import 'package:weaving/bridge/native.dart';
 import 'package:weaving/catalog/catalog_screen.dart';
 import 'package:weaving/components/pin_code_dialog.dart';
 import 'package:weaving/data_transfer/data_transfer_screen.dart';
@@ -85,11 +87,32 @@ class LayoutState extends ConsumerState<Layout> with TickerProviderStateMixin {
 
     return Scaffold(
       backgroundColor: Colors.transparent,
-      appBar: const PreferredSize(
-        preferredSize: Size.fromHeight(AppStyle.appbarHeight),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(AppStyle.appbarHeight),
         child: WindowCaption(
           brightness: Brightness.dark,
           backgroundColor: Colors.transparent,
+          title: Row(
+            children: [
+              SizedBox(
+                width: MediaQuery.of(context).size.width - 200,
+              ),
+              InkWell(
+                onTap: () {
+                  api.showDialog(
+                      message: const EventMessage(
+                          alignment: (0, 0), dialogType: DialogType.subWindow));
+                },
+                child: Transform.rotate(
+                  angle: 3.14 / 2,
+                  child: const Tooltip(
+                    message: "Split sub screen",
+                    child: Icon(Icons.splitscreen),
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
       body: Stack(

@@ -93,14 +93,24 @@ class CommonSettingWidget extends ConsumerWidget {
             ),
             ElevatedButton(
                 onPressed: () {
-                  api.showNotification(
+                  api.showDialog(
                       message: const EventMessage(
                           title: "a ba a ba",
                           content: "a ba a ba",
                           alignment: (0, 0),
                           dialogType: DialogType.notification));
                 },
-                child: Text("test"))
+                child: Text("test")),
+            ElevatedButton(
+                onPressed: () {
+                  api.sendDartMessage(message: "aaaaa");
+                },
+                child: Text("send message")),
+            ElevatedButton(
+                onPressed: () {
+                  api.sendDartMessage(message: "bbbbb");
+                },
+                child: Text("send message"))
           ]),
     );
   }
