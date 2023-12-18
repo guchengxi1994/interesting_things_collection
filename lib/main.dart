@@ -22,7 +22,10 @@ void main() async {
   // ignore: non_constant_identifier_names
   final IsarDatabase database = IsarDatabase();
   await database.initialDatabase();
-  api.createEventLoop();
+
+  if (Platform.isWindows) {
+    api.createEventLoop();
+  }
 
   if (Platform.isAndroid || Platform.isIOS) {
     m.runAPP();

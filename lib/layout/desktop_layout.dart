@@ -101,7 +101,9 @@ class LayoutState extends ConsumerState<Layout> with TickerProviderStateMixin {
                 onTap: () {
                   api.showDialog(
                       message: const EventMessage(
-                          alignment: (0, 0), dialogType: DialogType.subWindow));
+                          title: "Weaving",
+                          alignment: (0, 0),
+                          dialogType: DialogType.subWindow));
                 },
                 child: Transform.rotate(
                   angle: 3.14 / 2,

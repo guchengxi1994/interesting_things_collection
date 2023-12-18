@@ -14,6 +14,7 @@ import 'package:weaving/style/app_style.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import '../components/fast_search_region.dart';
+import 'wrapper.dart';
 
 class AppScrollBehavior extends MaterialScrollBehavior {
   @override
@@ -86,8 +87,10 @@ class MyAppState extends ConsumerState<MyApp> {
                             .withAlpha(50)
                       ]),
                 ),
-                child: const Stack(
-                  children: [Layout(), FastSearchRegion()],
+                child: const AppWrapper(
+                  child: Stack(
+                    children: [Layout(), FastSearchRegion()],
+                  ),
                 ),
               ),
             ),
