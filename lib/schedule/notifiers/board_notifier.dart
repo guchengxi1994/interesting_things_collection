@@ -16,13 +16,11 @@ class BoardNotifier extends AsyncNotifier<BoardNotifierState> {
     return BoardNotifierState(kanbanData: list);
   }
 
-  newItem(KanbanData kanbanData, String itemTitle) async {
+  Future<int> newItem(KanbanData kanbanData, String itemTitle) async {
     state = const AsyncValue.loading();
-
+    KanbanItem item = KanbanItem()..title = itemTitle;
     state = await AsyncValue.guard(() async {
       await database.isar!.writeTxn(() async {
-        KanbanItem item = KanbanItem()..title = itemTitle;
-
         await database.isar!.kanbanItems.put(item);
         kanbanData.items.add(item);
         await kanbanData.items.save();
@@ -31,6 +29,8 @@ class BoardNotifier extends AsyncNotifier<BoardNotifierState> {
       final list = await database.isar!.kanbanDatas.where().findAll();
       return BoardNotifierState(kanbanData: list);
     });
+
+    return item.id!;
   }
 
   KanbanData? getDataByIndex(int index) {

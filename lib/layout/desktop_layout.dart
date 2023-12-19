@@ -109,7 +109,10 @@ class LayoutState extends ConsumerState<Layout> with TickerProviderStateMixin {
                   angle: 3.14 / 2,
                   child: const Tooltip(
                     message: "Split sub screen",
-                    child: Icon(Icons.splitscreen),
+                    child: Icon(
+                      Icons.splitscreen,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               )
