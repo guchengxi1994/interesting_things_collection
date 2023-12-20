@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:weaving/bridge/native.dart';
 import 'package:weaving/common/logger.dart';
 import 'package:weaving/schedule/notifiers/board_notifier.dart';
+import 'package:window_manager/window_manager.dart';
 
 class AppWrapper extends ConsumerStatefulWidget {
   const AppWrapper({super.key, required this.child});
@@ -30,6 +31,14 @@ class _AppWrapperState extends ConsumerState<AppWrapper> {
               ref.read(kanbanBoardNotifier).value!.kanbanData.first,
               j['data']['title']);
           api.setItemId(id: i);
+        } else if (j['data']['type'] == 2) {
+          ref
+              .read(kanbanBoardNotifier.notifier)
+              .changeStatus(int.parse(j['data']['title']));
+        } else if (j['data']['type'] == 3) {
+          if (!await windowManager.isFocused()) {
+            windowManager.focus();
+          }
         }
       });
     }

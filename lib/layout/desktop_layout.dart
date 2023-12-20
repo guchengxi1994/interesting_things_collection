@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fsb_dart/bridge_definitions.dart';
@@ -8,9 +10,11 @@ import 'package:weaving/components/pin_code_dialog.dart';
 import 'package:weaving/data_transfer/data_transfer_screen.dart';
 import 'package:weaving/fast_note/fast_note_screen.dart';
 import 'package:weaving/gen/strings.g.dart';
+import 'package:weaving/isar/kanban.dart';
 import 'package:weaving/layout/expand_collapse_notifier.dart';
 import 'package:weaving/notifier/color_notifier.dart';
 import 'package:weaving/notifier/settings_notifier.dart';
+import 'package:weaving/schedule/notifiers/board_notifier.dart';
 import 'package:weaving/schedule/schedule_screen.dart';
 import 'package:weaving/settings/settings_screen.dart';
 import 'package:weaving/style/app_style.dart';
@@ -98,9 +102,14 @@ class LayoutState extends ConsumerState<Layout> with TickerProviderStateMixin {
                 width: MediaQuery.of(context).size.width - 200,
               ),
               InkWell(
-                onTap: () {
+                onTap: () async {
+                  final l =
+                      await ref.read(kanbanBoardNotifier.notifier).getToday();
+                  Map<String, List<KanbanItem>> m = {"data": l};
+                  final String s = jsonEncode(m);
                   api.showDialog(
-                      message: const EventMessage(
+                      message: EventMessage(
+                          data: s,
                           title: "Weaving",
                           alignment: (0, 0),
                           dialogType: DialogType.subWindow));
@@ -108,7 +117,7 @@ class LayoutState extends ConsumerState<Layout> with TickerProviderStateMixin {
                 child: Transform.rotate(
                   angle: 3.14 / 2,
                   child: const Tooltip(
-                    message: "Split sub screen",
+                    message: "Sub Window Tool Box",
                     child: Icon(
                       Icons.splitscreen,
                       color: Colors.white,

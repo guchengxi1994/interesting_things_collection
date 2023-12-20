@@ -16,6 +16,39 @@ class BoardNotifier extends AsyncNotifier<BoardNotifierState> {
     return BoardNotifierState(kanbanData: list);
   }
 
+  Future changeStatus(int id) async {
+    KanbanItem? item =
+        await database.isar!.kanbanItems.where().idEqualTo(id).findFirst();
+    if (item == null) {
+      return;
+    }
+
+    await database.isar!.writeTxn(() async {
+      if (item.status == ItemStatus.done) {
+        item.status = ItemStatus.inProgress;
+      } else {
+        item.status = ItemStatus.done;
+      }
+
+      await database.isar!.kanbanItems.put(item);
+    });
+  }
+
+  Future<List<KanbanItem>> getToday() async {
+    var now = DateTime.now();
+    var startOfDay = DateTime(now.year, now.month, now.day);
+    var endOfDay = DateTime(now.year, now.month, now.day, 23, 59, 59);
+    final l = await database.isar!.kanbanItems
+        .filter()
+        .createAtBetween(
+            startOfDay.millisecondsSinceEpoch, endOfDay.millisecondsSinceEpoch)
+        .findAll();
+
+    // Map<String, List<KanbanItem>> m = {"data": l};
+
+    return l;
+  }
+
   Future<int> newItem(KanbanData kanbanData, String itemTitle) async {
     state = const AsyncValue.loading();
     KanbanItem item = KanbanItem()..title = itemTitle;
