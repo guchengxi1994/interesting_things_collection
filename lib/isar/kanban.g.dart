@@ -843,13 +843,19 @@ const KanbanItemSchema = CollectionSchema(
       name: r'priority',
       type: IsarType.long,
     ),
-    r'tagIds': PropertySchema(
+    r'status': PropertySchema(
       id: 4,
+      name: r'status',
+      type: IsarType.byte,
+      enumMap: _KanbanItemstatusEnumValueMap,
+    ),
+    r'tagIds': PropertySchema(
+      id: 5,
       name: r'tagIds',
       type: IsarType.longList,
     ),
     r'title': PropertySchema(
-      id: 5,
+      id: 6,
       name: r'title',
       type: IsarType.string,
     )
@@ -894,8 +900,9 @@ void _kanbanItemSerialize(
   writer.writeLong(offsets[1], object.deadline);
   writer.writeLong(offsets[2], object.orderNum);
   writer.writeLong(offsets[3], object.priority);
-  writer.writeLongList(offsets[4], object.tagIds);
-  writer.writeString(offsets[5], object.title);
+  writer.writeByte(offsets[4], object.status.index);
+  writer.writeLongList(offsets[5], object.tagIds);
+  writer.writeString(offsets[6], object.title);
 }
 
 KanbanItem _kanbanItemDeserialize(
@@ -910,8 +917,11 @@ KanbanItem _kanbanItemDeserialize(
   object.id = id;
   object.orderNum = reader.readLong(offsets[2]);
   object.priority = reader.readLong(offsets[3]);
-  object.tagIds = reader.readLongList(offsets[4]) ?? [];
-  object.title = reader.readStringOrNull(offsets[5]);
+  object.status =
+      _KanbanItemstatusValueEnumMap[reader.readByteOrNull(offsets[4])] ??
+          ItemStatus.blocked;
+  object.tagIds = reader.readLongList(offsets[5]) ?? [];
+  object.title = reader.readStringOrNull(offsets[6]);
   return object;
 }
 
@@ -931,13 +941,29 @@ P _kanbanItemDeserializeProp<P>(
     case 3:
       return (reader.readLong(offset)) as P;
     case 4:
-      return (reader.readLongList(offset) ?? []) as P;
+      return (_KanbanItemstatusValueEnumMap[reader.readByteOrNull(offset)] ??
+          ItemStatus.blocked) as P;
     case 5:
+      return (reader.readLongList(offset) ?? []) as P;
+    case 6:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
 }
+
+const _KanbanItemstatusEnumValueMap = {
+  'blocked': 0,
+  'pending': 1,
+  'inProgress': 2,
+  'done': 3,
+};
+const _KanbanItemstatusValueEnumMap = {
+  0: ItemStatus.blocked,
+  1: ItemStatus.pending,
+  2: ItemStatus.inProgress,
+  3: ItemStatus.done,
+};
 
 Id _kanbanItemGetId(KanbanItem object) {
   return object.id ?? Isar.autoIncrement;
@@ -1315,6 +1341,59 @@ extension KanbanItemQueryFilter
     });
   }
 
+  QueryBuilder<KanbanItem, KanbanItem, QAfterFilterCondition> statusEqualTo(
+      ItemStatus value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'status',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<KanbanItem, KanbanItem, QAfterFilterCondition> statusGreaterThan(
+    ItemStatus value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'status',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<KanbanItem, KanbanItem, QAfterFilterCondition> statusLessThan(
+    ItemStatus value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'status',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<KanbanItem, KanbanItem, QAfterFilterCondition> statusBetween(
+    ItemStatus lower,
+    ItemStatus upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'status',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
   QueryBuilder<KanbanItem, KanbanItem, QAfterFilterCondition>
       tagIdsElementEqualTo(int value) {
     return QueryBuilder.apply(this, (query) {
@@ -1663,6 +1742,18 @@ extension KanbanItemQuerySortBy
     });
   }
 
+  QueryBuilder<KanbanItem, KanbanItem, QAfterSortBy> sortByStatus() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'status', Sort.asc);
+    });
+  }
+
+  QueryBuilder<KanbanItem, KanbanItem, QAfterSortBy> sortByStatusDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'status', Sort.desc);
+    });
+  }
+
   QueryBuilder<KanbanItem, KanbanItem, QAfterSortBy> sortByTitle() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'title', Sort.asc);
@@ -1738,6 +1829,18 @@ extension KanbanItemQuerySortThenBy
     });
   }
 
+  QueryBuilder<KanbanItem, KanbanItem, QAfterSortBy> thenByStatus() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'status', Sort.asc);
+    });
+  }
+
+  QueryBuilder<KanbanItem, KanbanItem, QAfterSortBy> thenByStatusDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'status', Sort.desc);
+    });
+  }
+
   QueryBuilder<KanbanItem, KanbanItem, QAfterSortBy> thenByTitle() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'title', Sort.asc);
@@ -1774,6 +1877,12 @@ extension KanbanItemQueryWhereDistinct
   QueryBuilder<KanbanItem, KanbanItem, QDistinct> distinctByPriority() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'priority');
+    });
+  }
+
+  QueryBuilder<KanbanItem, KanbanItem, QDistinct> distinctByStatus() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'status');
     });
   }
 
@@ -1820,6 +1929,12 @@ extension KanbanItemQueryProperty
   QueryBuilder<KanbanItem, int, QQueryOperations> priorityProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'priority');
+    });
+  }
+
+  QueryBuilder<KanbanItem, ItemStatus, QQueryOperations> statusProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'status');
     });
   }
 

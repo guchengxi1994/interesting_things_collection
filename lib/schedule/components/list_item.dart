@@ -54,7 +54,7 @@ class ListItem extends StatelessWidget {
               ReorderableDragStartListener(
                 index: index,
                 child: const MouseRegion(
-                  cursor: SystemMouseCursors.grabbing,
+                  cursor: SystemMouseCursors.move,
                   child: Icon(Icons.drag_handle),
                 ),
               )

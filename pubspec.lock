@@ -201,6 +201,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.18.0"
+  console:
+    dependency: transitive
+    description:
+      name: console
+      sha256: e04e7824384c5b39389acdd6dc7d33f3efe6b232f6f16d7626f194f6a01ad69a
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "4.1.0"
   convert:
     dependency: transitive
     description:
@@ -575,10 +583,10 @@ packages:
     dependency: transitive
     description:
       name: flutter_rust_bridge
-      sha256: "2d31289a022f8b0a97e952d553686c50dff2ed5b58ac03628a13bc8cdf5f8ece"
+      sha256: "02720226035257ad0b571c1256f43df3e1556a499f6bcb004849a0faaa0e87f0"
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "1.82.3"
+    version: "1.82.6"
   flutter_smart_dialog:
     dependency: "direct main"
     description:
@@ -636,6 +644,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.3.0"
+  get_it:
+    dependency: transitive
+    description:
+      name: get_it
+      sha256: f79870884de16d689cf9a7d15eedf31ed61d750e813c538a6efb92660fea83c3
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "7.6.4"
   glob:
     dependency: transitive
     description:
@@ -956,6 +972,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.0.4"
+  msix:
+    dependency: "direct dev"
+    description:
+      name: msix
+      sha256: "519b183d15dc9f9c594f247e2d2339d855cf0eaacc30e19b128e14f3ecc62047"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "3.16.7"
   package_config:
     dependency: transitive
     description:

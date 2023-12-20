@@ -1,7 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:weaving/bridge/native.dart';
 import 'package:weaving/gen/strings.g.dart';
 import 'package:weaving/notifier/color_notifier.dart';
 import 'package:weaving/notifier/settings_notifier.dart';
@@ -90,11 +88,6 @@ class CommonSettingWidget extends ConsumerWidget {
                     onChanged: (v) {}),
               ],
             ),
-            ElevatedButton(
-                onPressed: () {
-                  api.showAutoCloseDialog();
-                },
-                child: Text("test"))
           ]),
     );
   }
