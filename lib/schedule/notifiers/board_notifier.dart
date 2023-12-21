@@ -13,24 +13,65 @@ class BoardNotifier extends AsyncNotifier<BoardNotifierState> {
   @override
   FutureOr<BoardNotifierState> build() async {
     final list = await database.isar!.kanbanDatas.where().findAll();
+
+    final pending = list.where((element) => element.name == "Pending").first;
+    final underGoing =
+        list.where((element) => element.name == "In progress").first;
+
+    for (final i in underGoing.items) {
+      if (_deadline(i.deadline)) {
+        i.status = ItemStatus.pending;
+        underGoing.items.remove(i);
+        pending.items.add(i);
+        database.isar!.writeTxnSync(() {
+          database.isar!.kanbanItems.putSync(i);
+        });
+      }
+    }
+
+    await database.isar!.writeTxn(
+      () async {
+        await pending.items.save();
+        await underGoing.items.save();
+      },
+    );
+
     return BoardNotifierState(kanbanData: list);
   }
 
   Future changeStatus(int id) async {
+    state = const AsyncLoading();
+
     KanbanItem? item =
         await database.isar!.kanbanItems.where().idEqualTo(id).findFirst();
     if (item == null) {
+      state = state;
       return;
     }
+    final list = state.value!.kanbanData;
 
-    await database.isar!.writeTxn(() async {
-      if (item.status == ItemStatus.done) {
-        item.status = ItemStatus.inProgress;
-      } else {
-        item.status = ItemStatus.done;
-      }
+    state = await AsyncValue.guard(() async {
+      final underGoing =
+          list.where((element) => element.name == "In progress").first;
+      final done = list.where((element) => element.name == "Done").first;
 
-      await database.isar!.kanbanItems.put(item);
+      await database.isar!.writeTxn(() async {
+        if (item.status == ItemStatus.done) {
+          item.status = ItemStatus.inProgress;
+          underGoing.items.add(item);
+          done.items.remove(item);
+        } else {
+          item.status = ItemStatus.done;
+          underGoing.items.remove(item);
+          done.items.add(item);
+        }
+
+        await database.isar!.kanbanItems.put(item);
+        await done.items.save();
+        await underGoing.items.save();
+      });
+
+      return state.value!.copyWith(list);
     });
   }
 
@@ -49,9 +90,17 @@ class BoardNotifier extends AsyncNotifier<BoardNotifierState> {
     return l;
   }
 
+  bool _deadline(int time) {
+    var now = DateTime.now();
+    var endOfDay = DateTime(now.year, now.month, now.day, 23, 59, 59);
+    return endOfDay.millisecondsSinceEpoch > time;
+  }
+
   Future<int> newItem(KanbanData kanbanData, String itemTitle) async {
     state = const AsyncValue.loading();
     KanbanItem item = KanbanItem()..title = itemTitle;
+    item.status = ItemStatus.inProgress;
+
     state = await AsyncValue.guard(() async {
       await database.isar!.writeTxn(() async {
         await database.isar!.kanbanItems.put(item);

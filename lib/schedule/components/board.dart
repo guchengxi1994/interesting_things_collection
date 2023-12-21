@@ -27,6 +27,8 @@ class _BoardState extends ConsumerState<CustomBoard> {
 
           return IntrinsicWidth(
             child: ReorderableRow(
+              key: UniqueKey(),
+              scrollController: ScrollController(),
               onReorder: (int oldIndex, int newIndex) {
                 setState(() {
                   KanbanData c = _columns.removeAt(oldIndex);

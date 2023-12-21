@@ -71,6 +71,8 @@ class _BoardListState extends ConsumerState<BoardList> {
           ),
           Expanded(
               child: ReorderableListView(
+            scrollController: ScrollController(),
+            key: UniqueKey(),
             buildDefaultDragHandles: false,
             children: _rows,
             onReorder: (int oldIndex, int newIndex) {

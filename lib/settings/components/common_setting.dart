@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:weaving/gen/strings.g.dart';
+import 'package:weaving/isar/database.dart';
+import 'package:weaving/isar/fast_note.dart';
 import 'package:weaving/notifier/color_notifier.dart';
 import 'package:weaving/notifier/settings_notifier.dart';
 import 'package:weaving/style/app_style.dart';
@@ -86,6 +89,20 @@ class CommonSettingWidget extends ConsumerWidget {
                         .catalogCardBorderColors[ref.watch(colorNotifier)],
                     value: false,
                     onChanged: (v) {}),
+              ],
+            ),
+            Row(
+              children: [
+                SizedBox(
+                  width: 200,
+                  child: Text("删除数据"),
+                ),
+                ElevatedButton(
+                    onPressed: () {
+                      final IsarDatabase database = IsarDatabase();
+                      // database.isar!.fastNotes.clear();
+                    },
+                    child: Text("删除所有笔记"))
               ],
             ),
           ]),

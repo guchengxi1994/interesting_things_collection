@@ -28,7 +28,12 @@ class _AppWrapperState extends ConsumerState<AppWrapper> {
         final j = jsonDecode(event);
         if (j['data']['type'] == 1) {
           final i = await ref.read(kanbanBoardNotifier.notifier).newItem(
-              ref.read(kanbanBoardNotifier).value!.kanbanData.first,
+              ref
+                  .read(kanbanBoardNotifier)
+                  .value!
+                  .kanbanData
+                  .where((element) => element.name == "In progress")
+                  .first,
               j['data']['title']);
           api.setItemId(id: i);
         } else if (j['data']['type'] == 2) {
