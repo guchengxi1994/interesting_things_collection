@@ -18,16 +18,23 @@ class BoardNotifier extends AsyncNotifier<BoardNotifierState> {
     final underGoing =
         list.where((element) => element.name == "In progress").first;
 
+    List<KanbanItem> shouldRemove = [];
+
     for (final i in underGoing.items) {
       if (_deadline(i.deadline)) {
         i.status = ItemStatus.pending;
-        underGoing.items.remove(i);
-        pending.items.add(i);
+        // underGoing.items.remove(i);
+        // pending.items.add(i);
+        shouldRemove.add(i);
+
         database.isar!.writeTxnSync(() {
           database.isar!.kanbanItems.putSync(i);
         });
       }
     }
+
+    underGoing.items.removeAll(shouldRemove);
+    pending.items.addAll(shouldRemove);
 
     await database.isar!.writeTxn(
       () async {

@@ -209,7 +209,8 @@ class _CustomEditableTextState extends ConsumerState<CustomEditableText> {
                               child: PinCodeDialog(message: "请先设置密钥"),
                             );
                           });
-                      if (r == "") {
+
+                      if (r == null || r == false) {
                         return;
                       }
                     }
