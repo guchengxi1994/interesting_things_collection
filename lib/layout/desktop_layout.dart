@@ -1,5 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fsb_dart/bridge_definitions.dart';
@@ -12,6 +15,7 @@ import 'package:weaving/fast_note/fast_note_screen.dart';
 import 'package:weaving/gen/strings.g.dart';
 import 'package:weaving/isar/kanban.dart';
 import 'package:weaving/layout/expand_collapse_notifier.dart';
+import 'package:weaving/notifier/background_notifier.dart';
 import 'package:weaving/notifier/color_notifier.dart';
 import 'package:weaving/notifier/settings_notifier.dart';
 import 'package:weaving/schedule/notifiers/board_notifier.dart';
@@ -88,6 +92,7 @@ class LayoutState extends ConsumerState<Layout> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final _ = ref.watch(settingsNotifier);
+    final bgNotifier = ref.watch(backgroundNotifier);
 
     return Scaffold(
       backgroundColor: Colors.transparent,
@@ -101,30 +106,105 @@ class LayoutState extends ConsumerState<Layout> with TickerProviderStateMixin {
               SizedBox(
                 width: MediaQuery.of(context).size.width - 200,
               ),
-              InkWell(
-                onTap: () async {
-                  final l =
-                      await ref.read(kanbanBoardNotifier.notifier).getToday();
-                  Map<String, List<KanbanItem>> m = {"data": l};
-                  final String s = jsonEncode(m);
-                  api.showDialog(
-                      message: EventMessage(
-                          data: s,
-                          title: "Weaving",
-                          alignment: (0, 0),
-                          dialogType: DialogType.subWindow));
+              DropdownButtonHideUnderline(
+                  child: DropdownButton2(
+                customButton: const Icon(
+                  Icons.list,
+                  size: 30,
+                  color: Colors.white,
+                ),
+                onChanged: (value) {
+                  // print(value);
                 },
-                child: Transform.rotate(
-                  angle: 3.14 / 2,
-                  child: const Tooltip(
-                    message: "Sub Window Tool Box",
-                    child: Icon(
-                      Icons.splitscreen,
-                      color: Colors.white,
+                dropdownStyleData: DropdownStyleData(
+                  width: 250,
+                  padding: const EdgeInsets.symmetric(vertical: 6),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(4),
+                    color: Colors.white,
+                  ),
+                  offset: const Offset(0, 8),
+                ),
+                menuItemStyleData: const MenuItemStyleData(
+                  padding: EdgeInsets.only(left: 16, right: 16),
+                ),
+                items: [
+                  DropdownMenuItem(
+                    value: 1,
+                    onTap: () async {
+                      final l = await ref
+                          .read(kanbanBoardNotifier.notifier)
+                          .getToday();
+                      Map<String, List<KanbanItem>> m = {"data": l};
+                      final String s = jsonEncode(m);
+                      api.showDialog(
+                          message: EventMessage(
+                              data: s,
+                              title: "Weaving",
+                              alignment: (0, 0),
+                              dialogType: DialogType.subWindow));
+                    },
+                    child: Row(
+                      children: [
+                        Transform.rotate(
+                          angle: 3.14 / 2,
+                          child: const Icon(
+                            Icons.splitscreen,
+                            color: Colors.black,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        const Text("Sub Window")
+                      ],
                     ),
                   ),
-                ),
-              )
+                  // const DropdownMenuItem<Divider>(
+                  //     enabled: false, child: Divider()),
+                  DropdownMenuItem(
+                    value: 2,
+                    onTap: () async {
+                      const XTypeGroup typeGroup = XTypeGroup(
+                        label: 'images',
+                        extensions: <String>['jpg', 'png'],
+                      );
+                      final XFile? file = await openFile(
+                          acceptedTypeGroups: <XTypeGroup>[typeGroup]);
+
+                      if (file != null) {
+                        ref
+                            .read(backgroundNotifier.notifier)
+                            .setPath(file.path);
+                      }
+                    },
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.image,
+                          color: Colors.black,
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        const Expanded(
+                            child: Text(
+                          "Change Background",
+                        )),
+                        InkWell(
+                          onTap: () {
+                            ref.read(backgroundNotifier.notifier).setPath("");
+                          },
+                          child: const Icon(
+                            Icons.delete,
+                            color: Colors.red,
+                          ),
+                        )
+                      ],
+                    ),
+                  )
+                ],
+              )),
             ],
           ),
         ),
@@ -205,8 +285,18 @@ class LayoutState extends ConsumerState<Layout> with TickerProviderStateMixin {
               ),
               Expanded(
                   child: Container(
-                decoration: const BoxDecoration(
-                    color: Colors.white, borderRadius: AppStyle.leftTopRadius),
+                decoration: BoxDecoration(
+                    image: bgNotifier != null && bgNotifier != ""
+                        ? DecorationImage(
+                            image: FileImage(File(bgNotifier)),
+                            fit: BoxFit.cover,
+                            colorFilter: ColorFilter.mode(
+                                Colors.black.withOpacity(0.15),
+                                BlendMode.dstATop),
+                          )
+                        : null,
+                    color: Colors.white,
+                    borderRadius: AppStyle.leftTopRadius),
                 child: PageView(
                   physics: const NeverScrollableScrollPhysics(),
                   controller: controller,

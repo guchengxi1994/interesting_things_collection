@@ -28,9 +28,21 @@ class _FastNoteScreenState extends ConsumerState<FastNoteScreen> {
       backgroundColor: Colors.transparent,
       body: Container(
         decoration: const BoxDecoration(
-            color: Colors.white, borderRadius: AppStyle.leftTopRadius),
+            color: Colors.transparent, borderRadius: AppStyle.leftTopRadius),
         child: const Row(
-          children: [SideMenu(), Expanded(child: FastNoteDetailsWidget())],
+          children: [
+            SideMenu(),
+            SizedBox(
+              width: 1.5,
+              child: VerticalDivider(
+                width: 1.5,
+                color: Color.fromARGB(255, 236, 243, 236),
+              ),
+            ),
+            Expanded(
+              child: FastNoteDetailsWidget(),
+            )
+          ],
         ),
       ),
       floatingActionButtonLocation: ExpandableFab.location,

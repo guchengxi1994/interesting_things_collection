@@ -12,7 +12,7 @@ class ScheduleScreen extends ConsumerWidget {
     return Container(
       padding: const EdgeInsets.only(top: 10),
       decoration: const BoxDecoration(
-          color: Colors.white, borderRadius: AppStyle.leftTopRadius),
+          color: Colors.transparent, borderRadius: AppStyle.leftTopRadius),
       child: const CustomBoard(),
     );
   }

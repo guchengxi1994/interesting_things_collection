@@ -38,7 +38,11 @@ class _BoardListState extends ConsumerState<BoardList> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(left: 20, right: 20),
+      margin: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+      padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5),
+          color: const Color.fromARGB(255, 233, 231, 231)),
       width: 300,
       child: Column(
         children: [
@@ -72,7 +76,6 @@ class _BoardListState extends ConsumerState<BoardList> {
           Expanded(
               child: ReorderableListView(
             scrollController: ScrollController(),
-            key: UniqueKey(),
             buildDefaultDragHandles: false,
             children: _rows,
             onReorder: (int oldIndex, int newIndex) {

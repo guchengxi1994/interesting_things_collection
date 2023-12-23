@@ -13,7 +13,10 @@ class _DataTransferScreenState extends ConsumerState<DataTransferScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(borderRadius: AppStyle.leftTopRadius),
+      decoration: const BoxDecoration(
+        borderRadius: AppStyle.leftTopRadius,
+        color: Colors.white,
+      ),
       child: Center(
         // child: ElevatedButton(
         //     onPressed: () {

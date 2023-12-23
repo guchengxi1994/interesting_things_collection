@@ -46,4 +46,12 @@ class LocalStorage {
   Future setEnablePasscode(bool b) async {
     await _storage!.setBool("enablePasscode", b);
   }
+
+  Future setBgImagePath(String s) async {
+    await _storage!.setString("bgImage", s);
+  }
+
+  String? getBgImagePath() {
+    return _storage!.getString("bgImage");
+  }
 }

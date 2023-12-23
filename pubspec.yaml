@@ -19,6 +19,7 @@ dependencies:
   dropdown_button2: ^2.3.9
   easy_refresh: ^3.3.2+4
   equatable: ^2.0.5
+  file_selector: ^1.0.1
   flutter:
     sdk: flutter
   flutter_expandable_fab: ^2.0.0

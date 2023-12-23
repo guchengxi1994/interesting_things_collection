@@ -89,11 +89,15 @@ class FastNoteDetailsWidget extends ConsumerWidget {
   Widget _buildValues(FastNote? note, WidgetRef ref) {
     if (note == null) {
       return Expanded(
-          child: Center(
-        child: SizedBox(
-          width: 250,
-          height: 250,
-          child: Image.asset("assets/empty.png"),
+          child: Container(
+        color: Colors.white,
+        width: double.infinity,
+        child: Center(
+          child: SizedBox(
+            width: 250,
+            height: 250,
+            child: Image.asset("assets/empty.png"),
+          ),
         ),
       ));
     }
