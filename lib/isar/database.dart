@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:weaving/common/color_utils.dart';
 import 'package:weaving/isar/catalog.dart';
 import 'package:weaving/isar/fast_note.dart';
@@ -7,6 +6,7 @@ import 'package:weaving/isar/password.dart';
 import 'package:weaving/isar/catalog_item.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:weaving/style/app_style.dart';
 
 class IsarDatabase {
   // ignore: avoid_init_to_null
@@ -45,19 +45,19 @@ class IsarDatabase {
       return;
     }
     KanbanData blocked = KanbanData()
-      ..color = ColorUtil.toHex(const Color.fromRGBO(239, 147, 148, 1))
+      ..color = ColorUtil.toHex(AppStyle.blockedColor)
       ..orderNum = 1
       ..name = "Blocked";
     KanbanData pending = KanbanData()
-      ..color = ColorUtil.toHex(const Color.fromRGBO(255, 230, 168, 1))
+      ..color = ColorUtil.toHex(AppStyle.pendingColor)
       ..orderNum = 2
       ..name = "Pending";
     KanbanData inProgress = KanbanData()
-      ..color = ColorUtil.toHex(Colors.blueAccent)
+      ..color = ColorUtil.toHex(AppStyle.inProgressColor)
       ..orderNum = 3
       ..name = "In progress";
     KanbanData done = KanbanData()
-      ..color = ColorUtil.toHex(Colors.greenAccent)
+      ..color = ColorUtil.toHex(AppStyle.doneColor)
       ..orderNum = 4
       ..name = "Done";
 

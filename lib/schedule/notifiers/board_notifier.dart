@@ -131,6 +131,115 @@ class BoardNotifier extends AsyncNotifier<BoardNotifierState> {
         .first;
   }
 
+  changeItemStatus(KanbanItem kanbanItem, {DateTime? deadline}) async {
+    if (deadline == null) {
+      return;
+    }
+
+    state = const AsyncValue.loading();
+    final list = state.value!.kanbanData;
+
+    state = await AsyncValue.guard(() async {
+      final underGoing =
+          list.where((element) => element.name == "In progress").first;
+
+      if (kanbanItem.status == ItemStatus.pending) {
+        final pending =
+            list.where((element) => element.name == "Pending").first;
+        if (deadline.millisecondsSinceEpoch > kanbanItem.deadline &&
+            deadline.millisecondsSinceEpoch >
+                DateTime.now().millisecondsSinceEpoch) {
+          kanbanItem.status = ItemStatus.inProgress;
+          underGoing.items.add(kanbanItem);
+          pending.items.remove(kanbanItem);
+        }
+
+        await database.isar!.writeTxn(() async {
+          await underGoing.items.save();
+          await pending.items.save();
+        });
+      } else if (kanbanItem.status == ItemStatus.blocked) {
+        final blocked =
+            list.where((element) => element.name == "Blocked").first;
+        if (deadline.millisecondsSinceEpoch > kanbanItem.deadline &&
+            deadline.millisecondsSinceEpoch >
+                DateTime.now().millisecondsSinceEpoch) {
+          kanbanItem.status = ItemStatus.inProgress;
+          underGoing.items.add(kanbanItem);
+          blocked.items.remove(kanbanItem);
+        }
+
+        await database.isar!.writeTxn(() async {
+          await underGoing.items.save();
+          await blocked.items.save();
+        });
+      }
+
+      kanbanItem.deadline = deadline.millisecondsSinceEpoch;
+
+      await database.isar!.writeTxn(() async {
+        await database.isar!.kanbanItems.put(kanbanItem);
+      });
+
+      return state.value!.copyWith(list);
+    });
+  }
+
+  changeItemItemStatus(KanbanItem item, ItemStatus after) async {
+    state = const AsyncValue.loading();
+
+    final list = state.value!.kanbanData;
+
+    state = await AsyncValue.guard(() async {
+      final KanbanData beforeList, afterList;
+      switch (item.status) {
+        case ItemStatus.blocked:
+          beforeList = list.where((element) => element.name == "Blocked").first;
+          break;
+        case ItemStatus.pending:
+          beforeList = list.where((element) => element.name == "Pending").first;
+          break;
+        case ItemStatus.inProgress:
+          beforeList =
+              list.where((element) => element.name == "In progress").first;
+          break;
+        case ItemStatus.done:
+          beforeList = list.where((element) => element.name == "Done").first;
+          break;
+      }
+      switch (after) {
+        case ItemStatus.blocked:
+          afterList = list.where((element) => element.name == "Blocked").first;
+          break;
+        case ItemStatus.pending:
+          afterList = list.where((element) => element.name == "Pending").first;
+          break;
+        case ItemStatus.inProgress:
+          afterList =
+              list.where((element) => element.name == "In progress").first;
+          break;
+        case ItemStatus.done:
+          afterList = list.where((element) => element.name == "Done").first;
+          break;
+      }
+
+      beforeList.items.remove(item);
+      afterList.items.add(item);
+
+      await database.isar!.writeTxn(() async {
+        await beforeList.items.save();
+        await afterList.items.save();
+      });
+
+      item.status = after;
+
+      await database.isar!.writeTxn(() async {
+        await database.isar!.kanbanItems.put(item);
+      });
+      return state.value!.copyWith(list);
+    });
+  }
+
   kanbanListReorder(KanbanData kanbanData, List<KanbanItem> items) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {

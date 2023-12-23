@@ -42,7 +42,7 @@ class _BoardListState extends ConsumerState<BoardList> {
       padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
-          color: const Color.fromARGB(255, 233, 231, 231)),
+          color: const Color.fromARGB(255, 240, 240, 240).withOpacity(0.85)),
       width: 300,
       child: Column(
         children: [

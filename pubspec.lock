@@ -137,6 +137,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "8.8.0"
+  calendar_date_picker2:
+    dependency: "direct main"
+    description:
+      name: calendar_date_picker2
+      sha256: b91d51b8d0928f9745e0113e86d06b161ac48c52b7530337a3b77283cbc6be27
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.5.3"
   characters:
     dependency: transitive
     description:
@@ -329,14 +337,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.1.0"
-  drag_and_drop_lists:
-    dependency: "direct main"
-    description:
-      name: drag_and_drop_lists
-      sha256: "9a14595f9880be7953f23578aef88c15cc9b367eeb39dbc1f1bd6af52f70872b"
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "0.3.3"
   dropdown_button2:
     dependency: "direct main"
     description:

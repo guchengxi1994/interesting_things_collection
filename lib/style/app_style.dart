@@ -29,4 +29,9 @@ class AppStyle {
   ];
 
   static const Color inputFillColor = Color.fromARGB(255, 233, 234, 236);
+
+  static const Color blockedColor = Color.fromRGBO(239, 147, 148, 1);
+  static const Color pendingColor = Color.fromRGBO(255, 230, 168, 1);
+  static const Color inProgressColor = Colors.blueAccent;
+  static const Color doneColor = Colors.greenAccent;
 }
