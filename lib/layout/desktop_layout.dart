@@ -15,6 +15,7 @@ import 'package:weaving/fast_note/fast_note_screen.dart';
 import 'package:weaving/gen/strings.g.dart';
 import 'package:weaving/isar/kanban.dart';
 import 'package:weaving/layout/expand_collapse_notifier.dart';
+import 'package:weaving/layout/navigator.dart';
 import 'package:weaving/notifier/background_notifier.dart';
 import 'package:weaving/notifier/color_notifier.dart';
 import 'package:weaving/notifier/settings_notifier.dart';
@@ -36,8 +37,6 @@ class Layout extends ConsumerStatefulWidget {
 class LayoutState extends ConsumerState<Layout> with TickerProviderStateMixin {
   late final notifier =
       ExpandCollapseNotifier(minWidth: minWidth, maxWidth: maxWidth);
-  final PageController controller = PageController();
-  int selected = 0;
 
   static const double minWidth = 70;
   static const double maxWidth = 200;
@@ -217,12 +216,7 @@ class LayoutState extends ConsumerState<Layout> with TickerProviderStateMixin {
                 color: Colors.transparent,
                 child: NavigationRail(
                   onDestinationSelected: (value) {
-                    if (value != selected) {
-                      controller.jumpToPage(value);
-                      setState(() {
-                        selected = value;
-                      });
-                    }
+                    ref.read(pageNavigator.notifier).changeState(value);
                   },
                   backgroundColor: Colors.transparent,
                   destinations: [
@@ -277,7 +271,7 @@ class LayoutState extends ConsumerState<Layout> with TickerProviderStateMixin {
                               ref.watch(colorNotifier)],
                         ))
                   ],
-                  selectedIndex: selected,
+                  selectedIndex: ref.watch(pageNavigator),
                   extended: notifier.isExpanded,
                   minWidth: minWidth,
                   minExtendedWidth: maxWidth,
@@ -299,7 +293,7 @@ class LayoutState extends ConsumerState<Layout> with TickerProviderStateMixin {
                     borderRadius: AppStyle.leftTopRadius),
                 child: PageView(
                   physics: const NeverScrollableScrollPhysics(),
-                  controller: controller,
+                  controller: PageNavigatorNotifier.controller,
                   children: const [
                     CatalogScreen(),
                     FastNoteScreen(),
