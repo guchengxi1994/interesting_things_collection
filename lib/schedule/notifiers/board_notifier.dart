@@ -103,9 +103,12 @@ class BoardNotifier extends AsyncNotifier<BoardNotifierState> {
     return endOfDay.millisecondsSinceEpoch > time;
   }
 
-  Future<int> newItem(KanbanData kanbanData, String itemTitle) async {
+  Future<int> newItem(KanbanData kanbanData, String itemTitle,
+      {int? id}) async {
     state = const AsyncValue.loading();
-    KanbanItem item = KanbanItem()..title = itemTitle;
+    KanbanItem item = KanbanItem()
+      ..title = itemTitle
+      ..id = id;
     item.status = ItemStatus.inProgress;
 
     state = await AsyncValue.guard(() async {
@@ -319,6 +322,46 @@ class BoardNotifier extends AsyncNotifier<BoardNotifierState> {
     state = AsyncValue.data(
         BoardNotifierState(kanbanData: state.value!.kanbanData));
   }
+
+  Future<int> addNewItemPreview(String title) async {
+    state = const AsyncLoading();
+    final list = state.value!.kanbanData;
+    KanbanItem kanbanItem = KanbanItem();
+    state = await AsyncValue.guard(() async {
+      final KanbanData before =
+          list.where((element) => element.name == title).first;
+
+      await database.isar!.writeTxn(() async {
+        await database.isar!.kanbanItems.put(kanbanItem);
+        before.items.add(kanbanItem);
+        await before.items.save();
+      });
+
+      return state.value!.copyWith(list);
+    });
+    return kanbanItem.id!;
+  }
+
+  removeNewItemPreview(String title, int id) async {
+    print(title);
+    state = const AsyncLoading();
+    final list = state.value!.kanbanData;
+    state = await AsyncValue.guard(() async {
+      final KanbanData before =
+          list.where((element) => element.name == title).first;
+      before.items.removeWhere((element) => element.id == id);
+
+      await database.isar!.writeTxn(() async {
+        await before.items.save();
+        await database.isar!.kanbanItems.delete(id);
+      });
+      return state.value!.copyWith(list);
+    });
+  }
+}
+
+class InsertNewListItem extends KanbanItem {
+  final bool isNew = true;
 }
 
 final kanbanBoardNotifier =

@@ -4,6 +4,7 @@ import 'package:weaving/style/app_style.dart';
 
 typedef OnCreate = void Function(String);
 
+/// flutter bug https://github.com/flutter/flutter/issues/124421
 class NewListItem extends StatefulWidget {
   const NewListItem(
       {super.key, required this.onCreate, required this.onRemove});
@@ -26,6 +27,12 @@ class _NewListItemState extends State<NewListItem> {
       child: Column(
         children: [
           TextField(
+            onSubmitted: (value) {
+              // print(value);
+
+              widget.onCreate(value);
+            },
+            autofocus: true,
             controller: controller,
             maxLines: 1,
             keyboardType: TextInputType.text,

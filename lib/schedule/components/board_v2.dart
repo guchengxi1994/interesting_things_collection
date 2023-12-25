@@ -13,10 +13,6 @@ import 'package:taskboard/board_widget.dart';
 import 'listview_header.dart';
 import 'new_list_item.dart';
 
-class InsertNewListItem extends KanbanItem {
-  final bool isNew = true;
-}
-
 class CustomBoardV2 extends ConsumerStatefulWidget {
   const CustomBoardV2({super.key});
 
@@ -29,6 +25,8 @@ class _CustomBoardV2State extends ConsumerState<CustomBoardV2> {
       GlobalKey<ReorderableListState>();
   final ScrollController _controller = ScrollController();
   bool _isDragging = false;
+
+  late int id = -1;
 
   @override
   Widget build(BuildContext context) {
@@ -96,31 +94,16 @@ class _CustomBoardV2State extends ConsumerState<CustomBoardV2> {
                           title: kanbanData.name!,
                           stateColor:
                               ColorUtil.getColorFromHex(kanbanData.color),
-                          onItemAdd: () {
+                          onItemAdd: () async {
                             if (rows.isNotEmpty &&
                                 rows.first.runtimeType == InsertNewListItem) {
                               return;
                             }
 
                             /// FIXME not work
-
-                            setState(() {
-                              rows.insert(0, InsertNewListItem()
-                                  // NewListItem(
-                                  //   key: UniqueKey(),
-                                  //   onCreate: (String s) {
-                                  //     ref
-                                  //         .read(kanbanBoardNotifier.notifier)
-                                  //         .newItem(kanbanData, s);
-                                  //   },
-                                  //   onRemove: () {
-                                  //     setState(() {
-                                  //       rows.removeAt(0);
-                                  //     });
-                                  //   },
-                                  // ) as KanbanItem
-                                  );
-                            });
+                            id = await ref
+                                .read(kanbanBoardNotifier.notifier)
+                                .addNewItemPreview(kanbanData.name!);
                           },
                         ),
                         onSameListReorder: (oldIndex, newIndex) {
@@ -144,18 +127,19 @@ class _CustomBoardV2State extends ConsumerState<CustomBoardV2> {
                         },
                         key: ValueKey(board.hashCode),
                         itemBuilder: (task) {
-                          if (task.runtimeType == InsertNewListItem) {
+                          if (task.title == "" || task.title == null) {
+                            // print("aaaaaaaaaaaaaaaaa");
                             return NewListItem(
-                              key: UniqueKey(),
                               onCreate: (String s) {
+                                // print("aaaaaaaaaaaaaaa");
                                 ref
                                     .read(kanbanBoardNotifier.notifier)
-                                    .newItem(kanbanData, s);
+                                    .newItem(kanbanData, s, id: id);
                               },
                               onRemove: () {
-                                setState(() {
-                                  rows.removeAt(0);
-                                });
+                                ref
+                                    .read(kanbanBoardNotifier.notifier)
+                                    .removeNewItemPreview(kanbanData.name!, id);
                               },
                             );
                           }
