@@ -1,4 +1,7 @@
+// ignore_for_file: overridden_fields
+
 import 'package:isar/isar.dart';
+import 'package:taskboard/model/task.dart';
 
 part 'kanban.g.dart';
 
@@ -9,6 +12,21 @@ class KanbanData {
   String color = "FFFFFF";
   final items = IsarLinks<KanbanItem>();
   int orderNum = 1;
+
+  ItemStatus getStatus() {
+    switch (name) {
+      case "Blocked":
+        return ItemStatus.blocked;
+      case "Pending":
+        return ItemStatus.pending;
+      case "In progress":
+        return ItemStatus.inProgress;
+      case "Done":
+        return ItemStatus.done;
+      default:
+        return ItemStatus.blocked;
+    }
+  }
 }
 
 enum ItemStatus {
@@ -23,13 +41,17 @@ enum ItemStatus {
 }
 
 @collection
-class KanbanItem {
+class KanbanItem extends Task {
+  @override
   Id? id;
+  @override
   String? title;
+  @override
   int deadline =
       DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day)
           .add(const Duration(days: 1))
           .millisecondsSinceEpoch;
+  @override
   int createAt = DateTime.now().millisecondsSinceEpoch;
   List<int> tagIds = [];
   int priority = 1;

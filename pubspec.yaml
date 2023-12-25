@@ -57,6 +57,9 @@ dependencies:
   slang: ^3.25.0  # dart run slang
   slang_flutter: ^3.25.0
   super_clipboard: ^0.7.3
+  taskboard:
+    git:
+      url: https://github.com/guchengxi1994/taskboard
   window_manager: ^0.3.7
   
   
@@ -83,6 +86,9 @@ dependency_overrides:
   
   fsb_dart:
     path: D:/github_repo/flutter_slint_bridge/fsb_dart
+  
+  taskboard:
+    path: D:/github_repo/taskboard
 
 flutter_launcher_icons:
   android: "launcher_icon"

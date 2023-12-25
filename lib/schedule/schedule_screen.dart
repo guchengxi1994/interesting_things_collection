@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:weaving/schedule/components/board.dart';
 import 'package:weaving/style/app_style.dart';
 
-import 'components/board.dart';
+// import 'components/board.dart';
 
 class ScheduleScreen extends ConsumerWidget {
   const ScheduleScreen({super.key});

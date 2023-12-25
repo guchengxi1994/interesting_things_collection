@@ -1456,6 +1456,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "3.1.0"
+  taskboard:
+    dependency: "direct main"
+    description:
+      path: "D:/github_repo/taskboard"
+      relative: false
+    source: path
+    version: "1.0.0+1"
   term_glyph:
     dependency: transitive
     description:
@@ -1640,6 +1647,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.1.2"
+  visibility_detector:
+    dependency: transitive
+    description:
+      name: visibility_detector
+      sha256: dd5cc11e13494f432d15939c3aa8ae76844c42b723398643ce9addb88a5ed420
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.4.0+2"
   vsc_quill_delta_to_html:
     dependency: transitive
     description:

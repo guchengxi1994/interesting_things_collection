@@ -267,7 +267,45 @@ class BoardNotifier extends AsyncNotifier<BoardNotifierState> {
     });
   }
 
+  moveItemTo(KanbanData kanbanData, KanbanItem item) async {
+    state = const AsyncLoading();
+
+    final list = state.value!.kanbanData;
+
+    state = await AsyncValue.guard(() async {
+      final KanbanData before;
+
+      switch (item.status) {
+        case ItemStatus.blocked:
+          before = list.where((element) => element.name == "Blocked").first;
+          break;
+        case ItemStatus.pending:
+          before = list.where((element) => element.name == "Pending").first;
+          break;
+        case ItemStatus.inProgress:
+          before = list.where((element) => element.name == "In progress").first;
+          break;
+        case ItemStatus.done:
+          before = list.where((element) => element.name == "Done").first;
+          break;
+      }
+
+      before.items.remove(item);
+      kanbanData.items.add(item);
+
+      await database.isar!.writeTxn(() async {
+        await before.items.save();
+        await kanbanData.items.save();
+        item.status = kanbanData.getStatus();
+        await database.isar!.kanbanItems.put(item);
+      });
+      return BoardNotifierState(kanbanData: list);
+    });
+  }
+
   kanbanReorder(List<String> titles) async {
+    state = const AsyncLoading();
+
     await database.isar!.writeTxn(() async {
       int index = 0;
       for (final i in titles) {

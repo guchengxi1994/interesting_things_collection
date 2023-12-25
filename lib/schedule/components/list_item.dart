@@ -4,17 +4,16 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_the_tooltip/just_the_tooltip.dart';
+import 'package:taskboard/model/task.dart';
 import 'package:weaving/isar/kanban.dart';
 import 'package:weaving/schedule/notifiers/board_notifier.dart';
 import 'package:weaving/style/app_style.dart';
 
-class ListItem extends ConsumerWidget {
-  const ListItem({super.key, required this.kanbanItem, required this.index});
-  final KanbanItem kanbanItem;
-  final int index;
+class ListItem<T extends Task> extends ConsumerWidget {
+  const ListItem({super.key, required this.kanbanItem});
+  final T kanbanItem;
 
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget _child(BuildContext context, WidgetRef ref) {
     late final List<DateTime?> defaultValue = [
       // DateTime.now(),
       DateTime.fromMillisecondsSinceEpoch(kanbanItem.deadline),
@@ -77,13 +76,14 @@ class ListItem extends ConsumerWidget {
                   ),
                   items: [
                     DropdownMenuItem(
-                      enabled: kanbanItem.status != ItemStatus.blocked,
+                      enabled: (kanbanItem as KanbanItem).status !=
+                          ItemStatus.blocked,
                       value: 1,
                       onTap: () async {
                         ref
                             .read(kanbanBoardNotifier.notifier)
                             .changeItemItemStatus(
-                                kanbanItem, ItemStatus.blocked);
+                                (kanbanItem as KanbanItem), ItemStatus.blocked);
                       },
                       child: Row(
                         children: [
@@ -96,19 +96,22 @@ class ListItem extends ConsumerWidget {
                           ),
                           Text("Mark As Blocked",
                               style: TextStyle(
-                                  color: kanbanItem.status != ItemStatus.blocked
+                                  color: (kanbanItem as KanbanItem).status !=
+                                          ItemStatus.blocked
                                       ? Colors.black
                                       : Colors.grey))
                         ],
                       ),
                     ),
                     DropdownMenuItem(
-                      enabled: kanbanItem.status != ItemStatus.done,
+                      enabled:
+                          (kanbanItem as KanbanItem).status != ItemStatus.done,
                       value: 2,
                       onTap: () async {
                         ref
                             .read(kanbanBoardNotifier.notifier)
-                            .changeItemItemStatus(kanbanItem, ItemStatus.done);
+                            .changeItemItemStatus(
+                                (kanbanItem as KanbanItem), ItemStatus.done);
                       },
                       child: Row(
                         children: [
@@ -122,7 +125,8 @@ class ListItem extends ConsumerWidget {
                           Text(
                             "Mark As Done",
                             style: TextStyle(
-                                color: kanbanItem.status != ItemStatus.done
+                                color: (kanbanItem as KanbanItem).status !=
+                                        ItemStatus.done
                                     ? Colors.black
                                     : Colors.grey),
                           )
@@ -130,13 +134,14 @@ class ListItem extends ConsumerWidget {
                       ),
                     ),
                     DropdownMenuItem(
-                      enabled: kanbanItem.status != ItemStatus.inProgress,
+                      enabled: (kanbanItem as KanbanItem).status !=
+                          ItemStatus.inProgress,
                       value: 3,
                       onTap: () async {
                         ref
                             .read(kanbanBoardNotifier.notifier)
-                            .changeItemItemStatus(
-                                kanbanItem, ItemStatus.inProgress);
+                            .changeItemItemStatus((kanbanItem as KanbanItem),
+                                ItemStatus.inProgress);
                       },
                       child: Row(
                         children: [
@@ -149,21 +154,22 @@ class ListItem extends ConsumerWidget {
                           ),
                           Text("Mark As In Progress",
                               style: TextStyle(
-                                  color:
-                                      kanbanItem.status != ItemStatus.inProgress
-                                          ? Colors.black
-                                          : Colors.grey))
+                                  color: (kanbanItem as KanbanItem).status !=
+                                          ItemStatus.inProgress
+                                      ? Colors.black
+                                      : Colors.grey))
                         ],
                       ),
                     ),
                     DropdownMenuItem(
-                      enabled: kanbanItem.status != ItemStatus.pending,
+                      enabled: (kanbanItem as KanbanItem).status !=
+                          ItemStatus.pending,
                       value: 4,
                       onTap: () async {
                         ref
                             .read(kanbanBoardNotifier.notifier)
                             .changeItemItemStatus(
-                                kanbanItem, ItemStatus.pending);
+                                (kanbanItem as KanbanItem), ItemStatus.pending);
                       },
                       child: Row(
                         children: [
@@ -177,7 +183,8 @@ class ListItem extends ConsumerWidget {
                           Text(
                             "Mark As Pending",
                             style: TextStyle(
-                                color: kanbanItem.status != ItemStatus.pending
+                                color: (kanbanItem as KanbanItem).status !=
+                                        ItemStatus.pending
                                     ? Colors.black
                                     : Colors.grey),
                           )
@@ -202,7 +209,8 @@ class ListItem extends ConsumerWidget {
                             if (v[0] != null) {
                               ref
                                   .read(kanbanBoardNotifier.notifier)
-                                  .changeItemStatus(kanbanItem, deadline: v[0]);
+                                  .changeItemStatus((kanbanItem as KanbanItem),
+                                      deadline: v[0]);
                             }
                           }
                         },
@@ -223,7 +231,8 @@ class ListItem extends ConsumerWidget {
                               color: kanbanItem.deadline <
                                       DateTime.now().millisecondsSinceEpoch
                                   ? Colors.redAccent
-                                  : kanbanItem.status == ItemStatus.done
+                                  : (kanbanItem as KanbanItem).status ==
+                                          ItemStatus.done
                                       ? AppStyle.doneColor
                                       : Colors.black),
                         ),
@@ -233,25 +242,24 @@ class ListItem extends ConsumerWidget {
                               color: kanbanItem.deadline <
                                       DateTime.now().millisecondsSinceEpoch
                                   ? Colors.redAccent
-                                  : kanbanItem.status == ItemStatus.done
+                                  : (kanbanItem as KanbanItem).status ==
+                                          ItemStatus.done
                                       ? AppStyle.doneColor
                                       : Colors.black),
                         ),
                       ),
                     )),
                 const Spacer(),
-                ReorderableDragStartListener(
-                  index: index,
-                  child: const MouseRegion(
-                    cursor: SystemMouseCursors.move,
-                    child: Icon(Icons.drag_handle),
-                  ),
-                )
               ],
             )
           ],
         ),
       ),
     );
+  }
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return _child(context, ref);
   }
 }
