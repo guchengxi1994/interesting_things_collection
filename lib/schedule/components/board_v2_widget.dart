@@ -11,16 +11,12 @@ import 'package:weaving/schedule/notifiers/board_notifier.dart';
 
 import 'new_list_item.dart';
 
-class BoardV2Widget extends ConsumerStatefulWidget {
-  const BoardV2Widget({super.key, required this.kanbanData});
+// ignore: must_be_immutable
+class BoardV2Widget extends ConsumerWidget {
+  BoardV2Widget({super.key, required this.kanbanData});
   final List<KanbanData> kanbanData;
 
-  @override
-  ConsumerState<BoardV2Widget> createState() => _BoardV2WidgetState();
-}
-
-class _BoardV2WidgetState extends ConsumerState<BoardV2Widget> {
-  late final List<KanbanData> _columns = widget.kanbanData
+  late final List<KanbanData> _columns = kanbanData
     ..sort((a, b) => a.orderNum.compareTo(b.orderNum));
 
   late List<Board<KanbanItem>> boards = _columns
@@ -36,7 +32,7 @@ class _BoardV2WidgetState extends ConsumerState<BoardV2Widget> {
   late int id = -1;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return ReorderableListView.builder(
       scrollDirection: Axis.horizontal,
       scrollController: _controller,
@@ -147,15 +143,13 @@ class _BoardV2WidgetState extends ConsumerState<BoardV2Widget> {
       },
       itemCount: boards.length,
       onReorder: (int oldIndex, int newIndex) {
-        setState(() {
-          if (oldIndex < newIndex) {
-            newIndex -= 1;
-          }
-          KanbanData c = _columns.removeAt(oldIndex);
-          _columns.insert(newIndex, c);
-          final item = boards.removeAt(oldIndex);
-          boards.insert(newIndex, item);
-        });
+        if (oldIndex < newIndex) {
+          newIndex -= 1;
+        }
+        KanbanData c = _columns.removeAt(oldIndex);
+        _columns.insert(newIndex, c);
+        final item = boards.removeAt(oldIndex);
+        boards.insert(newIndex, item);
 
         ref
             .read(kanbanBoardNotifier.notifier)

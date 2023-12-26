@@ -68,7 +68,7 @@ class _AppWrapperState extends ConsumerState<AppWrapper> {
         showGeneralDialog(
             context: context,
             barrierDismissible: true,
-            barrierColor: Colors.grey.withOpacity(0.7),
+            barrierColor: Colors.transparent,
             barrierLabel: "b",
             pageBuilder: (c, _, __) {
               return Center(
