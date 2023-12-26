@@ -269,7 +269,17 @@ class LayoutState extends ConsumerState<Layout> with TickerProviderStateMixin {
                           Icons.settings,
                           color: AppStyle.catalogCardBorderColors[
                               ref.watch(colorNotifier)],
-                        ))
+                        )),
+                    // NavigationRailDestination(
+                    //     icon: const Icon(
+                    //       Icons.textsms_sharp,
+                    //     ),
+                    //     label: Text("For test"),
+                    //     selectedIcon: Icon(
+                    //       Icons.textsms_sharp,
+                    //       color: AppStyle.catalogCardBorderColors[
+                    //           ref.watch(colorNotifier)],
+                    //     ))
                   ],
                   selectedIndex: ref.watch(pageNavigator),
                   extended: notifier.isExpanded,
@@ -300,6 +310,9 @@ class LayoutState extends ConsumerState<Layout> with TickerProviderStateMixin {
                     ScheduleScreen(),
                     DataTransferScreen(),
                     SettingsScreen(),
+                    // SizedBox(
+                    //   child: CustomBoardV2(),
+                    // ),
                   ],
                 ),
               ))

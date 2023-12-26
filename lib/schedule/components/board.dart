@@ -7,6 +7,7 @@ import '../notifiers/board_notifier.dart';
 import '../notifiers/board_notifier_state.dart';
 import 'board_list.dart';
 
+@Deprecated("use v2 instead")
 class CustomBoard extends ConsumerStatefulWidget {
   const CustomBoard({super.key});
 

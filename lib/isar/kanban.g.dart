@@ -833,29 +833,34 @@ const KanbanItemSchema = CollectionSchema(
       name: r'deadline',
       type: IsarType.long,
     ),
-    r'orderNum': PropertySchema(
+    r'hashCode': PropertySchema(
       id: 2,
+      name: r'hashCode',
+      type: IsarType.long,
+    ),
+    r'orderNum': PropertySchema(
+      id: 3,
       name: r'orderNum',
       type: IsarType.long,
     ),
     r'priority': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'priority',
       type: IsarType.long,
     ),
     r'status': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'status',
       type: IsarType.byte,
       enumMap: _KanbanItemstatusEnumValueMap,
     ),
     r'tagIds': PropertySchema(
-      id: 5,
+      id: 6,
       name: r'tagIds',
       type: IsarType.longList,
     ),
     r'title': PropertySchema(
-      id: 6,
+      id: 7,
       name: r'title',
       type: IsarType.string,
     )
@@ -898,11 +903,12 @@ void _kanbanItemSerialize(
 ) {
   writer.writeLong(offsets[0], object.createAt);
   writer.writeLong(offsets[1], object.deadline);
-  writer.writeLong(offsets[2], object.orderNum);
-  writer.writeLong(offsets[3], object.priority);
-  writer.writeByte(offsets[4], object.status.index);
-  writer.writeLongList(offsets[5], object.tagIds);
-  writer.writeString(offsets[6], object.title);
+  writer.writeLong(offsets[2], object.hashCode);
+  writer.writeLong(offsets[3], object.orderNum);
+  writer.writeLong(offsets[4], object.priority);
+  writer.writeByte(offsets[5], object.status.index);
+  writer.writeLongList(offsets[6], object.tagIds);
+  writer.writeString(offsets[7], object.title);
 }
 
 KanbanItem _kanbanItemDeserialize(
@@ -915,13 +921,13 @@ KanbanItem _kanbanItemDeserialize(
   object.createAt = reader.readLong(offsets[0]);
   object.deadline = reader.readLong(offsets[1]);
   object.id = id;
-  object.orderNum = reader.readLong(offsets[2]);
-  object.priority = reader.readLong(offsets[3]);
+  object.orderNum = reader.readLong(offsets[3]);
+  object.priority = reader.readLong(offsets[4]);
   object.status =
-      _KanbanItemstatusValueEnumMap[reader.readByteOrNull(offsets[4])] ??
+      _KanbanItemstatusValueEnumMap[reader.readByteOrNull(offsets[5])] ??
           ItemStatus.blocked;
-  object.tagIds = reader.readLongList(offsets[5]) ?? [];
-  object.title = reader.readStringOrNull(offsets[6]);
+  object.tagIds = reader.readLongList(offsets[6]) ?? [];
+  object.title = reader.readStringOrNull(offsets[7]);
   return object;
 }
 
@@ -941,11 +947,13 @@ P _kanbanItemDeserializeProp<P>(
     case 3:
       return (reader.readLong(offset)) as P;
     case 4:
+      return (reader.readLong(offset)) as P;
+    case 5:
       return (_KanbanItemstatusValueEnumMap[reader.readByteOrNull(offset)] ??
           ItemStatus.blocked) as P;
-    case 5:
-      return (reader.readLongList(offset) ?? []) as P;
     case 6:
+      return (reader.readLongList(offset) ?? []) as P;
+    case 7:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -1156,6 +1164,60 @@ extension KanbanItemQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
         property: r'deadline',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<KanbanItem, KanbanItem, QAfterFilterCondition> hashCodeEqualTo(
+      int value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'hashCode',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<KanbanItem, KanbanItem, QAfterFilterCondition>
+      hashCodeGreaterThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'hashCode',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<KanbanItem, KanbanItem, QAfterFilterCondition> hashCodeLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'hashCode',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<KanbanItem, KanbanItem, QAfterFilterCondition> hashCodeBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'hashCode',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -1718,6 +1780,18 @@ extension KanbanItemQuerySortBy
     });
   }
 
+  QueryBuilder<KanbanItem, KanbanItem, QAfterSortBy> sortByHashCode() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hashCode', Sort.asc);
+    });
+  }
+
+  QueryBuilder<KanbanItem, KanbanItem, QAfterSortBy> sortByHashCodeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hashCode', Sort.desc);
+    });
+  }
+
   QueryBuilder<KanbanItem, KanbanItem, QAfterSortBy> sortByOrderNum() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'orderNum', Sort.asc);
@@ -1790,6 +1864,18 @@ extension KanbanItemQuerySortThenBy
   QueryBuilder<KanbanItem, KanbanItem, QAfterSortBy> thenByDeadlineDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'deadline', Sort.desc);
+    });
+  }
+
+  QueryBuilder<KanbanItem, KanbanItem, QAfterSortBy> thenByHashCode() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hashCode', Sort.asc);
+    });
+  }
+
+  QueryBuilder<KanbanItem, KanbanItem, QAfterSortBy> thenByHashCodeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'hashCode', Sort.desc);
     });
   }
 
@@ -1868,6 +1954,12 @@ extension KanbanItemQueryWhereDistinct
     });
   }
 
+  QueryBuilder<KanbanItem, KanbanItem, QDistinct> distinctByHashCode() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'hashCode');
+    });
+  }
+
   QueryBuilder<KanbanItem, KanbanItem, QDistinct> distinctByOrderNum() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'orderNum');
@@ -1917,6 +2009,12 @@ extension KanbanItemQueryProperty
   QueryBuilder<KanbanItem, int, QQueryOperations> deadlineProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'deadline');
+    });
+  }
+
+  QueryBuilder<KanbanItem, int, QQueryOperations> hashCodeProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'hashCode');
     });
   }
 

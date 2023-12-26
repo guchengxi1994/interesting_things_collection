@@ -103,9 +103,12 @@ class BoardNotifier extends AsyncNotifier<BoardNotifierState> {
     return endOfDay.millisecondsSinceEpoch > time;
   }
 
-  Future<int> newItem(KanbanData kanbanData, String itemTitle) async {
+  Future<int> newItem(KanbanData kanbanData, String itemTitle,
+      {int? id}) async {
     state = const AsyncValue.loading();
-    KanbanItem item = KanbanItem()..title = itemTitle;
+    KanbanItem item = KanbanItem()
+      ..title = itemTitle
+      ..id = id;
     item.status = ItemStatus.inProgress;
 
     state = await AsyncValue.guard(() async {
@@ -267,7 +270,46 @@ class BoardNotifier extends AsyncNotifier<BoardNotifierState> {
     });
   }
 
+  moveItemTo(KanbanData kanbanData, KanbanItem item) async {
+    state = const AsyncLoading();
+
+    final list = state.value!.kanbanData;
+
+    state = await AsyncValue.guard(() async {
+      final KanbanData before;
+
+      switch (item.status) {
+        case ItemStatus.blocked:
+          before = list.where((element) => element.name == "Blocked").first;
+          break;
+        case ItemStatus.pending:
+          before = list.where((element) => element.name == "Pending").first;
+          break;
+        case ItemStatus.inProgress:
+          before = list.where((element) => element.name == "In progress").first;
+          break;
+        case ItemStatus.done:
+          before = list.where((element) => element.name == "Done").first;
+          break;
+      }
+
+      before.items.remove(item);
+      kanbanData.items.add(item);
+
+      await database.isar!.writeTxn(() async {
+        await before.items.save();
+        await kanbanData.items.save();
+        item.status = kanbanData.getStatus();
+        await database.isar!.kanbanItems.put(item);
+      });
+      return BoardNotifierState(kanbanData: list);
+    });
+  }
+
+  // dont repaint
   kanbanReorder(List<String> titles) async {
+    // state = const AsyncLoading();
+
     await database.isar!.writeTxn(() async {
       int index = 0;
       for (final i in titles) {
@@ -278,9 +320,49 @@ class BoardNotifier extends AsyncNotifier<BoardNotifierState> {
         await database.isar!.kanbanDatas.put(data);
       }
     });
-    state = AsyncValue.data(
-        BoardNotifierState(kanbanData: state.value!.kanbanData));
+    // state = AsyncValue.data(
+    //     BoardNotifierState(kanbanData: state.value!.kanbanData));
   }
+
+  Future<int> addNewItemPreview(String title) async {
+    state = const AsyncLoading();
+    final list = state.value!.kanbanData;
+    KanbanItem kanbanItem = KanbanItem();
+    state = await AsyncValue.guard(() async {
+      final KanbanData before =
+          list.where((element) => element.name == title).first;
+
+      await database.isar!.writeTxn(() async {
+        await database.isar!.kanbanItems.put(kanbanItem);
+        before.items.add(kanbanItem);
+        await before.items.save();
+      });
+
+      return state.value!.copyWith(list);
+    });
+    return kanbanItem.id!;
+  }
+
+  @Deprecated("")
+  removeNewItemPreview(String title, int id) async {
+    state = const AsyncLoading();
+    final list = state.value!.kanbanData;
+    state = await AsyncValue.guard(() async {
+      final KanbanData before =
+          list.where((element) => element.name == title).first;
+      before.items.removeWhere((element) => element.id == id);
+
+      await database.isar!.writeTxn(() async {
+        await before.items.save();
+        await database.isar!.kanbanItems.delete(id);
+      });
+      return state.value!.copyWith(list);
+    });
+  }
+}
+
+class InsertNewListItem extends KanbanItem {
+  final bool isNew = true;
 }
 
 final kanbanBoardNotifier =

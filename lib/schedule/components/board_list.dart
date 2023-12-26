@@ -31,7 +31,6 @@ class _BoardListState extends ConsumerState<BoardList> {
       .mapIndexed((i, e) => ListItem(
             key: ValueKey(widget.kanbanData.name.toString() + e.id.toString()),
             kanbanItem: e,
-            index: i,
           ) as Widget)
       .toList();
 
@@ -63,11 +62,6 @@ class _BoardListState extends ConsumerState<BoardList> {
                         ref
                             .read(kanbanBoardNotifier.notifier)
                             .newItem(widget.kanbanData, s);
-                      },
-                      onRemove: () {
-                        setState(() {
-                          _rows.removeAt(0);
-                        });
                       },
                     ));
               });
