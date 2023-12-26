@@ -19,7 +19,6 @@ import 'package:weaving/layout/navigator.dart';
 import 'package:weaving/notifier/background_notifier.dart';
 import 'package:weaving/notifier/color_notifier.dart';
 import 'package:weaving/notifier/settings_notifier.dart';
-import 'package:weaving/schedule/components/board_v2.dart';
 import 'package:weaving/schedule/notifiers/board_notifier.dart';
 import 'package:weaving/schedule/schedule_screen.dart';
 import 'package:weaving/settings/settings_screen.dart';
@@ -271,16 +270,16 @@ class LayoutState extends ConsumerState<Layout> with TickerProviderStateMixin {
                           color: AppStyle.catalogCardBorderColors[
                               ref.watch(colorNotifier)],
                         )),
-                    NavigationRailDestination(
-                        icon: const Icon(
-                          Icons.textsms_sharp,
-                        ),
-                        label: Text("For test"),
-                        selectedIcon: Icon(
-                          Icons.textsms_sharp,
-                          color: AppStyle.catalogCardBorderColors[
-                              ref.watch(colorNotifier)],
-                        ))
+                    // NavigationRailDestination(
+                    //     icon: const Icon(
+                    //       Icons.textsms_sharp,
+                    //     ),
+                    //     label: Text("For test"),
+                    //     selectedIcon: Icon(
+                    //       Icons.textsms_sharp,
+                    //       color: AppStyle.catalogCardBorderColors[
+                    //           ref.watch(colorNotifier)],
+                    //     ))
                   ],
                   selectedIndex: ref.watch(pageNavigator),
                   extended: notifier.isExpanded,
@@ -311,9 +310,9 @@ class LayoutState extends ConsumerState<Layout> with TickerProviderStateMixin {
                     ScheduleScreen(),
                     DataTransferScreen(),
                     SettingsScreen(),
-                    SizedBox(
-                      child: CustomBoardV2(),
-                    ),
+                    // SizedBox(
+                    //   child: CustomBoardV2(),
+                    // ),
                   ],
                 ),
               ))

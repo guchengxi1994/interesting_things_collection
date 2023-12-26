@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:weaving/schedule/components/board.dart';
 import 'package:weaving/style/app_style.dart';
+
+import 'components/board_v2.dart';
 
 // import 'components/board.dart';
 
@@ -14,7 +15,7 @@ class ScheduleScreen extends ConsumerWidget {
       padding: const EdgeInsets.only(top: 10),
       decoration: const BoxDecoration(
           color: Colors.transparent, borderRadius: AppStyle.leftTopRadius),
-      child: const CustomBoard(),
+      child: const CustomBoardV2(),
     );
   }
 }

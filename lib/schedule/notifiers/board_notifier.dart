@@ -307,7 +307,7 @@ class BoardNotifier extends AsyncNotifier<BoardNotifierState> {
   }
 
   kanbanReorder(List<String> titles) async {
-    state = const AsyncLoading();
+    // state = const AsyncLoading();
 
     await database.isar!.writeTxn(() async {
       int index = 0;
@@ -319,8 +319,8 @@ class BoardNotifier extends AsyncNotifier<BoardNotifierState> {
         await database.isar!.kanbanDatas.put(data);
       }
     });
-    state = AsyncValue.data(
-        BoardNotifierState(kanbanData: state.value!.kanbanData));
+    // state = AsyncValue.data(
+    //     BoardNotifierState(kanbanData: state.value!.kanbanData));
   }
 
   Future<int> addNewItemPreview(String title) async {
@@ -342,8 +342,8 @@ class BoardNotifier extends AsyncNotifier<BoardNotifierState> {
     return kanbanItem.id!;
   }
 
+  @Deprecated("")
   removeNewItemPreview(String title, int id) async {
-    print(title);
     state = const AsyncLoading();
     final list = state.value!.kanbanData;
     state = await AsyncValue.guard(() async {

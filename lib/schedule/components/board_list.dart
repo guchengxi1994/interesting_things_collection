@@ -63,11 +63,6 @@ class _BoardListState extends ConsumerState<BoardList> {
                             .read(kanbanBoardNotifier.notifier)
                             .newItem(widget.kanbanData, s);
                       },
-                      onRemove: () {
-                        setState(() {
-                          _rows.removeAt(0);
-                        });
-                      },
                     ));
               });
             },

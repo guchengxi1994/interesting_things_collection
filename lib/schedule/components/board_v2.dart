@@ -53,7 +53,15 @@ class _CustomBoardV2State extends ConsumerState<CustomBoardV2> {
             dragStartBehavior: DragStartBehavior.start,
             proxyDecorator:
                 (Widget child, int index, Animation<double> animation) {
+              KanbanData kanbanData = _columns[index];
               return BoardWidget(
+                header: ListHeader(
+                  title: kanbanData.name!,
+                  stateColor: ColorUtil.getColorFromHex(kanbanData.color),
+                  onItemAdd: () {
+                    // print(id);
+                  },
+                ),
                 board: boards[index],
                 itemBuilder: (task) {
                   return ListItem(kanbanItem: task);
@@ -100,10 +108,11 @@ class _CustomBoardV2State extends ConsumerState<CustomBoardV2> {
                               return;
                             }
 
-                            /// FIXME not work
                             id = await ref
                                 .read(kanbanBoardNotifier.notifier)
                                 .addNewItemPreview(kanbanData.name!);
+
+                            // print(id);
                           },
                         ),
                         onSameListReorder: (oldIndex, newIndex) {
@@ -136,17 +145,12 @@ class _CustomBoardV2State extends ConsumerState<CustomBoardV2> {
                                     .read(kanbanBoardNotifier.notifier)
                                     .newItem(kanbanData, s, id: id);
                               },
-                              onRemove: () {
-                                ref
-                                    .read(kanbanBoardNotifier.notifier)
-                                    .removeNewItemPreview(kanbanData.name!, id);
-                              },
                             );
                           }
                           return ListItem(kanbanItem: task);
                         },
                         board: board,
-                        addNewTaskCallback: () {},
+                        addNewTaskCallback: null,
                       );
                     },
                   ),
@@ -154,17 +158,20 @@ class _CustomBoardV2State extends ConsumerState<CustomBoardV2> {
               );
             },
             itemCount: boards.length,
-            onReorder: (int oldIndex, int newIndex) {
+            onReorder: (int oldIndex, int newIndex) async {
+              /// FIXME repaint
+
               if (oldIndex < newIndex) {
                 newIndex -= 1;
               }
-
               KanbanData c = _columns.removeAt(oldIndex);
               _columns.insert(newIndex, c);
 
-              ref
+              await ref
                   .read(kanbanBoardNotifier.notifier)
                   .kanbanReorder(_columns.map((e) => e.name ?? "").toList());
+
+              setState(() {});
             },
           );
         }),
