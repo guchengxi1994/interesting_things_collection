@@ -146,20 +146,20 @@ class _BoardV2WidgetState extends ConsumerState<BoardV2Widget> {
         );
       },
       itemCount: boards.length,
-      onReorder: (int oldIndex, int newIndex) async {
-        /// FIXME repaint
+      onReorder: (int oldIndex, int newIndex) {
+        setState(() {
+          if (oldIndex < newIndex) {
+            newIndex -= 1;
+          }
+          KanbanData c = _columns.removeAt(oldIndex);
+          _columns.insert(newIndex, c);
+          final item = boards.removeAt(oldIndex);
+          boards.insert(newIndex, item);
+        });
 
-        if (oldIndex < newIndex) {
-          newIndex -= 1;
-        }
-        KanbanData c = _columns.removeAt(oldIndex);
-        _columns.insert(newIndex, c);
-
-        await ref
+        ref
             .read(kanbanBoardNotifier.notifier)
             .kanbanReorder(_columns.map((e) => e.name ?? "").toList());
-
-        setState(() {});
       },
     );
   }

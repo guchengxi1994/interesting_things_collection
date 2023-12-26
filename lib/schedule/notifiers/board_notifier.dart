@@ -306,6 +306,7 @@ class BoardNotifier extends AsyncNotifier<BoardNotifierState> {
     });
   }
 
+  // dont repaint
   kanbanReorder(List<String> titles) async {
     // state = const AsyncLoading();
 
