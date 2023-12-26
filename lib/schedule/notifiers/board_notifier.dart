@@ -359,10 +359,16 @@ class BoardNotifier extends AsyncNotifier<BoardNotifierState> {
       return state.value!.copyWith(list);
     });
   }
-}
 
-class InsertNewListItem extends KanbanItem {
-  final bool isNew = true;
+  bool couldAddMore() {
+    return database.isar!.kanbanItems
+        .filter()
+        .titleIsNull()
+        .or()
+        .titleEqualTo("")
+        .findAllSync()
+        .isEmpty;
+  }
 }
 
 final kanbanBoardNotifier =

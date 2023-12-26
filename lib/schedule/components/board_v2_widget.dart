@@ -89,8 +89,9 @@ class BoardV2Widget extends ConsumerWidget {
                     title: kanbanData.name!,
                     stateColor: ColorUtil.getColorFromHex(kanbanData.color),
                     onItemAdd: () async {
-                      if (rows.isNotEmpty &&
-                          rows.first.runtimeType == InsertNewListItem) {
+                      if (!ref
+                          .read(kanbanBoardNotifier.notifier)
+                          .couldAddMore()) {
                         return;
                       }
 
@@ -121,6 +122,10 @@ class BoardV2Widget extends ConsumerWidget {
                   key: ValueKey(board.hashCode),
                   itemBuilder: (task) {
                     if (task.title == "" || task.title == null) {
+                      if (task.id != null) {
+                        id = task.id!;
+                      }
+
                       // print("aaaaaaaaaaaaaaaaa");
                       return NewListItem(
                         onCreate: (String s) {
