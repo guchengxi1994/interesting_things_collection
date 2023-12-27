@@ -61,7 +61,7 @@ class BoardV2Widget extends ConsumerWidget {
       itemBuilder: (context, index) {
         var board = boards[index];
         KanbanData kanbanData = _columns[index];
-        final List<dynamic> rows = board.tasks;
+
         return ReorderableDragStartListener(
           key: ValueKey(board.name),
           index: index,

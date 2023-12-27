@@ -55,6 +55,13 @@ class _EditorState extends State<Editor> {
     }
 
     _controller = QuillController(
+      onSelectionChanged: (textSelection) async {
+        print(textSelection.baseOffset);
+        // print(doc.changes.last);
+        final delta = _controller.document.toDelta().last;
+
+        print(delta.data);
+      },
       document: doc,
       selection: const TextSelection.collapsed(offset: 0),
     );
