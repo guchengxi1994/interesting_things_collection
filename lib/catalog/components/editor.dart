@@ -10,6 +10,7 @@ import 'package:flutter_quill/extensions.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
 import 'package:flutter_quill_extensions/presentation/embeds/editor/shims/dart_ui_real.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:path_provider/path_provider.dart';
 // ignore: depend_on_referenced_packages
@@ -56,11 +57,21 @@ class _EditorState extends State<Editor> {
 
     _controller = QuillController(
       onSelectionChanged: (textSelection) async {
-        print(textSelection.baseOffset);
-        // print(doc.changes.last);
-        final delta = _controller.document.toDelta().last;
-
-        print(delta.data);
+        try {
+          final s = _controller.document.getPlainText(_controller.index - 1, 1);
+          if (s == "/") {
+            final index = _controller.index;
+            final length = _controller.length;
+            await Future.delayed(const Duration(milliseconds: 1500))
+                .then((value) {
+              final index0 = _controller.index;
+              final length0 = _controller.length;
+              if (index == index0 && length0 == length) {
+                SmartDialog.showToast("OK");
+              }
+            });
+          }
+        } catch (_) {}
       },
       document: doc,
       selection: const TextSelection.collapsed(offset: 0),

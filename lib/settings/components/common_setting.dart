@@ -7,6 +7,8 @@ import 'package:weaving/notifier/color_notifier.dart';
 import 'package:weaving/notifier/settings_notifier.dart';
 import 'package:weaving/style/app_style.dart';
 
+import 'database_table.dart';
+
 class CommonSettingWidget extends ConsumerWidget {
   const CommonSettingWidget({super.key});
 
@@ -104,6 +106,7 @@ class CommonSettingWidget extends ConsumerWidget {
                     child: const Text("删除所有笔记"))
               ],
             ),
+            const DatabaseTable()
           ]),
     );
   }

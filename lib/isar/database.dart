@@ -18,22 +18,26 @@ class IsarDatabase {
 
   IsarDatabase._init();
 
+  late List<CollectionSchema<Object>> schemas = [
+    CatalogSchema,
+    CatalogItemSchema,
+    PasswordSchema,
+    FastNoteSchema,
+    FastNoteValueSchema,
+    KanbanDataSchema,
+    KanbanItemSchema,
+    KanbanItamTagSchema
+  ];
+
+  int get schemaCount => schemas.length;
+
   Future initialDatabase() async {
     if (isar != null && isar!.isOpen) {
       return;
     }
     final dir = await getApplicationDocumentsDirectory();
     isar = await Isar.open(
-      [
-        CatalogSchema,
-        CatalogItemSchema,
-        PasswordSchema,
-        FastNoteSchema,
-        FastNoteValueSchema,
-        KanbanDataSchema,
-        KanbanItemSchema,
-        KanbanItamTagSchema
-      ],
+      schemas,
       name: "weaving_db",
       directory: dir.path,
     );
