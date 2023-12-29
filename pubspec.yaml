@@ -21,6 +21,7 @@ dependencies:
   easy_refresh: ^3.3.2+4
   equatable: ^2.0.5
   file_selector: ^1.0.1
+  filesize: ^2.0.1
   flutter:
     sdk: flutter
   flutter_expandable_fab: ^2.0.0
@@ -53,6 +54,7 @@ dependencies:
   qr_code_scanner: ^1.0.1
   quill_html_converter: ^0.0.1-experimental.1
   reorderables: ^0.6.0
+  scrollview_observer: 1.19.0
   shared_preferences: ^2.2.2
   slang: ^3.25.0  # dart run slang
   slang_flutter: ^3.25.0
@@ -61,6 +63,7 @@ dependencies:
     git:
       url: https://github.com/guchengxi1994/taskboard
   window_manager: ^0.3.7
+  
   
   
 

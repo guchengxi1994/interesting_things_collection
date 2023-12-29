@@ -92,21 +92,16 @@ class CommonSettingWidget extends ConsumerWidget {
                     onChanged: (v) {}),
               ],
             ),
-            Row(
+            const Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(
+                SizedBox(
                   width: 200,
                   child: Text("删除数据"),
                 ),
-                ElevatedButton(
-                    onPressed: () {
-                      final IsarDatabase database = IsarDatabase();
-                      // database.isar!.fastNotes.clear();
-                    },
-                    child: const Text("删除所有笔记"))
+                Expanded(child: DatabaseTable())
               ],
             ),
-            const DatabaseTable()
           ]),
     );
   }

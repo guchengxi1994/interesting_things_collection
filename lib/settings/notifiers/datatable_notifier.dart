@@ -11,11 +11,12 @@ class DataTableNotifier extends AutoDisposeAsyncNotifier<DatabaseState> {
   @override
   FutureOr<DatabaseState> build() async {
     final totalSize = await database.isar!.getSize();
+    final details = database.getAllDetails();
 
     // final collections = database.isar!.;
 
     return DatabaseState(
-        details: [], size: totalSize, databaseCount: database.schemaCount);
+        details: details, size: totalSize, databaseCount: database.schemaCount);
   }
 }
 

@@ -10,7 +10,6 @@ import 'package:flutter_quill/extensions.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_quill_extensions/flutter_quill_extensions.dart';
 import 'package:flutter_quill_extensions/presentation/embeds/editor/shims/dart_ui_real.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:path_provider/path_provider.dart';
 // ignore: depend_on_referenced_packages
@@ -18,6 +17,8 @@ import 'package:path/path.dart' as path;
 import 'dart:ui' as ui;
 
 import 'package:weaving/gen/strings.g.dart';
+
+import 'editor_insert_listview.dart';
 
 typedef OnQuillSave = void Function(String, String, String);
 typedef OnQuillPreviewImageSave = void Function(Uint8List);
@@ -67,7 +68,17 @@ class _EditorState extends State<Editor> {
               final index0 = _controller.index;
               final length0 = _controller.length;
               if (index == index0 && length0 == length) {
-                SmartDialog.showToast("OK");
+                // SmartDialog.showToast("OK");
+                showGeneralDialog(
+                    barrierDismissible: true,
+                    barrierColor: Colors.transparent,
+                    barrierLabel: "editor",
+                    context: context,
+                    pageBuilder: (c, _, __) {
+                      return const Center(
+                        child: EditorInsertListview(),
+                      );
+                    });
               }
             });
           }
