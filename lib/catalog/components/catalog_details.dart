@@ -1,12 +1,14 @@
 import 'dart:io';
 
+import 'package:custom_quill_editor/editor.dart';
+import 'package:custom_quill_editor/editor_insert_listview.dart';
+import 'package:custom_quill_editor/image_provider.dart';
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_stars/flutter_rating_stars.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:flutter_tags_x/flutter_tags_x.dart';
-import 'package:weaving/catalog/components/editor.dart';
 import 'package:weaving/common/base64_utils.dart';
 import 'package:weaving/gen/strings.g.dart';
 import 'package:weaving/isar/catalog_item.dart';
@@ -26,6 +28,8 @@ class CatalogDetails extends ConsumerWidget {
   CatalogDetails({super.key, required this.catalogId, this.onNewItem});
   final int catalogId;
   final OnNewItem? onNewItem;
+
+  final GlobalKey<EditorState> globalKey = GlobalKey();
 
   late final notifier =
       AsyncNotifierProvider<CatalogDetailsNotifier, CatalogDetailsState>(() {
@@ -198,7 +202,31 @@ class CatalogDetails extends ConsumerWidget {
                                   AppStyle.appbarHeight
                               : MediaQuery.of(context).size.height,
                           child: Editor(
+                            key: globalKey,
                             savedData: "",
+                            onSelectImage: () async {
+                              await showGeneralDialog(
+                                  barrierDismissible: true,
+                                  barrierColor: Colors.transparent,
+                                  barrierLabel: "editor",
+                                  context: context,
+                                  pageBuilder: (c, _, __) {
+                                    return Center(
+                                      child: EditorImageInsertListview(
+                                        editorImageProvider:
+                                            EditorImageProvider(
+                                          images: [],
+                                          onSelect: (e) {
+                                            print(e.name);
+
+                                            globalKey.currentState!
+                                                .insertImage(e.path!);
+                                          },
+                                        ),
+                                      ),
+                                    );
+                                  });
+                            },
                             saveToJson: (p0, p1, p2) async {
                               SmartDialog.showLoading(msg: t.dialogs.loading);
                               item.catalogId = catalogId;

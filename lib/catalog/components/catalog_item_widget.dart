@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:custom_quill_editor/editor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_stars/flutter_rating_stars.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -12,8 +13,6 @@ import 'package:weaving/notifier/settings_notifier.dart';
 import 'package:weaving/style/app_style.dart';
 import 'package:just_the_tooltip/just_the_tooltip.dart';
 import 'package:popup_card/popup_card.dart';
-
-import 'editor.dart';
 
 typedef OnRatingChange = void Function(double);
 typedef OnDeleteClick = void Function(CatalogItem);
